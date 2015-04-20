@@ -14,6 +14,10 @@
 
 package com.saasovation.collaboration.domain.model.collaborator;
 
+/**
+ * <h3>物主、所有人，拥有者 - 值对象
+ *
+ */
 public class Owner extends Collaborator {
 
     private static final long serialVersionUID = 1L;

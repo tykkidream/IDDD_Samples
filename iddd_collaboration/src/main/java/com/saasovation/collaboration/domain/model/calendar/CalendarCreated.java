@@ -21,6 +21,10 @@ import com.saasovation.collaboration.domain.model.collaborator.Owner;
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ * <h3>日历被创建事件 - 领域事件
+ *
+ */
 public class CalendarCreated implements DomainEvent {
 
     private CalendarId calendarId;

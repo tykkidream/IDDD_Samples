@@ -16,6 +16,10 @@ package com.saasovation.collaboration.domain.model.calendar;
 
 import com.saasovation.common.domain.model.AbstractId;
 
+/**
+ * <h3>日历条目的唯一标识 - 值对象
+ *
+ */
 public final class CalendarEntryId extends AbstractId {
 
     private static final long serialVersionUID = 1L;

@@ -16,6 +16,10 @@ package com.saasovation.agilepm.domain.model.product.backlogitem;
 
 import com.saasovation.agilepm.domain.model.ValueObject;
 
+/**
+ * <h3>待定项唯一标识 - 值对象</h3>
+ *
+ */
 public class BacklogItemId extends ValueObject {
 
     private String id;

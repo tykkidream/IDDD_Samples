@@ -30,6 +30,10 @@ import com.saasovation.agilepm.domain.model.team.TeamMember;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 import com.saasovation.common.domain.model.DomainEventPublisher;
 
+/**
+ * <h3>待定项 - 聚合根</h3>
+ *
+ */
 public class BacklogItem extends Entity {
 
     private String associatedIssueId;

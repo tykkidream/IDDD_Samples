@@ -16,6 +16,10 @@ package com.saasovation.collaboration.domain.model.calendar;
 
 import com.saasovation.common.AssertionConcern;
 
+/**
+ * <h3>提醒 - </h3>
+ *
+ */
 public final class Alarm extends AssertionConcern {
 
     private int alarmUnits;

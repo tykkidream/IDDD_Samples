@@ -16,9 +16,21 @@ package com.saasovation.common.domain.model;
 
 import java.util.Date;
 
+/**
+ * 领域事件的接口。
+ *
+ */
 public interface DomainEvent {
 
+	/**
+	 * 事件版本
+	 * @return
+	 */
     public int eventVersion();
 
+    /**
+     * 事件发生时间
+     * @return
+     */
     public Date occurredOn();
 }

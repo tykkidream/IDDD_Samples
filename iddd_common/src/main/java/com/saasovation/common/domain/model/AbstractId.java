@@ -18,6 +18,10 @@ import java.io.Serializable;
 
 import com.saasovation.common.AssertionConcern;
 
+/**
+ * 领域实体的唯一标识的实现。
+ *
+ */
 public abstract class AbstractId
     extends AssertionConcern
     implements Identity, Serializable {
@@ -26,6 +30,9 @@ public abstract class AbstractId
 
     private String id;
 
+    /**
+     * 获取ID。
+     */
     public String id() {
         return this.id;
     }
@@ -75,6 +82,10 @@ public abstract class AbstractId
         // throws a runtime exception if invalid.
     }
 
+    /**
+     * ID属性的setter，是私有的。
+     * @param anId
+     */
     private void setId(String anId) {
         this.assertArgumentNotEmpty(anId, "The basic identity is required.");
         this.assertArgumentLength(anId, 36, "The basic identity must be 36 characters.");

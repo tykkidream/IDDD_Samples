@@ -36,6 +36,10 @@ import com.saasovation.agilepm.domain.model.team.ProductOwnerId;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 import com.saasovation.common.domain.model.DomainEventPublisher;
 
+/**
+ * <h3>产品 - 聚合根
+ *
+ */
 public class Product extends Entity {
 
     private Set<ProductBacklogItem> backlogItems;

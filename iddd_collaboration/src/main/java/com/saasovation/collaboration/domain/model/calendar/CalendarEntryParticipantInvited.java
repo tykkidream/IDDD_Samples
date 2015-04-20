@@ -20,6 +20,10 @@ import com.saasovation.collaboration.domain.model.collaborator.Participant;
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ * <h3>日历条目的参加邀请事件 - 领域事件
+ *
+ */
 public class CalendarEntryParticipantInvited implements DomainEvent {
 
     private CalendarEntryId calendarEntryId;

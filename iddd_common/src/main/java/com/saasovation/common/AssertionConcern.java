@@ -14,24 +14,45 @@
 
 package com.saasovation.common;
 
+/**
+ * 断言工具类。
+ *
+ */
 public class AssertionConcern {
 
     protected AssertionConcern() {
         super();
     }
 
+    /**
+     * 断言两个对象是事业相等（equals）。 
+     * @param anObject1
+     * @param anObject2
+     * @param aMessage
+     */
     protected void assertArgumentEquals(Object anObject1, Object anObject2, String aMessage) {
         if (!anObject1.equals(anObject2)) {
             throw new IllegalArgumentException(aMessage);
         }
     }
 
+    /**
+     * 断言是否为假。
+     * @param aBoolean
+     * @param aMessage
+     */
     protected void assertArgumentFalse(boolean aBoolean, String aMessage) {
         if (aBoolean) {
             throw new IllegalArgumentException(aMessage);
         }
     }
 
+    /**
+     * 断言字符是否小于等于指定的长度。
+     * @param aString
+     * @param aMaximum
+     * @param aMessage
+     */
     protected void assertArgumentLength(String aString, int aMaximum, String aMessage) {
         int length = aString.trim().length();
         if (length > aMaximum) {

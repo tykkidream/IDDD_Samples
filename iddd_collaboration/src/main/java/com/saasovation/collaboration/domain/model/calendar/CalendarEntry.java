@@ -25,6 +25,10 @@ import com.saasovation.collaboration.domain.model.tenant.Tenant;
 import com.saasovation.common.domain.model.DomainEvent;
 import com.saasovation.common.domain.model.EventSourcedRootEntity;
 
+/**
+ * <h3>日历条目 - 聚合根
+ *
+ */
 public class CalendarEntry extends EventSourcedRootEntity {
 
     private Alarm alarm;

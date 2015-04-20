@@ -18,6 +18,10 @@ import java.util.Date;
 
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 
+/**
+ * <h3>Scrum 团队成员 - 实体</h3>
+ * 
+ */
 public class TeamMember extends Member {
 
     public TeamMember(

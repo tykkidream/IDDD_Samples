@@ -19,6 +19,10 @@ import java.util.Date;
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ * <h3>日历的描述被修改事件 - 领域事件
+ *
+ */
 public class CalendarDescriptionChanged implements DomainEvent {
 
     private CalendarId calendarId;

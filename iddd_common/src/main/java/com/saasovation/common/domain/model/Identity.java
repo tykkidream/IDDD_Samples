@@ -14,6 +14,10 @@
 
 package com.saasovation.common.domain.model;
 
+/**
+ * 领域实体的唯一标识接口。
+ *
+ */
 public interface Identity {
 
     public String id();

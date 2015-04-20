@@ -14,20 +14,33 @@
 
 package com.saasovation.collaboration.domain.model.calendar;
 
+/**
+ *<h3> 警报时间单位类型 - 值对象
+ *
+ */
 public enum AlarmUnitsType {
 
+	/**
+	 * 天
+	 */
     Days {
         public boolean isDays() {
             return true;
         }
     },
 
+    /**
+     * 小时
+     */
     Hours {
         public boolean isHours() {
             return true;
         }
     },
 
+    /**
+     * 分钟
+     */
     Minutes {
         public boolean isMinutes() {
             return true;

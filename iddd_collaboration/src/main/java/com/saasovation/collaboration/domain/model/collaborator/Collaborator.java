@@ -16,6 +16,10 @@ package com.saasovation.collaboration.domain.model.collaborator;
 
 import java.io.Serializable;
 
+/**
+ * <h3>协作者、合作者
+ *
+ */
 public abstract class Collaborator
         implements Comparable<Collaborator>, Serializable {
 

@@ -16,6 +16,10 @@ package com.saasovation.agilepm.domain.model;
 
 import com.saasovation.common.AssertionConcern;
 
+/**
+ * 实体。
+ *
+ */
 public abstract class Entity extends AssertionConcern {
 
     private int concurrencyVersion;

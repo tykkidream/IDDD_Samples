@@ -18,6 +18,11 @@ import com.saasovation.agilepm.domain.model.Entity;
 import com.saasovation.agilepm.domain.model.product.backlogitem.BacklogItemId;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 
+/**
+ * <h3>产品待定项 - 聚合根</h3>
+ * <p>完成产品需要做的事情。Backlog 可以理解成“积压的工作”，
+ *“待解决的问题”，“产品订单”。
+ */
 public class ProductBacklogItem extends Entity {
 
     private BacklogItemId backlogItemId;

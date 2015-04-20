@@ -16,6 +16,10 @@ package com.saasovation.collaboration.domain.model.tenant;
 
 import com.saasovation.common.domain.model.AbstractId;
 
+/**
+ * <h3>房客、住户、承租人 - 值对象
+ *
+ */
 public final class Tenant extends AbstractId {
 
     private static final long serialVersionUID = 1L;

@@ -25,13 +25,23 @@ import com.saasovation.collaboration.domain.model.tenant.Tenant;
 import com.saasovation.common.domain.model.DomainEvent;
 import com.saasovation.common.domain.model.EventSourcedRootEntity;
 
+/**
+ * <h3>日历 - 聚合根
+ * <p>
+ */
 public class Calendar extends EventSourcedRootEntity {
 
+	/** ID **/
     private CalendarId calendarId;
+    /** 描述 **/
     private String description;
+    /** 名称 **/
     private String name;
+    /** 拥有者 **/
     private Owner owner;
+    /** ID **/
     private Set<CalendarSharer> sharedWith;
+    /** 房客、住户 **/
     private Tenant tenant;
 
     public Calendar(

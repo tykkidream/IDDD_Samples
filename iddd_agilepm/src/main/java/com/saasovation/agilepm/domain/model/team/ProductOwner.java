@@ -18,6 +18,11 @@ import java.util.Date;
 
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 
+/**
+ * <h3>产品负责人 - 聚合根</h3>
+ * <p>Scrum 框架的3个角色之一，另外两个是 Scrum Master 和 Scrum团队 {@link Team}
+ *
+ */
 public class ProductOwner extends Member {
 
     public ProductOwner(
