@@ -14,6 +14,11 @@
 
 package com.saasovation.collaboration.domain.model.collaborator;
 
+/**
+ * <h3>创作者 - 值对象</h3>
+ * 
+ *
+ */
 public final class Creator extends Collaborator {
 
     private static final long serialVersionUID = 1L;

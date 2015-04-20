@@ -23,6 +23,10 @@ import com.saasovation.collaboration.domain.model.tenant.Tenant;
 import com.saasovation.common.domain.model.DomainEvent;
 import com.saasovation.common.domain.model.EventSourcedRootEntity;
 
+/**
+ * <h3>论坛 - 聚合根</h3>
+ *
+ */
 public class Forum extends EventSourcedRootEntity {
 
     private boolean closed;
@@ -142,6 +146,13 @@ public class Forum extends EventSourcedRootEntity {
         this.apply(new ForumReopened(this.tenant(), this.forumId(), this.exclusiveOwner()));
     }
 
+    /**
+     * 
+     * @param aForumIdentityService
+     * @param anAuthor
+     * @param aSubject
+     * @return
+     */
     public Discussion startDiscussion(
             ForumIdentityService aForumIdentityService,
             Author anAuthor,
@@ -150,6 +161,14 @@ public class Forum extends EventSourcedRootEntity {
         return this.startDiscussionFor(aForumIdentityService, anAuthor, aSubject, null);
     }
 
+    /**
+     * 
+     * @param aForumIdentityService
+     * @param anAuthor
+     * @param aSubject
+     * @param anExclusiveOwner
+     * @return
+     */
     public Discussion startDiscussionFor(
             ForumIdentityService aForumIdentityService,
             Author anAuthor,

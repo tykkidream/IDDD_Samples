@@ -21,6 +21,9 @@ import com.saasovation.collaboration.domain.model.tenant.Tenant;
 import com.saasovation.common.domain.model.DomainEvent;
 import com.saasovation.common.domain.model.EventSourcedRootEntity;
 
+/**
+ * <h3>讨论 - 聚合根</h3>
+ */
 public class Discussion extends EventSourcedRootEntity {
 
     private Author author;

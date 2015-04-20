@@ -15,7 +15,7 @@
 package com.saasovation.collaboration.domain.model.collaborator;
 
 /**
- * <h3>物主、所有人，拥有者 - 值对象
+ * <h3>拥有者 - 值对象</h3>
  *
  */
 public class Owner extends Collaborator {
