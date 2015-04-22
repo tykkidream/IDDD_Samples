@@ -26,7 +26,7 @@ import com.saasovation.common.domain.model.DomainEvent;
 import com.saasovation.common.domain.model.EventSourcedRootEntity;
 
 /**
- * <h3>日历 - 聚合根
+ * <h3>日历 - 聚合根</h3>
  * <p>
  */
 public class Calendar extends EventSourcedRootEntity {

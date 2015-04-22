@@ -1,5 +1,4 @@
-These are the sample Bounded Contexts from the book
-"Implementing Domain-Driven Design" by Vaughn Vernon:
+此项目演示了《实施领域驱动设计》书中示例的限界上下文——by Vaughn Vernon:
 
 http://vaughnvernon.co/?page_id=168
 
@@ -10,19 +9,16 @@ not meant to be a reflection of a production quality
 work, but rather as a set of reference projects for
 the book.
 
-Points of Interest
+说明
 ==================
 
-The iddd_agilepm project uses a key-value store as
-its underlying persistence mechanism, and in particular
-is LevelDB. Actually the LevelDB in use is a pure Java
-implementation: https://github.com/dain/leveldb
+iddd_agilepm 项目使用了一个key-value存储作为底层的持久层机制，主要是LevelDB。
+实际使用的LevelDB是一个纯Java实现：https://github.com/dain/leveldb
 
-Currently iddd_agilepm doesn't employ a container of
-any kind (such as Spring).
+目前 iddd_agilepm 没使用任何一种容器（例如Spring）。
 
-The iddd_collaboration project uses Event Sourcing and
-CQRS. It purposely avoids the use of an object-relational
+iddd_collaboration 项目使用了事件溯源和CQRS。
+It purposely avoids the use of an object-relational
 mapper, showing that a simple JDBC-based query engine
 and DTO matter can be used instead. This technique does
 have its limitations, but it is meant to be small and fast
@@ -53,10 +49,10 @@ liter each project. This is not a recommendation, but it
 did work well and save a considerable amount of work while
 producing the samples.
 
-Usage
+用法
 =====
 
-Requires
+要求
 --------
 
 - Java 7 (8+ does not work)
