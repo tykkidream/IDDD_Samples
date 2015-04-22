@@ -15,8 +15,8 @@
 package com.saasovation.collaboration.domain.model.calendar;
 
 /**
- *<h3> 警报时间单位类型 - 值对象
- *
+ *<h3> 警报的时间单位 - 值对象</h3>
+ *<p>主要有 {@link #Days 天}、 {@link #Hours 小时}、 {@link #Minutes 分钟} 这三个单位。
  */
 public enum AlarmUnitsType {
 

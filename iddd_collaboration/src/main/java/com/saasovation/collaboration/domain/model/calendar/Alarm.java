@@ -32,14 +32,27 @@ public final class Alarm extends AssertionConcern {
         this.setAlarmUnitsType(anAlarmUnitsType);
     }
 
+    /**
+     * 
+     * @return
+     */
     public int alarmUnits() {
         return this.alarmUnits;
     }
 
+    /**
+     * 获取警报时间类型
+     * @return
+     */
     public AlarmUnitsType alarmUnitsType() {
         return this.alarmUnitsType;
     }
 
+    /**
+     *<h3>与其它对象判断是否相等</h3>
+     *<p>本类是值对象，所以比较时只能同本类对象进行比较，
+     *而且要对所有属性进行比较。
+     */
     @Override
     public boolean equals(Object anObject) {
         boolean equalObjects = false;
@@ -69,14 +82,32 @@ public final class Alarm extends AssertionConcern {
         return "Alarm [alarmUnits=" + alarmUnits + ", alarmUnitsType=" + alarmUnitsType + "]";
     }
 
+    /**
+     * <h3>初始化Alarm</h3>
+     * <p>本方法是受保护的protected，只限本模块成员使用。
+     */
     protected Alarm() {
         super();
     }
 
+    /**
+     *<h3>设置报警值</h3>
+     *<p>POJO风格的Setter方法。
+     *在本类带参的构造函数中使用，给属性赋值，只被使用了这一次。
+     *另外可被一些框架调用赋值。
+     * @param anAlarmUnits
+     */
     protected void setAlarmUnits(int anAlarmUnits) {
         this.alarmUnits = anAlarmUnits;
     }
 
+    /**
+     * <h3>设置报警时间单位</h3>
+     * <p>POJO风格的Setter方法。
+     *在本类带参的构造函数中使用，给属性赋值，只被使用了这一次。
+     *另外可被一些框架调用赋值。
+     * @param anAlarmUnitsType
+     */
     protected void setAlarmUnitsType(AlarmUnitsType anAlarmUnitsType) {
         this.alarmUnitsType = anAlarmUnitsType;
     }
