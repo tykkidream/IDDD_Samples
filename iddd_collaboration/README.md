@@ -87,6 +87,8 @@
 |---------------|------------------------------------------|---------------------------------|----------------|
 |聚合根        |CalendarEntry                                      |日历条目                           |日历模块      |
 |值对象        |CalendarEntryId                                   |日历条目ID                             |日历模块      |
+|                       |Repetition                                             |警报时间类型                     |日历模块      |
+|                       |TimeSpan                                             |警报时间类型                     |日历模块      |
 |事件           |CalendarEntryDescriptionChanged     |日历条目描述修改事件       |日历模块      |
 |                      |CalendarEntryParticipantInvited          |日历条目参与者邀请          |日历模块      |
 |                      |CalendarEntryParticipantUninvited      |日历条目参与者取消邀请   |日历模块      |
@@ -94,6 +96,8 @@
 |                      |CalendarEntryRescheduled                    |日历条目改期事件             |日历模块      |
 |                      |CalendarEntryScheduled                        |日历条目计划事件             |日历模块      |
 |仓库           |CalendarEntryRepository                       |日历条目仓库                    |日历模块      |
+|外部值对象 |Participant                                               |参与者                              |日历模块      |
+|聚合引用    |CalendarId                                              |引用了日历聚合的ID             |日历模块      |
 
 共有相关：
 
@@ -102,9 +106,9 @@
 |值对象        |Alarm                                              |警报                           |日历模块      |
 |                       |AlarmUnitsType                             |警报时间类型             |日历模块      |
 |                       |RepeatType                                     |警报时间类型             |日历模块      |
-|                       |Repetition                                       |警报时间类型             |日历模块      |
-|                       |TimeSpan                                       |警报时间类型             |日历模块      |
 |领域服务     |CalendarIdentityService                 |服务                          |日历模块      |
+|外部值对象  |Owner                                             |拥有者                       |日历模块      |
+|                       |Tenant                                             |房客                           |日历模块      |
 
 
 日历模块（Calendar Model）
