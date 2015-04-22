@@ -67,32 +67,44 @@
 
 此模块的包为：`com.saasovation.collaboration.domain.model.calendar`
 
+日历相关：
+
 |       类型      |                           类名                 |                 名称             |       说明       |
 |---------------|--------------------------------------|----------------------------|----------------|
 |聚合根        |Calendar                                          |日历                           |日历模块     |
 |值对象        |CalendarId                                      |日历ID                             |日历模块      |
-|                       |Alarm                                              |警报                           |日历模块      |
-|                       |AlarmUnitsType                             |警报时间类型              |日历模块      |
-|                       |CalendarSharer                               |警报时间类型              |日历模块      |
-|事件           |CalendarCreated                              |日历创建事件             |日历模块      |
-|                      |CalendarDescriptionChanged         |日历描述修改事件      |日历模块      |
-|                      |CalendarRenamed                           |日历创建事件             |日历模块      |
-|                      |CalendarShared                                |日历创建事件             |日历模块      |
-|                      |CalendarUnshared                            |日历创建事件             |日历模块      |
-|领域服务    |日历模块                                 |日历子域                   |日历模块      |
+|                       |CalendarSharer                               |日历共享                    |日历模块      |
+|事件            |CalendarCreated                             |日历创建事件             |日历模块      |
+|                       |CalendarDescriptionChanged        |日历描述修改事件      |日历模块      |
+|                       |CalendarRenamed                           |日历创建事件             |日历模块      |
+|                       |CalendarShared                               |日历共享事件             |日历模块      |
+|                       |CalendarUnshared                           |日历取消共享事件      |日历模块      |
+|仓库            |CalendarRepository                         |日历仓库                   |日历模块      |
 
+日历条目相关：
+
+|       类型      |                             类名                    |                      名称               |       说明       |
+|---------------|------------------------------------------|---------------------------------|----------------|
+|聚合根        |CalendarEntry                                      |日历条目                           |日历模块      |
+|值对象        |CalendarEntryId                                   |日历条目ID                             |日历模块      |
+|事件           |CalendarEntryDescriptionChanged     |日历条目描述修改事件       |日历模块      |
+|                      |CalendarEntryParticipantInvited          |日历条目参与者邀请          |日历模块      |
+|                      |CalendarEntryParticipantUninvited      |日历条目参与者取消邀请   |日历模块      |
+|                      |CalendarEntryRelocated                        |日历条目迁移事件             |日历模块      |
+|                      |CalendarEntryRescheduled                    |日历条目改期事件             |日历模块      |
+|                      |CalendarEntryScheduled                        |日历条目计划事件             |日历模块      |
+|仓库           |CalendarEntryRepository                       |日历条目仓库                    |日历模块      |
+
+共有相关：
 
 |       类型      |                           类名                 |                 名称             |       说明       |
 |---------------|--------------------------------------|----------------------------|----------------|
-|聚合根        |CalendarEntry                                |日历                           |日历模块     |
-                        |Calenda                                           |日历条目                    |日历模块      |
 |值对象        |Alarm                                              |警报                           |日历模块      |
-                        |AlarmUnitsType                             |警报时间类型              |日历模块      |
-|事件           |CalendarCreated                              |日历创建事件             |日历模块      |
-|事件           |CalendarDescriptionChanged         |日历描述修改事件      |日历模块      |
-|事件           |CalendarCreated                              |日历创建事件             |日历模块      |
-|事件           |CalendarCreated                              |日历创建事件             |日历模块      |
-|领域服务    |日历模块                                 |日历子域                   |日历模块      |
+|                       |AlarmUnitsType                             |警报时间类型             |日历模块      |
+|                       |RepeatType                                     |警报时间类型             |日历模块      |
+|                       |Repetition                                       |警报时间类型             |日历模块      |
+|                       |TimeSpan                                       |警报时间类型             |日历模块      |
+|领域服务     |CalendarIdentityService                 |服务                          |日历模块      |
 
 
 日历模块（Calendar Model）
