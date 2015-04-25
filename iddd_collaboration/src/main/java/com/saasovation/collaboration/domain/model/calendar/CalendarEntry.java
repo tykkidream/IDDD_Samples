@@ -26,22 +26,43 @@ import com.saasovation.common.domain.model.DomainEvent;
 import com.saasovation.common.domain.model.EventSourcedRootEntity;
 
 /**
- * <h3>日历条目 - 聚合根
- *
+ *<h3>日历条目 - 聚合根</h3>
+ *<p>日历条目就是待办事项、活动，或者日历事件等。
  */
 public class CalendarEntry extends EventSourcedRootEntity {
 
+	/** 警报 **/
     private Alarm alarm;
+    /** ID **/
     private CalendarEntryId calendarEntryId;
+    /** 日历ID。遵循“通过唯一标识引用其它聚合”的原则。 **/
     private CalendarId calendarId;
+    /** 描述 **/
     private String description;
+    /** 参与者 **/
     private Set<Participant> invitees;
+    /** 地址 **/
     private String location;
+    /** 拥有者 **/
     private Owner owner;
+    /** 重复时间 **/
     private Repetition repetition;
+    /** 租户（订阅者） **/
     private Tenant tenant;
+    /** 条目活动时间范围 **/
     private TimeSpan timeSpan;
 
+    /**
+     *<h3>构造CalendarEntry</h3>
+     *<p>代表了重建（还原）一个已存在的CalendarEntry对象。
+     *<p>由于本聚合使用了事件溯源，所以初始化需要参数的是事件流及事件版本号。
+     *重建过程是将事件流中的事件按顺序依次使用聚合内的事件重放方法更新聚合对
+     *象的状态。
+     *<p>具体的事件溯源机制参考{@link #apply(DomainEvent)}。
+     *
+     * @param anEventStream
+     * @param aStreamVersion
+     */
     public CalendarEntry(List<DomainEvent> anEventStream, int aStreamVersion) {
         super(anEventStream, aStreamVersion);
     }
@@ -78,6 +99,14 @@ public class CalendarEntry extends EventSourcedRootEntity {
         return this.repetition;
     }
 
+    /**
+     *<h3>修改描述</h3>
+     *<p>这是一个CQS命令方法，用于修改日历条目的描述，没有返回值。
+     *<p>处理时，将参数封装到一个新的{@link CalendarEntryDescriptionChanged}事件对象中，并发布它，最
+     *后由事件重放方法{@link #when(CalendarEntryDescriptionChanged)}更新当前聚合状态。
+     *<p>具体的事件溯源机制参考{@link #apply(DomainEvent)}。
+     * @param aDescription
+     */
     public void changeDescription(String aDescription) {
         if (aDescription != null) {
             aDescription = aDescription.trim();
@@ -89,6 +118,15 @@ public class CalendarEntry extends EventSourcedRootEntity {
         }
     }
 
+    /**
+     *<h3>邀请参与者到当前条目中</h3>
+     *<p>这是一个CQS命令方法，用于添加一个参与者参与当前待办事项，没有返回值。
+     *<p>处理时，将参数封装到一个新的{@link CalendarEntryParticipantInvited}事件对象中，并发布它，最
+     *后由事件重放方法{@link #when(CalendarEntryParticipantInvited)}更新当前聚合状态。
+     *<p>具体的事件溯源机制参考{@link #apply(DomainEvent)}。
+     *
+     * @param aParticipant
+     */
     public void invite(Participant aParticipant) {
         this.assertArgumentNotNull(aParticipant, "The participant must be provided.");
 
@@ -99,6 +137,18 @@ public class CalendarEntry extends EventSourcedRootEntity {
         }
     }
 
+    /**
+     *<h3>修改待办事项的地址</h3>
+     *
+     *<p>这是一个CQS命令方法，用于修改待办事项的地址，没有返回值。
+     *
+     *<p>处理时，将参数封装到一个新的{@link CalendarEntryRelocated}事件对象中，并发布它，最
+     *后由事件重放方法{@link #when(CalendarEntryRelocated)}更新当前聚合状态。
+     *
+     *<p>具体的事件溯源机制参考{@link #apply(DomainEvent)}。
+     *
+     * @param aLocation
+     */
     public void relocate(String aLocation) {
         if (aLocation != null) {
             aLocation = aLocation.trim();
@@ -110,6 +160,22 @@ public class CalendarEntry extends EventSourcedRootEntity {
         }
     }
 
+    /**
+     *<h3>重新设置日历条目</h3>
+     *
+     *<p>这是一个CQS命令方法，用于重新设置日历，修改描述、地址、时间，没有返回值。
+     *
+     *<p>处理时，将参数封装到一个新的{@link CalendarEntryRescheduled}事件对象中，并发布它，最
+     *后由事件重放方法{@link #when(CalendarEntryRescheduled)}更新当前聚合状态。
+     *
+     *<p>具体的事件溯源机制参考{@link #apply(DomainEvent)}。
+     * 
+     * @param aDescription
+     * @param aLocation
+     * @param aTimeSpan
+     * @param aRepetition
+     * @param anAlarm
+     */
     public void reschedule(
             String aDescription,
             String aLocation,
@@ -125,9 +191,12 @@ public class CalendarEntry extends EventSourcedRootEntity {
             aRepetition = Repetition.doesNotRepeatInstance(aTimeSpan.ends());
         }
 
+        // 时间校验
         this.assertTimeSpans(aRepetition, aTimeSpan);
 
+        // 执行其它命令：修改描述
         this.changeDescription(aDescription);
+        // 执行其它命令：修改地址
         this.relocate(aLocation);
 
         this.apply(new CalendarEntryRescheduled(
@@ -143,6 +212,15 @@ public class CalendarEntry extends EventSourcedRootEntity {
         return this.timeSpan;
     }
 
+    /**
+     *<h3>从当前条目中取消一个参与者</h3>
+     *<p>这是一个CQS命令方法，用于从当前待办事项的参与者中移除一个参与者，没有返回值。
+     *<p>处理时，将参数封装到一个新的{@link CalendarEntryParticipantUninvited}事件对象中，并发布它，最
+     *后由事件重放方法{@link #when(CalendarEntryParticipantUninvited)}更新当前聚合状态。
+     *<p>具体的事件溯源机制参考{@link #apply(DomainEvent)}。
+     * 
+     * @param aParticipant
+     */
     public void uninvite(Participant aParticipant) {
         this.assertArgumentNotNull(aParticipant, "The participant must be provided.");
 
@@ -186,6 +264,32 @@ public class CalendarEntry extends EventSourcedRootEntity {
                 + ", repetition=" + repetition + ", tenant=" + tenant + ", timeSpan=" + timeSpan + "]";
     }
 
+    /**
+     *<h3>构造CalendarEntry</h3>
+     *
+     *<p>代表了一个新生的CalendarEntry对象，同时会发布创建事件{@link CalendarEntryScheduled}。
+     *本方法是受保护的protected，所以在当前calendar模块（包）外是无法使用的，需要创建新生的
+     *对象时，只能通过Calendar聚合的{@link Calendar#scheduleCalendarEntry scheduleCalendarEntry}
+     *命令创建，因为一个日历上可以创建多个条目。
+     *
+     *<p>初始化需要一些参数，其中某些是必须的，初始化时会对参数作一些断言。由于本聚合使用
+     *了事件溯源，所以在断言之后将参数封装到了一个{@link CalendarEntryScheduled}事件对象中，
+     *再将事件发布，最后由聚合内的事件重放方法{@link #when(CalendarEntryScheduled)}更新当前聚
+     *合状态。
+     *
+     *<p>具体的事件溯源机制参考{@link #apply(DomainEvent)}。
+     * 
+     * @param aTenant
+     * @param aCalendarId
+     * @param aCalendarEntryId
+     * @param aDescription
+     * @param aLocation
+     * @param anOwner
+     * @param aTimeSpan
+     * @param aRepetition
+     * @param anAlarm
+     * @param anInvitees
+     */
     protected CalendarEntry(
             Tenant aTenant,
             CalendarId aCalendarId,
@@ -214,6 +318,7 @@ public class CalendarEntry extends EventSourcedRootEntity {
             aRepetition = Repetition.doesNotRepeatInstance(aTimeSpan.ends());
         }
 
+        // 时间校验
         this.assertTimeSpans(aRepetition, aTimeSpan);
 
         if (anInvitees == null) {
@@ -224,28 +329,61 @@ public class CalendarEntry extends EventSourcedRootEntity {
                 aLocation, anOwner, aTimeSpan, aRepetition, anAlarm, anInvitees));
     }
 
+    /**
+     *<h3>构造CalendarEntry</h3>
+     */
     protected CalendarEntry() {
         super();
     }
 
+    /**
+     *<h3>处理CalendarEntryDescriptionChanged事件。</h3>
+     *<p>事件重放的方法。
+     * 
+     * @param anEvent
+     */
     protected void when(CalendarEntryDescriptionChanged anEvent) {
         this.setDescription(anEvent.description());
     }
 
+    /**
+     *<h3>处理CalendarEntryParticipantInvited事件。</h3>
+     *<p>事件重放的方法。
+     * 
+     * @param anEvent
+     */
     protected void when(CalendarEntryParticipantInvited anEvent) {
         this.invitees().add(anEvent.participant());
     }
 
+    /**
+     *<h3>处理CalendarEntryRelocated事件。</h3>
+     *<p>事件重放的方法。
+     * 
+     * @param anEvent
+     */
     protected void when(CalendarEntryRelocated anEvent) {
         this.setLocation(anEvent.location());
     }
 
+    /**
+     *<h3>处理CalendarEntryRescheduled事件。</h3>
+     *<p>事件重放的方法。
+     * 
+     * @param anEvent
+     */
     protected void when(CalendarEntryRescheduled anEvent) {
         this.setAlarm(anEvent.alarm());
         this.setRepetition(anEvent.repetition());
         this.setTimeSpan(anEvent.timeSpan());
     }
 
+    /**
+     *<h3>处理CalendarEntryScheduled事件。</h3>
+     *<p>事件重放的方法。
+     * 
+     * @param anEvent
+     */
     protected void when(CalendarEntryScheduled anEvent) {
         this.setAlarm(anEvent.alarm());
         this.setCalendarEntryId(anEvent.calendarEntryId());
@@ -259,6 +397,12 @@ public class CalendarEntry extends EventSourcedRootEntity {
         this.setTimeSpan(anEvent.timeSpan());
     }
 
+    /**
+     *<h3>处理CalendarEntryParticipantUninvited事件。</h3>
+     *<p>事件重放的方法。
+     * 
+     * @param anEvent
+     */
     protected void when(CalendarEntryParticipantUninvited anEvent) {
         this.invitees().remove(anEvent.participant());
     }
@@ -267,6 +411,11 @@ public class CalendarEntry extends EventSourcedRootEntity {
         this.alarm = anAlarm;
     }
 
+    /**
+     * 断言时间
+     * @param aRepetition
+     * @param aTimeSpan
+     */
     private void assertTimeSpans(Repetition aRepetition, TimeSpan aTimeSpan) {
         if (aRepetition.repeats().isDoesNotRepeat()) {
             this.assertArgumentEquals(
@@ -292,6 +441,10 @@ public class CalendarEntry extends EventSourcedRootEntity {
         this.description = aDescription;
     }
 
+    /**
+     * 
+     * @return
+     */
     private Set<Participant> invitees() {
         return this.invitees;
     }

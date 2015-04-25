@@ -18,9 +18,15 @@ import java.util.Date;
 
 import com.saasovation.common.AssertionConcern;
 
+/**
+ *<h3>重复时间 值对象</h3>
+ *<p>指日历任务的重复情况，比如每周一。
+ */
 public final class Repetition extends AssertionConcern {
 
+	/** 时间 **/
     private Date ends;
+    /** 重复类型 **/
     private RepeatType repeats;
 
     public static Repetition doesNotRepeatInstance(Date anEnds) {

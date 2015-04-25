@@ -14,32 +14,51 @@
 
 package com.saasovation.collaboration.domain.model.calendar;
 
+/**
+ *<h3>重复类型 - 值对象</h3>
+ *
+ */
 public enum RepeatType {
 
+	/**
+	 * 不重复
+	 */
     DoesNotRepeat {
         public boolean isDoesNotRepeat() {
             return true;
         }
     },
 
+    /**
+     * 每天
+     */
     Daily {
         public boolean isDaily() {
             return true;
         }
     },
 
+    /**
+     * 每周
+     */
     Weekly {
         public boolean isWeekly() {
             return true;
         }
     },
 
+    /**
+     * 每月
+     */
     Monthy {
         public boolean isMonthly() {
             return true;
         }
     },
 
+    /**
+     * 每年
+     */
     Yearly {
         public boolean isYearly() {
             return true;

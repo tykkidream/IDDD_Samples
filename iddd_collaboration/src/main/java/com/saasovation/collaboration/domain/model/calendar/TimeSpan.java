@@ -18,9 +18,15 @@ import java.util.Date;
 
 import com.saasovation.common.AssertionConcern;
 
+/**
+ *<h3>时间跨度 - 值对象</h3>
+ *<p>
+ */
 public final class TimeSpan extends AssertionConcern {
 
+	/** 开始时间 **/
     private Date begins;
+	/** 结束时间 **/
     private Date ends;
 
     public TimeSpan(Date aBegins, Date anEnds) {

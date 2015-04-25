@@ -17,7 +17,7 @@ package com.saasovation.collaboration.domain.model.tenant;
 import com.saasovation.common.domain.model.AbstractId;
 
 /**
- * <h3>租户订阅方 - 值对象</h3>
+ * <h3>租户（订阅方） - 值对象</h3>
  *
  */
 public final class Tenant extends AbstractId {

@@ -19,6 +19,11 @@ import java.util.Date;
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ * 
+ * @author Tykkidream
+ *
+ */
 public class CalendarEntryRescheduled implements DomainEvent {
 
     private Alarm alarm;

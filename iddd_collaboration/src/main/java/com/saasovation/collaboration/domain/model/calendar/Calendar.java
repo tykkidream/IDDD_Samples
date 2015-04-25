@@ -39,18 +39,21 @@ public class Calendar extends EventSourcedRootEntity {
     private String name;
     /** 拥有者 **/
     private Owner owner;
-    /** ID **/
+    /** 动态订阅者**/
     private Set<CalendarSharer> sharedWith;
-    /** 房客、住户 **/
+    /** 租户（订阅方） **/
     private Tenant tenant;
 
     /**
-     *<h3>初始化Calendar</h3>
+     *<h3>构造Calendar</h3>
+     *
      *<p>代表了一个新生的Calendar对象，同时会发布创建事件{@link CalendarCreated}。
-     *<p>初始化需要一些参数，其中某些是必须的，初始化时会对参数作一些断言。由
-     *于本聚合使用了事件溯源，所以在断言之后将参数封装到了一个事件对象中，再将
-     *事件发布，最后由聚合内的事件处理方法也就是事件重放方法，处理事件对象并获
-     *得参数更新到当前聚合对象的状态上。
+     *
+     *<p>初始化需要一些参数，其中某些是必须的，初始化时会对参数作一些断言。由于本聚
+     *合使用了事件溯源，所以在断言之后将参数封装到了一个{@link CalendarCreated}事件对
+     *象中，再将事件发布，最后由聚合内的事件重放方法{@link #when(CalendarCreated)}更新
+     *当前聚合状态。
+     *
      *<p>具体的事件溯源机制参考{@link #apply(DomainEvent)}。
      *
      * @param aTenant
@@ -87,11 +90,11 @@ public class Calendar extends EventSourcedRootEntity {
     }
 
     /**
-     *<h3>初始化Calendar</h3>
+     *<h3>构造Calendar</h3>
      *<p>代表了重建（还原）一个已存在的Calendar对象。
      *<p>由于本聚合使用了事件溯源，所以初始化需要参数的是事件流及事件版本号。
      *重建过程是将事件流中的事件按顺序依次使用聚合内的事件重放方法更新聚合对
-     *象的姿态。
+     *象的状态。
      *<p>具体的事件溯源机制参考{@link #apply(DomainEvent)}。
      *
      * @param anEventStream
@@ -120,7 +123,9 @@ public class Calendar extends EventSourcedRootEntity {
     }
 
     /**
-     *<h3></h3>
+     *<h3>修改描述</h3>
+     *<p>这是一个CQS命令方法，用于修改日历的描述，没有返回值。
+     *
      * @param aDescription
      */
     public void changeDescription(String aDescription) {
@@ -274,7 +279,7 @@ public class Calendar extends EventSourcedRootEntity {
     }
 
     /**
-     * 
+     *<h3>构造Calendar</h3>
      */
     protected Calendar() {
         super();
