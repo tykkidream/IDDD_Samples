@@ -18,13 +18,16 @@ import com.saasovation.collaboration.domain.model.collaborator.Participant;
 import com.saasovation.common.AssertionConcern;
 
 /**
- *<h3>日历共享 - 值对象</h3>
+ *<h3>日历（接收）共享者 - 值对象</h3>
  *<p>
  */
 public final class CalendarSharer
         extends AssertionConcern
         implements Comparable<CalendarSharer> {
 
+	/**
+	 * 接收共享者
+	 */
     private Participant participant;
 
     public CalendarSharer(Participant aParticipant) {

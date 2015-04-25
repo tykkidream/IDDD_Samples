@@ -17,17 +17,19 @@ package com.saasovation.collaboration.domain.model.calendar;
 import com.saasovation.common.AssertionConcern;
 
 /**
- * <h3>警报 - 值对象</h3>
- *
+ *<h3>警报 - 值对象</h3>
+ *<p>本类添加了final修饰。
  */
 public final class Alarm extends AssertionConcern {
 
+	/* 私有字段 */
     private int alarmUnits;
     private AlarmUnitsType alarmUnitsType;
 
     public Alarm(AlarmUnitsType anAlarmUnitsType, int anAlarmUnits) {
         this();
 
+        // 这里使用了setter。
         this.setAlarmUnits(anAlarmUnits);
         this.setAlarmUnitsType(anAlarmUnitsType);
     }
@@ -84,7 +86,7 @@ public final class Alarm extends AssertionConcern {
 
     /**
      * <h3>初始化Alarm</h3>
-     * <p>本方法是受保护的protected，只限本模块成员使用。
+     * <p>本方法是受保护的protected（只限本模块成员使用）。
      */
     protected Alarm() {
         super();

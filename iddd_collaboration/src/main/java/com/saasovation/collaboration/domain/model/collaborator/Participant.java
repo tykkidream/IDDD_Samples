@@ -15,7 +15,7 @@
 package com.saasovation.collaboration.domain.model.collaborator;
 
 /**
- * <h3>参加者 - 值对象</h3>
+ * <h3>参与者 - 值对象</h3>
  *
  */
 public final class Participant extends Collaborator {

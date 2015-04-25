@@ -77,7 +77,7 @@ public abstract class EventSourcedRootEntity extends AssertionConcern {
     }
 
     /**
-     * <p>根据事件重建聚合。
+     * <p>根据事件流重建聚合。
      * @param anEventStream
      * @param aStreamVersion
      */
@@ -104,9 +104,10 @@ public abstract class EventSourcedRootEntity extends AssertionConcern {
     }
 
     /**
-     * <p>应用某个事件。
-     * <p>事件将会被追加到本聚合的事件流的末尾，同时使用重放事件的方式处理事件，
+     *<h3>应用某个事件</h3>
+     *<p>事件将会被追加到本聚合内部的“事件流"对象的末尾，同时使用“重放事件”的方式处理事件，
      * 构建聚会的新状态。
+     * <p>这个事件流可以通过 {@link #mutatingEvents()} 获取。
      * @param aDomainEvent
      */
     protected void apply(DomainEvent aDomainEvent) {

@@ -19,6 +19,10 @@ import java.util.Date;
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>日历名称重命名事件 - 领域事件</h3>
+ *
+ */
 public class CalendarRenamed implements DomainEvent {
 
     private CalendarId calendarId;

@@ -50,6 +50,11 @@
 房客子域（Tenant Subdomain）
 -----------------------------------
 
+开发设计
+========
+
+[开发设计](开发设计.md)
+
 开发实现
 ========
 
@@ -67,21 +72,21 @@
 
 此模块的包为：`com.saasovation.collaboration.domain.model.calendar`
 
-日历相关：
+日历内容：
 
-|       类型      |                           类名                 |                 名称             |       说明       |
-|---------------|--------------------------------------|----------------------------|----------------|
-|聚合根        |Calendar                                          |日历                           |日历模块     |
-|值对象        |CalendarId                                      |日历ID                             |日历模块      |
-|                       |CalendarSharer                               |日历共享                    |日历模块      |
-|事件            |CalendarCreated                             |日历创建事件             |日历模块      |
-|                       |CalendarDescriptionChanged        |日历描述修改事件      |日历模块      |
-|                       |CalendarRenamed                           |日历创建事件             |日历模块      |
-|                       |CalendarShared                               |日历共享事件             |日历模块      |
-|                       |CalendarUnshared                           |日历取消共享事件      |日历模块      |
-|仓库            |CalendarRepository                         |日历仓库                   |日历模块      |
+|      类型      |                           类名                 |                 名称            |       说明      
+|---------------|--------------------------------------|---------------------------|----------------
+|聚合根        |Calendar                                          |日历                          |
+|值对象        |CalendarId                                      |日历ID                            |
+|                      |CalendarSharer                                |日历共享（集合）      |
+|事件           |CalendarCreated                             |日历创建事件             |
+|                       |CalendarDescriptionChanged       |日历描述修改事件      |
+|                       |CalendarRenamed                          |日历创建事件             |
+|                       |CalendarShared                              |日历共享事件             |
+|                       |CalendarUnshared                          |日历取消共享事件      |
+|仓库            |CalendarRepository                        |日历仓库                   |
 
-日历条目相关：
+日历条目内容：
 
 |       类型      |                             类名                    |                      名称               |       说明       |
 |---------------|------------------------------------------|---------------------------------|----------------|
@@ -96,10 +101,10 @@
 |                      |CalendarEntryRescheduled                    |日历条目改期事件             |日历模块      |
 |                      |CalendarEntryScheduled                        |日历条目计划事件             |日历模块      |
 |仓库           |CalendarEntryRepository                       |日历条目仓库                    |日历模块      |
-|外部值对象 |Participant                                               |参与者                              |日历模块      |
+|外部值对象 |Participant                                               |参与者（集合）                 |日历模块      |
 |聚合引用    |CalendarId                                              |引用了日历聚合的ID             |日历模块      |
 
-共有相关：
+日历、日历条目共有内容：
 
 |       类型      |                           类名                 |                 名称             |       说明       |
 |---------------|--------------------------------------|----------------------------|----------------|
@@ -109,7 +114,6 @@
 |领域服务     |CalendarIdentityService                 |服务                          |日历模块      |
 |外部值对象  |Owner                                             |拥有者                       |日历模块      |
 |                       |Tenant                                             |房客                           |日历模块      |
-
 
 日历模块（Calendar Model）
 -------------------------------------
