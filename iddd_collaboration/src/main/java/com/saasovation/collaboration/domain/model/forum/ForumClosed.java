@@ -19,6 +19,10 @@ import java.util.Date;
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>讲坛关闭事件 - 领域事件</h3>
+ *
+ */
 public class ForumClosed implements DomainEvent {
 
     private int eventVersion;

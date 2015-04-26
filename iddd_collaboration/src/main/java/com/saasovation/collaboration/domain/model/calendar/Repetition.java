@@ -19,7 +19,7 @@ import java.util.Date;
 import com.saasovation.common.AssertionConcern;
 
 /**
- *<h3>重复时间 值对象</h3>
+ *<h3>重复时间 - 值对象</h3>
  *<p>指日历任务的重复情况，比如每周一。
  */
 public final class Repetition extends AssertionConcern {
@@ -29,10 +29,24 @@ public final class Repetition extends AssertionConcern {
     /** 重复类型 **/
     private RepeatType repeats;
 
+    /**
+     *<h3>创建一个不重复实例</h3>
+     *<p>这是一个工厂方法。
+     *
+     * @param anEnds
+     * @return
+     */
     public static Repetition doesNotRepeatInstance(Date anEnds) {
         return new Repetition(RepeatType.DoesNotRepeat, anEnds);
     }
 
+    /**
+     *<h3>创建一个无限期重复实例</h3>
+     *<p>这是一个工厂方法。
+     * 
+     * @param aRepeatType
+     * @return
+     */
     public static Repetition indefinitelyRepeatsInstance(RepeatType aRepeatType) {
         Date ends = new Date(31536000000000L); // 1000 years from 1/1/1970
 

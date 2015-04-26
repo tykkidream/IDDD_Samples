@@ -16,6 +16,10 @@ package com.saasovation.collaboration.domain.model.calendar;
 
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 
+/**
+ *<h3>日历仓库 - 仓储</h3>
+ *
+ */
 public interface CalendarRepository {
 
     public Calendar calendarOfId(Tenant aTenant, CalendarId aCalendarId);

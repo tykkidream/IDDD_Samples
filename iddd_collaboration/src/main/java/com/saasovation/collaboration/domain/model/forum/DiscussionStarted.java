@@ -20,6 +20,10 @@ import com.saasovation.collaboration.domain.model.collaborator.Author;
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>开始讨论事件 - 领域事件</h3>
+ *
+ */
 public class DiscussionStarted implements DomainEvent {
 
     private Author author;

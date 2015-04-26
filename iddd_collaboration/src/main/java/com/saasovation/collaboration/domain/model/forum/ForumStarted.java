@@ -21,6 +21,10 @@ import com.saasovation.collaboration.domain.model.collaborator.Moderator;
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>论坛开始事件 - 领域事件</h3>
+ *
+ */
 public class ForumStarted implements DomainEvent {
 
     private Creator creator;

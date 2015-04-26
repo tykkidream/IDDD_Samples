@@ -20,6 +20,11 @@ import com.saasovation.collaboration.domain.model.collaborator.Author;
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>帖子被创建事件 - 领域事件</h3>
+ *<p>在某个讨论中创建了一个新帖子。
+ *
+ */
 public class PostedToDiscussion implements DomainEvent {
 
     private Author author;

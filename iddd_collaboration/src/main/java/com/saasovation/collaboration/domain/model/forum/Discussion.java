@@ -22,18 +22,36 @@ import com.saasovation.common.domain.model.DomainEvent;
 import com.saasovation.common.domain.model.EventSourcedRootEntity;
 
 /**
- * <h3>讨论 - 聚合根</h3>
+ * <h3>论坛讨论 - 聚合根</h3>
  */
 public class Discussion extends EventSourcedRootEntity {
 
+	/** 作者 **/
     private Author author;
+    /** 关闭状态**/
     private boolean closed;
+    /** ID **/
     private DiscussionId discussionId;
+    /** 独家拥有者 **/
     private String exclusiveOwner;
+    /** 论坛ID。遵循“通过唯一标识引用其它聚合”的原则。 **/
     private ForumId forumId;
+    /** 主题 **/
     private String subject;
+    /** 租户 **/
     private Tenant tenant;
 
+    /**
+     *<h3>构造Discussion</h3>
+     *<p>代表了重建（还原）一个已存在的Discussion对象。
+     *<p>由于本聚合使用了事件溯源，所以初始化需要参数的是事件流及事件版本号。
+     *重建过程是将事件流中的事件按顺序依次使用聚合内的事件重放方法更新聚合对
+     *象的状态。
+     *<p>具体的事件溯源机制参考{@link #apply(DomainEvent)}。
+     * 
+     * @param anEventStream
+     * @param aStreamVersion
+     */
     public Discussion(List<DomainEvent> anEventStream, int aStreamVersion) {
         super(anEventStream, aStreamVersion);
     }
@@ -42,6 +60,13 @@ public class Discussion extends EventSourcedRootEntity {
         return this.author;
     }
 
+    /**
+     *<h3>关闭讨论</h3>
+     *<p>这是一个CQS命令方法，用于关闭讨论，没有返回值。
+     *<p>处理时，将参数封装到一个新的{@link DiscussionClosed}事件对象中，并发
+     *布它，最后由事件重放方法{@link #when(DiscussionClosed)}更新当前聚合状态。
+     *<p>具体的事件溯源机制参考{@link #apply(DomainEvent)}。
+     */
     public void close() {
         if (this.isClosed()) {
             throw new IllegalStateException("This discussion is already closed.");
@@ -51,6 +76,10 @@ public class Discussion extends EventSourcedRootEntity {
                     this.discussionId(), this.exclusiveOwner()));
     }
 
+    /**
+     * <h3>讨论是否已关闭</h3>
+     * @return
+     */
     public boolean isClosed() {
         return this.closed;
     }
@@ -67,6 +96,18 @@ public class Discussion extends EventSourcedRootEntity {
         return this.forumId;
     }
 
+    /**
+     *<h3>开始讨论</h3>
+     *<p>这是一个CQS查询方法，用于开始讨论，逻辑委托给了
+     *{@link #post(ForumIdentityService, PostId, Author, String, String)}方法
+     *处理，其中传递aReplyToPost参数为null。
+     * 
+     * @param aForumIdentityService
+     * @param anAuthor
+     * @param aSubject
+     * @param aBodyText
+     * @return
+     */
     public Post post(
             ForumIdentityService aForumIdentityService,
             Author anAuthor,
@@ -76,6 +117,23 @@ public class Discussion extends EventSourcedRootEntity {
         return this.post(aForumIdentityService, null, anAuthor, aSubject, aBodyText);
     }
 
+    /**
+     *<h3>开始讨论</h3>
+     *<p>这是一个CQS查询方法，创建一个新讨论，返回现一个新{@link Post}
+     *对象，所以此方法是Post的一个工厂方法。
+     *
+     *<p>这个方法简化了创建Post的一些方面，使用了外部模块（其它包）无法使用的
+     *{@link Post#Post(Tenant, ForumId, DiscussionId, PostId, PostId, Author, String, String) 构造函数}，
+     *其中tenant、discussionId由当前聚合对象的状态提供，postId由aForumIdentityService的
+     *{@link ForumIdentityService#nextPostId() nextPostId()}提供。
+     * 
+     * @param aForumIdentityService
+     * @param aReplyToPost
+     * @param anAuthor
+     * @param aSubject
+     * @param aBodyText
+     * @return
+     */
     public Post post(
             ForumIdentityService aForumIdentityService,
             PostId aReplyToPost,
@@ -98,6 +156,14 @@ public class Discussion extends EventSourcedRootEntity {
     }
 
 
+    /**
+     *<h3>重新开始讨论</h3>
+     *<p>这是一个CQS命令方法，用于重新开始讨论，没有返回值。
+     *<p>处理时，将参数封装到一个新的{@link DiscussionReopened}事件对象中，并发
+     *布它，最后由事件重放方法{@link #when(DiscussionReopened)}更新当前聚合状态。
+     *<p>具体的事件溯源机制参考{@link #apply(DomainEvent)}。
+     * 
+     */
     public void reopen() {
         if (!this.isClosed()) {
             throw new IllegalStateException("The discussion is not closed.");
@@ -147,6 +213,26 @@ public class Discussion extends EventSourcedRootEntity {
                 + exclusiveOwner + ", forumId=" + forumId + ", subject=" + subject + ", tenantId=" + tenant + "]";
     }
 
+    /**
+     *<h3>构造Discussion</h3>
+     *
+     *<p>代表了一个新生的Discussion对象，同时会发布创建事件{@link DiscussionStarted}。
+     *
+     *<p>初始化需要一些参数，其中一些是必须的，初始化时会对参数做校验。由于本聚合使用
+     *了事件溯源，所以在断言之后将参数封装到了一个{@link DiscussionStarted}事件对象中，
+     *再将事件发布，最后由聚合内的事件重放方法{@link #when(DiscussionStarted)}更新当前
+     *聚合状态。
+     *
+     *<p>具体的事件溯源机制参考{@link #apply(DomainEvent)}。
+     * 
+     * 
+     * @param aTenantId
+     * @param aForumId
+     * @param aDiscussionId
+     * @param anAuthor
+     * @param aSubject
+     * @param anExclusiveOwner
+     */
     protected Discussion(
             Tenant aTenantId,
             ForumId aForumId,
@@ -167,18 +253,41 @@ public class Discussion extends EventSourcedRootEntity {
                 anAuthor, aSubject, anExclusiveOwner));
     }
 
+    /**
+     *<h3>构造Discussion</h3>
+     */
     protected Discussion() {
         super();
     }
 
+    /**
+     *<h3>处理{@link DiscussionClosed}事件。</h3>
+     *<p>事件重放的方法。
+     * 
+     * @param anEvent
+     */
     protected void when(DiscussionClosed anEvent) {
         this.setClosed(true);
     }
 
+    /**
+     *<h3>处理{@link DiscussionReopened}事件。</h3>
+     *<p>事件重放的方法。
+     * 
+     * 
+     * @param anEvent
+     */
     protected void when(DiscussionReopened anEvent) {
         this.setClosed(false);
     }
 
+    /**
+     *<h3>处理{@link DiscussionStarted}事件。</h3>
+     *<p>事件重放的方法。
+     * 
+     * 
+     * @param anEvent
+     */
     protected void when(DiscussionStarted anEvent) {
         this.setAuthor(anEvent.author());
         this.setDiscussionId(anEvent.discussionId());

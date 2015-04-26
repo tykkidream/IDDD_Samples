@@ -19,6 +19,10 @@ import java.util.Date;
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>论坛主题变更事件 - 领域事件</h3> 
+ *
+ */
 public class ForumSubjectChanged implements DomainEvent {
 
     private int eventVersion;

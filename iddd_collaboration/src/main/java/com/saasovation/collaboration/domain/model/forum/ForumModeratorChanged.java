@@ -20,6 +20,10 @@ import com.saasovation.collaboration.domain.model.collaborator.Moderator;
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>改变论坛版主事件 - 领域事件</h3>
+ *
+ */
 public class ForumModeratorChanged implements DomainEvent {
 
     private int eventVersion;

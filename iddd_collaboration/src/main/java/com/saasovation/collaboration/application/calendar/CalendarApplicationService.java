@@ -38,7 +38,9 @@ import com.saasovation.collaboration.domain.model.tenant.Tenant;
 
 public class CalendarApplicationService {
 
+	/** 日历仓库 **/
     private CalendarRepository calendarRepository;
+    /** 日历条目仓库 **/
     private CalendarEntryRepository calendarEntryRepository;
     private CalendarIdentityService calendarIdentityService;
     private CollaboratorService collaboratorService;
@@ -51,12 +53,20 @@ public class CalendarApplicationService {
 
         super();
 
+        // 由于不存在相应的setter，所以这里直接赋值。
         this.calendarRepository = aCalendarRepository;
         this.calendarEntryRepository = aCalendarEntryRepository;
         this.calendarIdentityService = aCalendarIdentityService;
         this.collaboratorService = aCollaboratorService;
     }
 
+    /**
+     *<h3>修改日历的描述</h3>
+     *
+     * @param aTenantId
+     * @param aCalendarId
+     * @param aDescription
+     */
     public void changeCalendarDescription(
             String aTenantId,
             String aCalendarId,
@@ -64,17 +74,30 @@ public class CalendarApplicationService {
 
         Tenant tenant = new Tenant(aTenantId);
 
+        // 从仓库中获取聚合实例
         Calendar calendar =
                 this.calendarRepository()
                     .calendarOfId(
                             tenant,
                             new CalendarId(aCalendarId));
 
+        // 执行聚合上的命令
         calendar.changeDescription(aDescription);
 
+        // 使用仓库保存聚合
         this.calendarRepository().save(calendar);
     }
 
+    /**
+     *<h3>创建日历</h3>
+     * 
+     * @param aTenantId
+     * @param aName
+     * @param aDescription
+     * @param anOwnerId
+     * @param aParticipantsToSharedWith
+     * @param aCalendarCommandResult
+     */
     public void createCalendar(
             String aTenantId,
             String aName,
@@ -85,10 +108,12 @@ public class CalendarApplicationService {
 
         Tenant tenant = new Tenant(aTenantId);
 
+        // 获取Owner
         Owner owner = this.collaboratorService().ownerFrom(tenant, anOwnerId);
 
         Set<CalendarSharer> sharers = this.sharersFrom(tenant, aParticipantsToSharedWith);
 
+        // 创建聚合实例
         Calendar calendar =
                 new Calendar(
                         tenant,
@@ -98,26 +123,37 @@ public class CalendarApplicationService {
                         owner,
                         sharers);
 
+        // 使用仓库保存聚合
         this.calendarRepository().save(calendar);
 
         aCalendarCommandResult.resultingCalendarId(calendar.calendarId().id());
     }
 
+    /**
+     *<h3>重全名日历</h3>
+     *
+     * @param aTenantId
+     * @param aCalendarId
+     * @param aName
+     */
     public void renameCalendar(
             String aTenantId,
             String aCalendarId,
             String aName) {
 
         Tenant tenant = new Tenant(aTenantId);
-
+        
+        // 从仓库中获取聚合实例
         Calendar calendar =
                 this.calendarRepository()
                     .calendarOfId(
                             tenant,
                             new CalendarId(aCalendarId));
 
+        // 执行聚合上的命令
         calendar.rename(aName);
 
+     // 使用仓库保存聚合
         this.calendarRepository().save(calendar);
     }
 

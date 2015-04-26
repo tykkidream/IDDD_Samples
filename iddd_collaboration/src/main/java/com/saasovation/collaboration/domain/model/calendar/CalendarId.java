@@ -17,7 +17,7 @@ package com.saasovation.collaboration.domain.model.calendar;
 import com.saasovation.common.domain.model.AbstractId;
 
 /**
- * 日历ID值对象
+ *<h3>日历唯一标识 - 值对象</h3>
  *
  */
 public final class CalendarId extends AbstractId {

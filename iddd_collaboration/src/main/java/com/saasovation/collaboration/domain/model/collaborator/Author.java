@@ -14,7 +14,7 @@
 
 package com.saasovation.collaboration.domain.model.collaborator;
 
-/**\
+/**
  * <h3>作者 - 值对象</h3>
  * 
  *

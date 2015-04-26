@@ -20,7 +20,7 @@ import com.saasovation.collaboration.domain.model.tenant.Tenant;
 import com.saasovation.common.domain.model.DomainEvent;
 
 /**
- * <h3>日历条目的描述被修改事件 - 领域事件
+ * <h3>日历条目的描述被修改事件 - 领域事件</h3>
  *
  */
 public class CalendarEntryDescriptionChanged implements DomainEvent {

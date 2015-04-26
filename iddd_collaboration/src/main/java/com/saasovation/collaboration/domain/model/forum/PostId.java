@@ -16,6 +16,10 @@ package com.saasovation.collaboration.domain.model.forum;
 
 import com.saasovation.common.domain.model.AbstractId;
 
+/**
+ *<h3>帖子唯一标识 - 值对象</h3>
+ *
+ */
 public final class PostId extends AbstractId {
 
     private static final long serialVersionUID = 1L;

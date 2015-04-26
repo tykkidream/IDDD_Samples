@@ -39,7 +39,7 @@ public class Calendar extends EventSourcedRootEntity {
     private String name;
     /** 拥有者 **/
     private Owner owner;
-    /** 动态订阅者**/
+    /** 日历动态订阅者**/
     private Set<CalendarSharer> sharedWith;
     /** 租户（订阅方） **/
     private Tenant tenant;

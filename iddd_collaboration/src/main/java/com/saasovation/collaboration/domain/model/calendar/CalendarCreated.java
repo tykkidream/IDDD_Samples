@@ -27,10 +27,17 @@ import com.saasovation.common.domain.model.DomainEvent;
  */
 public class CalendarCreated implements DomainEvent {
 
+	/*
+	 * 这些字段都可以在Calendar聚合中找到相应的状态。
+	 */
     private CalendarId calendarId;
     private String description;
     private int eventVersion;
     private String name;
+    /**
+     * occurredOn表示事件发生时间，Calendar聚合没有相应的状态，
+     * 这是事件特有的，可以提取到父类中。
+     */
     private Date occurredOn;
     private Owner owner;
     private Set<CalendarSharer> sharedWith;

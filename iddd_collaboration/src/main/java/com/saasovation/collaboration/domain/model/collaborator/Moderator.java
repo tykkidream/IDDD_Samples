@@ -15,7 +15,7 @@
 package com.saasovation.collaboration.domain.model.collaborator;
 
 /**
- * <h3>主持人 - 值对象</h3>
+ * <h3>论坛版主 - 值对象</h3>
  * 
  */
 public final class Moderator extends Collaborator {
