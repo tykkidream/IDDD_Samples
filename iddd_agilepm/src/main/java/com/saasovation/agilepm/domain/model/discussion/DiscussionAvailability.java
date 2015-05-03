@@ -14,32 +14,51 @@
 
 package com.saasovation.agilepm.domain.model.discussion;
 
+/**
+ *<h3>讨论的可用状态</h3>
+ *
+ */
 public enum DiscussionAvailability  {
 
+	/**
+	 * 
+	 */
     ADD_ON_NOT_ENABLED {
         public boolean isAddOnNotAvailable() {
             return true;
         }
     },
 
+    /**
+     * 失败
+     */
     FAILED {
         public boolean isFailed() {
             return true;
         }
     },
 
+    /**
+     * 没有要求
+     */
     NOT_REQUESTED {
         public boolean isNotRequested() {
             return true;
         }
     },
 
+    /**
+     * 请求
+     */
     REQUESTED {
         public boolean isRequested() {
             return true;
         }
     },
 
+    /**
+     * 准备
+     */
     READY {
         public boolean isReady() {
             return true;

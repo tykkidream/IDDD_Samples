@@ -18,11 +18,22 @@ import com.saasovation.agilepm.domain.model.ValueObject;
 import com.saasovation.agilepm.domain.model.discussion.DiscussionAvailability;
 import com.saasovation.agilepm.domain.model.discussion.DiscussionDescriptor;
 
+/**
+ *<h3>产品的讨论 - 值对象</h3>
+ *
+ */
 public final class ProductDiscussion extends ValueObject {
 
+	/** 讨论可用状态 **/
     private DiscussionAvailability availability;
+    /** 讨论的描述 **/
     private DiscussionDescriptor descriptor;
 
+    /**
+     * 
+     * @param anAvailability
+     * @return
+     */
     public static ProductDiscussion fromAvailability(
             DiscussionAvailability anAvailability) {
 
@@ -36,6 +47,11 @@ public final class ProductDiscussion extends ValueObject {
         return new ProductDiscussion(descriptor, anAvailability);
     }
 
+    /**
+     *<h3>构建ProductDiscussion</h3>
+     * @param aDescriptor
+     * @param anAvailability
+     */
     public ProductDiscussion(
             DiscussionDescriptor aDescriptor,
             DiscussionAvailability anAvailability) {
@@ -46,6 +62,10 @@ public final class ProductDiscussion extends ValueObject {
         this.setDescriptor(aDescriptor);
     }
 
+    /**
+     * 
+     * @param aProductDiscussion
+     */
     public ProductDiscussion(ProductDiscussion aProductDiscussion) {
         this(aProductDiscussion.descriptor(), aProductDiscussion.availability());
     }
@@ -58,6 +78,11 @@ public final class ProductDiscussion extends ValueObject {
         return this.descriptor;
     }
 
+    /**
+     * 
+     * @param aDescriptor
+     * @return
+     */
     public ProductDiscussion nowReady(DiscussionDescriptor aDescriptor) {
         if (aDescriptor == null || aDescriptor.isUndefined()) {
             throw new IllegalStateException("The discussion descriptor must be defined.");
@@ -69,6 +94,7 @@ public final class ProductDiscussion extends ValueObject {
         return new ProductDiscussion(aDescriptor, DiscussionAvailability.READY);
     }
 
+    
     private void setAvailability(DiscussionAvailability anAvailability) {
         this.assertArgumentNotNull(anAvailability, "The availability must be provided.");
 

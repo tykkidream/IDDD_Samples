@@ -16,18 +16,37 @@ package com.saasovation.agilepm.domain.model.discussion;
 
 import com.saasovation.agilepm.domain.model.ValueObject;
 
+/**
+ *<h3>讨论的描述 - 值对象</h3>
+ *
+ */
 public class DiscussionDescriptor extends ValueObject {
 
     public static final String UNDEFINED_ID = "UNDEFINED";
 
+    /**
+     * ID。
+     *<p>注意：这个ID不同与实体的唯一标识，这是值对象类型，
+     *它实际关联了另外一个限界上下文中的讨论聚合，而且它的
+     *唯一标识也是值对象类型，所以这里保存讨论聚合中ID的属
+     *性的值。
+     **/
     private String id;
 
+    /**
+     *<h3>初始化</h3>
+     * @param anId
+     */
     public DiscussionDescriptor(String anId) {
         this();
 
         this.setId(anId);
     }
 
+    /**
+     *<h3>以另外一个DiscussionDescriptor的ID初始化当前对象</h3>
+     * @param aDiscussionDescriptor
+     */
     public DiscussionDescriptor(DiscussionDescriptor aDiscussionDescriptor) {
         this(aDiscussionDescriptor.id());
     }
@@ -36,6 +55,11 @@ public class DiscussionDescriptor extends ValueObject {
         return this.id;
     }
 
+    /**
+     *<h3>是否未定义</h3>
+     *<p>根据ID是否是{@link #UNDEFINED_ID}判定。
+     * @return
+     */
     public boolean isUndefined() {
         return this.id().equals(UNDEFINED_ID);
     }

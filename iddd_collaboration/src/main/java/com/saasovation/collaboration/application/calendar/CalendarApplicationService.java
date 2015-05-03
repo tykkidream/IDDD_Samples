@@ -36,6 +36,18 @@ import com.saasovation.collaboration.domain.model.collaborator.Owner;
 import com.saasovation.collaboration.domain.model.collaborator.Participant;
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 
+/**
+ *<h3>日历聚合的应用服务</h3>
+ *<p>本应用服务主要有以下5个命令：
+ *<ul>
+ *<li>{@link #changeCalendarDescription}
+ *<li>{@link #renameCalendar}
+ *<li>{@link #scheduleCalendarEntry}
+ *<li>{@link #shareCalendarWith}
+ *<li>{@link #inviteesFrom}
+ *</ul>
+ *<p>
+ */
 public class CalendarApplicationService {
 
 	/** 日历仓库 **/
@@ -81,7 +93,7 @@ public class CalendarApplicationService {
                             tenant,
                             new CalendarId(aCalendarId));
 
-        // 执行聚合上的命令
+        // 执行聚合上的命令：修改日历的描述
         calendar.changeDescription(aDescription);
 
         // 使用仓库保存聚合
@@ -96,7 +108,7 @@ public class CalendarApplicationService {
      * @param aDescription
      * @param anOwnerId
      * @param aParticipantsToSharedWith
-     * @param aCalendarCommandResult
+     * @param aCalendarCommandResult 命令结果的载体
      */
     public void createCalendar(
             String aTenantId,
@@ -130,7 +142,7 @@ public class CalendarApplicationService {
     }
 
     /**
-     *<h3>重全名日历</h3>
+     *<h3>重命名日历</h3>
      *
      * @param aTenantId
      * @param aCalendarId
@@ -150,13 +162,29 @@ public class CalendarApplicationService {
                             tenant,
                             new CalendarId(aCalendarId));
 
-        // 执行聚合上的命令
+        // 执行聚合上的命令：重命名日历
         calendar.rename(aName);
 
      // 使用仓库保存聚合
         this.calendarRepository().save(calendar);
     }
 
+    /**
+     * 
+     * @param aTenantId
+     * @param aCalendarId
+     * @param aDescription
+     * @param aLocation
+     * @param anOwnerId
+     * @param aTimeSpanBegins
+     * @param aTimeSpanEnds
+     * @param aRepeatType
+     * @param aRepeatEndsOnDate
+     * @param anAlarmType
+     * @param anAlarmUnits
+     * @param aParticipantsToInvite
+     * @param aCalendarCommandResult  命令结果的载体
+     */
     public void scheduleCalendarEntry(
             String aTenantId,
             String aCalendarId,
@@ -174,12 +202,14 @@ public class CalendarApplicationService {
 
         Tenant tenant = new Tenant(aTenantId);
 
+        // 从仓库中获取日历
         Calendar calendar =
                 this.calendarRepository()
                     .calendarOfId(
                             tenant,
                             new CalendarId(aCalendarId));
 
+        // 创建日历条目
         CalendarEntry calendarEntry =
                 calendar.scheduleCalendarEntry(
                     this.calendarIdentityService(),
@@ -191,12 +221,21 @@ public class CalendarApplicationService {
                     new Alarm(AlarmUnitsType.valueOf(anAlarmType), anAlarmUnits),
                     this.inviteesFrom(tenant, aParticipantsToInvite));
 
+        // 使用仓库保存日历条目
         this.calendarEntryRepository().save(calendarEntry);
 
         aCalendarCommandResult.resultingCalendarId(aCalendarId);
         aCalendarCommandResult.resultingCalendarEntryId(calendarEntry.calendarEntryId().id());
     }
 
+    /**
+     *<h1>将日历分享给一些订阅者</h1>
+     *<p>允许订阅者可以关注拥有者的日历上的活动。
+     *
+     * @param aTenantId
+     * @param aCalendarId
+     * @param aParticipantsToSharedWith 日历订阅者集合，由拥有者为每个日历指定
+     */
     public void shareCalendarWith(
             String aTenantId,
             String aCalendarId,
@@ -204,19 +243,30 @@ public class CalendarApplicationService {
 
         Tenant tenant = new Tenant(aTenantId);
 
+        // 从仓库中获取日历
         Calendar calendar =
                 this.calendarRepository()
                     .calendarOfId(
                             tenant,
                             new CalendarId(aCalendarId));
 
+        // 遍历订阅者集合
         for (CalendarSharer sharer : this.sharersFrom(tenant, aParticipantsToSharedWith)) {
+        	// 将日历分享给每个订阅者
             calendar.shareCalendarWith(sharer);
         }
 
         this.calendarRepository().save(calendar);
     }
 
+    /**
+     *<h1>取消日历上的一些订阅者</h1>
+     *<p>取消订阅者，使其不能再关注拥有者的日历上的活动。
+     * 
+     * @param aTenantId
+     * @param aCalendarId
+     * @param aParticipantsToUnsharedWith 日历订阅者集合，由拥有者为每个日历指定
+     */
     public void unshareCalendarWith(
             String aTenantId,
             String aCalendarId,
@@ -224,13 +274,16 @@ public class CalendarApplicationService {
 
         Tenant tenant = new Tenant(aTenantId);
 
+        // 从仓库中获取日历
         Calendar calendar =
                 this.calendarRepository()
                     .calendarOfId(
                             tenant,
                             new CalendarId(aCalendarId));
 
+        // 遍历订阅者集合
         for (CalendarSharer sharer : this.sharersFrom(tenant, aParticipantsToUnsharedWith)) {
+        	// 使订阅者不再订阅日历
             calendar.unshareCalendarWith(sharer);
         }
 
@@ -269,13 +322,21 @@ public class CalendarApplicationService {
         return invitees;
     }
 
+    /**
+     *<h1>获取订阅者</h1>
+     * @param aTenant
+     * @param aParticipantsToSharedWith
+     * @return
+     */
     private Set<CalendarSharer> sharersFrom(
             Tenant aTenant,
             Set<String> aParticipantsToSharedWith) {
 
+    	// 创建订阅者集合
         Set<CalendarSharer> sharers =
                 new HashSet<CalendarSharer>(aParticipantsToSharedWith.size());
 
+        // 遍历获取订阅者对象
         for (String participatnId : aParticipantsToSharedWith) {
             Participant participant =
                     this.collaboratorService().participantFrom(aTenant, participatnId);

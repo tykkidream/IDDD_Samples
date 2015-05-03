@@ -164,7 +164,7 @@ public class Calendar extends EventSourcedRootEntity {
     }
 
     /**
-     *<h3>计划日程任务</h3>
+     *<h3>在日程当天计划一个新任务</h3>
      *<p>这是一个CQS查询方法，用于创建一个日历条目，返回现一个新{@link CalendarEntry}
      *对象，所以此方法是CalendarEntry的一个工厂方法。
      *<p>这个方法简化了创建CalendarEntry的一些方面，使用了外部模块（其它包）无法使用的

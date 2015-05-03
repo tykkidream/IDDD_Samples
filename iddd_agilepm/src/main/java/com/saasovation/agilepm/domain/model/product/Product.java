@@ -37,18 +37,26 @@ import com.saasovation.agilepm.domain.model.tenant.TenantId;
 import com.saasovation.common.domain.model.DomainEventPublisher;
 
 /**
- * <h3>产品 - 聚合根
+ * <h3>产品 - 聚合根<h3>
  *
  */
 public class Product extends Entity {
 
+	/** 待定项集合 **/
     private Set<ProductBacklogItem> backlogItems;
+    /** 描述 **/
     private String description;
+    /** 产品的讨论 **/
     private ProductDiscussion discussion;
+    /** 讨论起始标识 **/
     private String discussionInitiationId;
+    /** 名称 **/
     private String name;
+    /** ID **/
     private ProductId productId;
+    /** 拥有者ID **/
     private ProductOwnerId productOwnerId;
+    /** 租户ID **/
     private TenantId tenantId;
 
     public Product(
