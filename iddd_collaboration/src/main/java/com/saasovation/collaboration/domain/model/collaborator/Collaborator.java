@@ -17,7 +17,8 @@ package com.saasovation.collaboration.domain.model.collaborator;
 import java.io.Serializable;
 
 /**
- * <h3>协作者、合作者 - 值对象抽象模板<h3>
+ *<h3>协作者、合作者 - 值对象<h3>
+ *<p>抽象模板
  *
  */
 public abstract class Collaborator

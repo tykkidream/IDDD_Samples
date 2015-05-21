@@ -19,7 +19,7 @@ import com.saasovation.agilepm.domain.model.discussion.DiscussionAvailability;
 import com.saasovation.agilepm.domain.model.discussion.DiscussionDescriptor;
 
 /**
- *<h3>产品的讨论 - 值对象</h3>
+ *<h3>产品讨论 - 值对象</h3>
  *
  */
 public final class ProductDiscussion extends ValueObject {
@@ -30,7 +30,9 @@ public final class ProductDiscussion extends ValueObject {
     private DiscussionDescriptor descriptor;
 
     /**
-     * 
+     *<h3>根据讨论的可用状态创建一个产品讨论</h3>
+     *{@link ProductDiscussion}
+     *
      * @param anAvailability
      * @return
      */
@@ -63,6 +65,7 @@ public final class ProductDiscussion extends ValueObject {
     }
 
     /**
+     *<h3>构建ProductDiscussion</h3>
      * 
      * @param aProductDiscussion
      */
@@ -79,7 +82,8 @@ public final class ProductDiscussion extends ValueObject {
     }
 
     /**
-     * 
+     *<h3>现在已经准备好</h3>
+     *
      * @param aDescriptor
      * @return
      */

@@ -42,7 +42,7 @@ import com.saasovation.common.domain.model.DomainEventPublisher;
  */
 public class Product extends Entity {
 
-	/** 待定项集合 **/
+	/** 产品待办事项列表 **/
     private Set<ProductBacklogItem> backlogItems;
     /** 描述 **/
     private String description;
@@ -59,6 +59,16 @@ public class Product extends Entity {
     /** 租户ID **/
     private TenantId tenantId;
 
+    /**
+     *<h3></h3>
+     *
+     * @param aTenantId
+     * @param aProductId
+     * @param aProductOwnerId
+     * @param aName
+     * @param aDescription
+     * @param aDiscussionAvailability
+     */
     public Product(
             TenantId aTenantId,
             ProductId aProductId,

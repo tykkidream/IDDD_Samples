@@ -14,32 +14,56 @@
 
 package com.saasovation.agilepm.domain.model.product.backlogitem;
 
+/**
+ *<h3>待定项类型 - 值对象</h3>
+ *
+ */
 public enum BacklogItemType  {
 
+    /**
+     *<h3特征</h3>
+     *
+     */
     FEATURE {
         public boolean isFeature() {
             return true;
         }
     },
 
+    /**
+     *<h3>增强</h3>
+     *
+     */
     ENHANCEMENT {
         public boolean isEnhancement() {
             return true;
         }
     },
 
+    /**
+     *<h3>缺陷</h3>
+     *
+     */
     DEFECT {
         public boolean isDefect() {
             return true;
         }
     },
 
+    /**
+     *<h3>基础</h3>
+     *
+     */
     FOUNDATION {
         public boolean isFoundation() {
             return true;
         }
     },
 
+    /**
+     *<h3>集成</h3>
+     *
+     */
     INTEGRATION {
         public boolean isIntegration() {
             return true;

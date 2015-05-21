@@ -19,16 +19,51 @@ import java.util.Date;
 import com.saasovation.agilepm.domain.model.Entity;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 
+/**
+ *<h3>Scrum团队成员 - 实体</h3>
+ *
+ */
 public abstract class Member extends Entity {
 
+    /**
+     * 变更跟踪
+     */
     private MemberChangeTracker changeTracker;
+    /**
+     * 电子邮件地址
+     */
     private String emailAddress;
+    /**
+     * 是否启用
+     */
     private boolean enabled = true;
+    /**
+     * 名字
+     */
     private String firstName;
+    /**
+     * 姓名
+     */
     private String lastName;
+    /**
+     * 承租者ID
+     */
     private TenantId tenantId;
+    /**
+     * 用户名
+     */
     private String username;
 
+    /**
+     *<h3></h3>
+     *
+     * @param aTenantId
+     * @param aUsername
+     * @param aFirstName
+     * @param aLastName
+     * @param anEmailAddress
+     * @param anInitializedOn
+     */
     public Member(
             TenantId aTenantId,
             String aUsername,
@@ -46,6 +81,12 @@ public abstract class Member extends Entity {
                         anInitializedOn));
     }
 
+    /**
+     *<h3>改变电子邮件地址</h3>
+     *
+     * @param anEmailAddress
+     * @param asOfDate
+     */
     public void changeEmailAddress(String anEmailAddress, Date asOfDate) {
         if (this.changeTracker().canChangeEmailAddress(asOfDate) &&
             !this.emailAddress().equals(anEmailAddress)) {
@@ -54,6 +95,13 @@ public abstract class Member extends Entity {
         }
     }
 
+    /**
+     *<h3>改变名称</h3>
+     *
+     * @param aFirstName
+     * @param aLastName
+     * @param asOfDate
+     */
     public void changeName(String aFirstName, String aLastName, Date asOfDate) {
         if (this.changeTracker().canChangeName(asOfDate)) {
             this.setFirstName(aFirstName);
@@ -62,6 +110,11 @@ public abstract class Member extends Entity {
         }
     }
 
+    /**
+     *<h3>禁用成员</h3>
+     *
+     * @param asOfDate 禁用时间
+     */
     public void disable(Date asOfDate) {
         if (this.changeTracker().canToggleEnabling(asOfDate)) {
             this.setEnabled(false);
@@ -69,6 +122,13 @@ public abstract class Member extends Entity {
         }
     }
 
+    /**
+     *<h3>启用成员</h3>
+     *
+     *<p>这是一个CQS命令方法，用于启用成员，没有返回值。
+     *
+     * @param asOfDate 启用时间
+     */
     public void enable(Date asOfDate) {
         if (this.changeTracker().canToggleEnabling(asOfDate)) {
             this.setEnabled(true);
@@ -100,6 +160,15 @@ public abstract class Member extends Entity {
         return this.username;
     }
 
+    /**
+     *<h3></h3>
+     *
+     * @param aTenantId
+     * @param aUsername
+     * @param aFirstName
+     * @param aLastName
+     * @param anEmailAddress
+     */
     protected Member(
             TenantId aTenantId,
             String aUsername,
@@ -116,10 +185,19 @@ public abstract class Member extends Entity {
         this.setUsername(aUsername);
     }
 
+    /**
+     *<h3></h3>
+     *
+     */
     protected Member() {
         super();
     }
 
+    /**
+     *<h3></h3>
+     *
+     * @return
+     */
     private MemberChangeTracker changeTracker() {
         return this.changeTracker;
     }

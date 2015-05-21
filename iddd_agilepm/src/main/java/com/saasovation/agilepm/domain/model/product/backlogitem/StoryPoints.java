@@ -14,6 +14,10 @@
 
 package com.saasovation.agilepm.domain.model.product.backlogitem;
 
+/**
+ *<h3>故事点</h3>
+ *
+ */
 public enum StoryPoints  {
 
     ZERO {

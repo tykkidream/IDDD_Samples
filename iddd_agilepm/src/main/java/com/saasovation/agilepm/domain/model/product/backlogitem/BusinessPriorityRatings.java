@@ -16,13 +16,37 @@ package com.saasovation.agilepm.domain.model.product.backlogitem;
 
 import com.saasovation.agilepm.domain.model.ValueObject;
 
+/**
+ *<h3>业务优先级评级 - 值对象</h3>
+ *
+ */
 public class BusinessPriorityRatings extends ValueObject {
 
+    /**
+     * 收益
+     */
     private int benefit;
+    /**
+     * 成本
+     */
     private int cost;
+    /**
+     * 罚款
+     */
     private int penalty;
+    /**
+     * 风险
+     */
     private int risk;
 
+    /**
+     *<h3></h3>
+     *
+     * @param aBenefit 收益
+     * @param aPenalty 成本
+     * @param aCost 罚款
+     * @param aRisk 风险
+     */
     public BusinessPriorityRatings(int aBenefit, int aPenalty, int aCost, int aRisk) {
         this();
 
@@ -32,6 +56,11 @@ public class BusinessPriorityRatings extends ValueObject {
         this.setRisk(aRisk);
     }
 
+    /**
+     *<h3></h3>
+     *
+     * @param aBusinessPriorityRatings
+     */
     public BusinessPriorityRatings(BusinessPriorityRatings aBusinessPriorityRatings) {
         this(aBusinessPriorityRatings.benefit(),
              aBusinessPriorityRatings.penalty(),
@@ -39,34 +68,78 @@ public class BusinessPriorityRatings extends ValueObject {
              aBusinessPriorityRatings.risk());
     }
 
+    /**
+     *<h3>调整收益</h3>
+     *
+     * @param aBenefit
+     * @return
+     */
     public BusinessPriorityRatings withAdjustedBenefit(int aBenefit) {
         return new BusinessPriorityRatings(aBenefit, this.penalty(), this.cost(), this.risk());
     }
 
+    /**
+     *<h3>调整成本</h3>
+     *
+     * @param aCost
+     * @return
+     */
     public BusinessPriorityRatings withAdjustedCost(int aCost) {
         return new BusinessPriorityRatings(this.benefit(), this.penalty(), aCost, this.risk());
     }
 
+    /**
+     *<h3>调整罚款</h3>
+     *
+     * @param aPenalty
+     * @return
+     */
     public BusinessPriorityRatings withAdjustedPenalty(int aPenalty) {
         return new BusinessPriorityRatings(this.benefit(), aPenalty, this.cost(), this.risk());
     }
 
+    /**
+     *<h3>调整风险</h3>
+     *
+     * @param aRisk
+     * @return
+     */
     public BusinessPriorityRatings withAdjustedRisk(int aRisk) {
         return new BusinessPriorityRatings(this.benefit(), this.penalty(), this.cost(), aRisk);
     }
 
+    /**
+     *<h3>获取收益</h3>
+     *
+     * @return
+     */
     public int benefit() {
         return this.benefit;
     }
 
+    /**
+     *<h3>获取成本</h3>
+     *
+     * @return
+     */
     public int cost() {
         return this.cost;
     }
 
+    /**
+     *<h3>获取罚款</h3>
+     *
+     * @return
+     */
     public int penalty() {
         return this.penalty;
     }
 
+    /**
+     *<h3>风险</h3>
+     *
+     * @return
+     */
     public int risk() {
         return this.risk;
     }
@@ -103,6 +176,10 @@ public class BusinessPriorityRatings extends ValueObject {
         return "BusinessPriorityRatings [benefit=" + benefit + ", cost=" + cost + ", penalty=" + penalty + ", risk=" + risk + "]";
     }
 
+    /**
+     *<h3></h3>
+     *
+     */
     private BusinessPriorityRatings() {
         super();
     }

@@ -16,14 +16,42 @@ package com.saasovation.agilepm.domain.model.product.backlogitem;
 
 import com.saasovation.agilepm.domain.model.ValueObject;
 
+/**
+ *<h3>优先级汇总 - 值对象</h3>
+ *
+ */
 public class BusinessPriorityTotals extends ValueObject {
 
+    /**
+     * 总收益
+     */
     private int totalBenefit;
+    /**
+     * 总成本
+     */
     private int totalCost;
+    /**
+     * 总罚款
+     */
     private int totalPenalty;
+    /**
+     * 总风险
+     */
     private int totalRisk;
+    /**
+     * 总价值
+     */
     private int totalValue;
 
+    /**
+     *<h3></h3>
+     *
+     * @param aTotalBenefit 总收益
+     * @param aTotalPenalty 总罚款
+     * @param aTotalValue 总价值
+     * @param aTotalCost 总成本
+     * @param aTotalRisk 总风险
+     */
     public BusinessPriorityTotals(
             int aTotalBenefit,
             int aTotalPenalty,
@@ -40,6 +68,11 @@ public class BusinessPriorityTotals extends ValueObject {
         this.setTotalValue(aTotalValue);
     }
 
+    /**
+     *<h3></h3>
+     *
+     * @param aBusinessPriorityTotals
+     */
     public BusinessPriorityTotals(BusinessPriorityTotals aBusinessPriorityTotals) {
         this(aBusinessPriorityTotals.totalBenefit(),
              aBusinessPriorityTotals.totalPenalty(),
@@ -104,6 +137,10 @@ public class BusinessPriorityTotals extends ValueObject {
                 + totalPenalty + ", totalRisk=" + totalRisk + ", totalValue=" + totalValue + "]";
     }
 
+    /**
+     *<h3></h3>
+     *
+     */
     private BusinessPriorityTotals() {
         super();
     }

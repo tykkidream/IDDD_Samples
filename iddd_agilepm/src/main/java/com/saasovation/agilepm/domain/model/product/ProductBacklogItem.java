@@ -19,15 +19,27 @@ import com.saasovation.agilepm.domain.model.product.backlogitem.BacklogItemId;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 
 /**
- * <h3>产品待定项 - 聚合根</h3>
- * <p>完成产品需要做的事情。Backlog 可以理解成“积压的工作”，
+ *<h3>产品待定项 - 聚合根</h3>
+ *<p>产品待办项，指需求清单。完成产品需要做的事情。Backlog 可以理解成“积压的工作”，
  *“待解决的问题”，“产品订单”。
  */
 public class ProductBacklogItem extends Entity {
 
+    /**
+     * 待定项ID
+     */
     private BacklogItemId backlogItemId;
+    /**
+     * 顺序
+     */
     private int ordering;
+    /**
+     * 产品ID
+     */
     private ProductId productId;
+    /**
+     * 承租者ID
+     */
     private TenantId tenantId;
 
     public BacklogItemId backlogItemId() {
@@ -80,6 +92,14 @@ public class ProductBacklogItem extends Entity {
                 + ", ordering=" + ordering + "]";
     }
 
+    /**
+     *<h3></h3>
+     *
+     * @param aTenantId
+     * @param aProductId
+     * @param aBacklogItemId
+     * @param anOrdering
+     */
     protected ProductBacklogItem(
             TenantId aTenantId,
             ProductId aProductId,
@@ -94,10 +114,20 @@ public class ProductBacklogItem extends Entity {
         this.setTenantId(aTenantId);
     }
 
+    /**
+     *<h3></h3>
+     *
+     */
     protected ProductBacklogItem() {
         super();
     }
 
+    /**
+     *<h3>从重新排序</h3>
+     *
+     * @param anId
+     * @param anOrdering
+     */
     protected void reorderFrom(BacklogItemId anId, int anOrdering) {
         if (this.backlogItemId().equals(anId)) {
             this.setOrdering(anOrdering);

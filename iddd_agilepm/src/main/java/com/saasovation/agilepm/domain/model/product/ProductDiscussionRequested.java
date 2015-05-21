@@ -20,6 +20,10 @@ import com.saasovation.agilepm.domain.model.team.ProductOwnerId;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>产品请求讨论 - 领域事件</h3>
+ *
+ */
 public class ProductDiscussionRequested implements DomainEvent {
 
     private String description;

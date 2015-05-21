@@ -18,6 +18,10 @@ import java.util.Date;
 
 import com.saasovation.agilepm.domain.model.ValueObject;
 
+/**
+ *<h3></h3>
+ *
+ */
 public class MemberChangeTracker extends ValueObject {
 
     private Date emailAddressChangedOn;

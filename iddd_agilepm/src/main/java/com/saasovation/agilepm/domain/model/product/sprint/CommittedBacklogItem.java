@@ -18,11 +18,40 @@ import com.saasovation.agilepm.domain.model.Entity;
 import com.saasovation.agilepm.domain.model.product.backlogitem.BacklogItemId;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 
+/**
+ *<h3>冲刺待定项 - 实体</h3>
+ *
+ *<p>这个类的访问级别是public的，可以外界使用，但只能被当前子域元素如{@link Sprint}（也当前包内的类）创建。因为这个类的3个构造函数没
+ *有public的，分别是：
+ *<ul>
+ *<li>{@link #CommittedBacklogItem(TenantId, SprintId, BacklogItemId, int)}为protected的；
+ *<li>{@link #CommittedBacklogItem(TenantId, SprintId, BacklogItemId)}为protected的；
+ *<li>{@link #CommittedBacklogItem()}为private的。
+ *</ul>
+ *</p>
+ *
+ *<p>刚看到这个类时还以为是值对象，但经分析之后可以从两个点上判断为实体。一是{@link #backlogItemId()}可以作为实例唯一标识，这个标识
+ *是来自{@link com.saasovation.agilepm.domain.model.product.backlogitem.BacklogItem#backlogItemId()
+ *BacklogItem#backlogItemId()}，二是其状态可以被{@link #reorderFrom(BacklogItemId, int)}修改。所以这个类仅仅只
+ *是一个实体，不是值对象。</p>
+ */
 public class CommittedBacklogItem extends Entity {
 
+    /**
+     * 待定项ID
+     */
     private BacklogItemId backlogItemId;
+    /**
+     * 排序
+     */
     private int ordering;
+    /**
+     * 冲刺ID
+     */
     private SprintId sprintId;
+    /**
+     * 承租者ID
+     */
     private TenantId tenantId;
 
     public BacklogItemId backlogItemId() {
@@ -72,6 +101,16 @@ public class CommittedBacklogItem extends Entity {
         return "CommittedBacklogItem [sprintId=" + sprintId + ", ordering=" + ordering + "]";
     }
 
+    /**
+     *<h3>构造TenantId</h3>
+     *
+     *<p>这个方法的访问级别是protected的，只有当前包内的类才能使用此构造函数创建实例。
+     *
+     * @param aTenantId
+     * @param aSprintId
+     * @param aBacklogItemId
+     * @param anOrdering
+     */
     protected CommittedBacklogItem(
             TenantId aTenantId,
             SprintId aSprintId,
@@ -86,6 +125,18 @@ public class CommittedBacklogItem extends Entity {
         this.setTenantId(aTenantId);
     }
 
+    /**
+     *<h3>构造TenantId</h3>
+     *
+     *<p>内部委托给了{@link #CommittedBacklogItem(TenantId, SprintId, BacklogItemId, int)}
+     *初始化实例，并且默认最后一个参数anOrdering为0。
+     *
+     *<p>这个方法的访问级别是protected的，只有当前包内的类才能使用此构造函数创建实例。
+     *
+     * @param aTenantId
+     * @param aSprintId
+     * @param aBacklogItemId
+     */
     protected CommittedBacklogItem(
             TenantId aTenantId,
             SprintId aSprintId,
@@ -94,10 +145,23 @@ public class CommittedBacklogItem extends Entity {
         this(aTenantId, aSprintId, aBacklogItemId, 0);
     }
 
+    /**
+     *<h3>冲刺待定项</h3>
+     *
+     *<p>这个方法的访问级别是private的，禁止其它类使用此构造函数创建实例。
+     */
     private CommittedBacklogItem() {
         super();
     }
 
+    /**
+     *<h3>从重新排序</h3>
+     *<p>重新排序时同其它待定项比较位置，如果同自己比较，则修改自己的顺序号为anOrderOfPriority指定
+     *的号码，否则同anOrderOfPriority比较，如果比它大则递增自己一号。
+     *
+     * @param anId 待定项ID
+     * @param anOrderOfPriority 顺序号
+     */
     protected void reorderFrom(BacklogItemId anId, int anOrderOfPriority) {
         if (this.backlogItemId().equals(anId)) {
             this.setOrdering(anOrderOfPriority);
@@ -106,6 +170,14 @@ public class CommittedBacklogItem extends Entity {
         }
     }
 
+    /**
+     *<h3>设置顺序号</h3>
+     *<p>注意：这个setter方法是protected的，而其它都是private的。至于原因，由于不了解领域知识而无法知晓，
+     *不过可以观察一个现象，就是这个方法只被{@link #reorderFrom}方法调用，这个方法也是protected的。
+     *
+     *
+     * @param anOrdering 顺序号
+     */
     protected void setOrdering(int anOrdering) {
         this.ordering = anOrdering;
     }

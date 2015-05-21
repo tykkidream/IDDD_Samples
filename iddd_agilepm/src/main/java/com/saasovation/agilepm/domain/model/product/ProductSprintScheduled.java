@@ -20,6 +20,10 @@ import com.saasovation.agilepm.domain.model.product.sprint.SprintId;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>产品冲刺计划 - 领域事件</h3>
+ *
+ */
 public class ProductSprintScheduled implements DomainEvent {
 
     private Date begins;

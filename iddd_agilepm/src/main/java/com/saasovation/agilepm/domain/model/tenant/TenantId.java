@@ -16,16 +16,34 @@ package com.saasovation.agilepm.domain.model.tenant;
 
 import com.saasovation.agilepm.domain.model.ValueObject;
 
+/**
+ *<h3>承租者唯一标识符 - 值对象</h3>
+ *
+ */
 public class TenantId extends ValueObject {
 
     private String id;
 
+    /**
+     *<h3>构造TenantId</h3>
+     *<p>通过一个String类型值构建当前唯一标识对象。
+     *创建时必须提供这个值，否则当前对象将无意义。
+     *
+     * @param anId
+     */
     public TenantId(String anId) {
         this();
 
         this.setId(anId);
     }
 
+    /**
+     *<h3>构造TenantId</h3>
+     *<p>通过另外一个唯一标识对象构建当前唯一标识对象。
+     *创建时必须提供这个值，否则当前对象将无意义。
+     *
+     * @param aTenantId
+     */
     public TenantId(TenantId aTenantId) {
         this(aTenantId.id());
     }
@@ -60,6 +78,11 @@ public class TenantId extends ValueObject {
         return "TenantId [id=" + id + "]";
     }
 
+    /**
+     *<h3>构造TenantId</h3>
+     *<p>protected的？
+     *
+     */
     protected TenantId() {
         super();
     }

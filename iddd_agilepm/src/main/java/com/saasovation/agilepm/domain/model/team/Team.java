@@ -22,8 +22,7 @@ import com.saasovation.agilepm.domain.model.Entity;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 
 /**
- * <h3>Scrum 团队 - 聚合根</h3>
- * <p>Scrum 框架的3个角色之一，另外两个是 Scrum Master 和产品负责人 {@link ProductOwner}
+ *<h3>开发团队 - 聚合根</h3>
  *
  */
 public class Team extends Entity {

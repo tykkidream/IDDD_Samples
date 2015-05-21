@@ -16,16 +16,30 @@ package com.saasovation.agilepm.domain.model.product.release;
 
 import com.saasovation.agilepm.domain.model.ValueObject;
 
+/**
+ *<h3>版本唯一标识符 - 值对象</h3>
+ *
+ */
 public class ReleaseId extends ValueObject {
 
     private String id;
 
+    /**
+     *<h3></h3>
+     *
+     * @param anId
+     */
     public ReleaseId(String anId) {
         super();
 
         this.setId(anId);
     }
 
+    /**
+     *<h3></h3>
+     *
+     * @param aReleaseId
+     */
     public ReleaseId(ReleaseId aReleaseId) {
         this(aReleaseId.id());
     }
@@ -60,6 +74,10 @@ public class ReleaseId extends ValueObject {
         return "ReleaseId [id=" + id + "]";
     }
 
+    /**
+     *<h3></h3>
+     *
+     */
     protected ReleaseId() {
         super();
     }

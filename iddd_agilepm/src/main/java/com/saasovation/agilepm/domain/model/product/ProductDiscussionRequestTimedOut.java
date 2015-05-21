@@ -17,6 +17,10 @@ package com.saasovation.agilepm.domain.model.product;
 import com.saasovation.common.domain.model.process.ProcessId;
 import com.saasovation.common.domain.model.process.ProcessTimedOut;
 
+/**
+ *<h3>产品讨论请求超时 - 领域事件</h3>
+ *
+ */
 public class ProductDiscussionRequestTimedOut extends ProcessTimedOut {
 
     public ProductDiscussionRequestTimedOut(

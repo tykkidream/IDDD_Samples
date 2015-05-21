@@ -119,7 +119,13 @@ public class Task extends Entity {
         this.setEstimationLog(new ArrayList<EstimationLogEntry>(0));
     }
 
+    /**
+     * 
+     * @param aVolunteer
+     */
     protected void assignVolunteer(TeamMember aVolunteer) {
+    	// 业务如此简单，仅仅是修改了一个状态。
+    	// 但是这个方法富有业务意义。
         this.setVolunteer(aVolunteer.teamMemberId());
 
         DomainEventPublisher

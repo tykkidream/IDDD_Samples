@@ -14,32 +14,56 @@
 
 package com.saasovation.agilepm.domain.model.product.backlogitem;
 
+/**
+ *<h3>状态 - 值对象</h3>
+ *
+ */
 public enum BacklogItemStatus {
 
+    /**
+     *<h3>计划完</h3>
+     *
+     */
     PLANNED {
         public boolean isPlanned() {
             return true;
         }
     },
 
+    /**
+     *<h3>排定完</h3>
+     *
+     */
     SCHEDULED {
         public boolean isScheduled() {
             return true;
         }
     },
 
+    /**
+     *<h3>承诺</h3>
+     *
+     */
     COMMITTED {
         public boolean isCommitted() {
             return true;
         }
     },
 
+    /**
+     *<h3>完成的</h3>
+     *
+     */
     DONE {
         public boolean isDone() {
             return true;
         }
     },
 
+    /**
+     *<h3>移除的</h3>
+     *
+     */
     REMOVED {
         public boolean isRemoved() {
             return true;

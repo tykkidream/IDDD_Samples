@@ -16,16 +16,30 @@ package com.saasovation.agilepm.domain.model.product;
 
 import com.saasovation.agilepm.domain.model.ValueObject;
 
+/**
+ *<h3>产品唯一标识符 - 值对象</h3>
+ *
+ */
 public class ProductId extends ValueObject {
 
     private String id;
 
+    /**
+     *<h3></h3>
+     *
+     * @param anId
+     */
     public ProductId(String anId) {
         this();
 
         this.setId(anId);
     }
 
+    /**
+     *<h3></h3>
+     *
+     * @param aProductId
+     */
     public ProductId(ProductId aProductId) {
         this(aProductId.id());
     }
@@ -60,6 +74,10 @@ public class ProductId extends ValueObject {
         return "ProductId [id=" + id + "]";
     }
 
+    /**
+     *<h3></h3>
+     *
+     */
     private ProductId() {
         super();
     }

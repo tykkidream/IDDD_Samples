@@ -21,18 +21,78 @@ import com.saasovation.agilepm.domain.model.product.ProductId;
 import com.saasovation.agilepm.domain.model.product.backlogitem.*;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 
+/**
+ *<h3>冲刺 - 聚合</h3>
+ *<p>Sprint原意为冲刺，无对应中文翻译，指一次迭代。</p>
+ *<p>Scrum是一种迭代和增量式的产品开发方法，Scrum通过冲刺来实现迭代。一个冲刺是指一个
+ *1周－4周的迭代，它是一个时间盒。冲刺的长度一旦确定，保持不变。冲刺的产出是“完成”的、可用
+ *的、潜在可发布的产品增量。冲刺在整个开发过程中的周期一致。新的冲刺在上一 个冲刺完成之后立即
+ *开始。冲刺包含并由冲刺计划会议、每日站会、开发工作、冲刺评审会议和冲刺回顾会议构成。
+ *</p>
+ *<p>Scrum采用迭代增量的方式，是因为需求是涌现的，我们对产品和需求的理解是渐进式的，冲刺
+ *长度越长，我们需要预测的越多，复杂度会提升、风险也会增加，所以冲刺的长度最多不超过4周。越来
+ *越多的团队使用2周的冲刺，很多市场变化快、竞争激烈的领域，比如互联网和移动互联网产品开发团队
+ *也会使用1周的迭代。
+ *</p>
+ *<p>在Sprint进行过程中，如下内容不能发生变化：
+ *<ul>
+ *<li>Sprint的目标</li>
+ *<li>Sprint的质量目标和验收标准</li>
+ *<li>开发团队的组成</li>
+ *</ul>
+ *</p>
+ *
+ */
 public class Sprint extends Entity {
 
+    /**
+     * 冲刺代办事项列表
+     */
     private Set<CommittedBacklogItem> backlogItems;
+    /**
+     * 开始时间
+     */
     private Date begins;
+    /**
+     * 结束时间
+     */
     private Date ends;
+    /**
+     * 目标
+     */
     private String goals;
+    /**
+     * 名称
+     */
     private String name;
+    /**
+     * 产品ID
+     */
     private ProductId productId;
+    /**
+     * 回顾
+     */
     private String retrospective;
+    /**
+     * ID
+     */
     private SprintId sprintId;
+    /**
+     * 承租者ID
+     */
     private TenantId tenantId;
 
+    /**
+     *<h3></h3>
+     *
+     * @param aTenantId
+     * @param aProductId
+     * @param aSprintId
+     * @param aName
+     * @param aGoals
+     * @param aBegins
+     * @param anEnds
+     */
     public Sprint(
             TenantId aTenantId,
             ProductId aProductId,
@@ -57,6 +117,11 @@ public class Sprint extends Entity {
         this.setTenantId(aTenantId);
     }
 
+    /**
+     *<h3>调整目标</h3>
+     *
+     * @param aGoals
+     */
     public void adjustGoals(String aGoals) {
         this.setGoals(aGoals);
 
@@ -71,12 +136,22 @@ public class Sprint extends Entity {
         return this.begins;
     }
 
+    /**
+     *<h3>捕捉回顾会议结果</h3>
+     *
+     * @param aRetrospective
+     */
     public void captureRetrospectiveMeetingResults(String aRetrospective) {
         this.setRetrospective(aRetrospective);
 
         // TODO: publish event / student assignment
     }
 
+    /**
+     *<h3>提交待定项</h3>
+     *
+     * @param aBacklogItem
+     */
     public void commit(BacklogItem aBacklogItem) {
         this.assertArgumentEquals(this.tenantId(), aBacklogItem.tenantId(), "Must have same tenants.");
         this.assertArgumentEquals(this.productId(), aBacklogItem.productId(), "Must have same products.");
@@ -105,12 +180,22 @@ public class Sprint extends Entity {
         return this.name;
     }
 
+    /**
+     *<h3>冲刺现在开始于时间</h3>
+     *
+     * @param aBegins
+     */
     public void nowBeginsOn(Date aBegins) {
         this.setBegins(aBegins);
 
         // TODO: publish event / student assignment
     }
 
+    /**
+     *<h3>冲刺现在结束于时间</h3>
+     *
+     * @param anEnds
+     */
     public void nowEndsOn(Date anEnds) {
         this.setEnds(anEnds);
 
@@ -121,12 +206,23 @@ public class Sprint extends Entity {
         return this.productId;
     }
 
+    /**
+     *<h3>重命令</h3>
+     *
+     * @param aName
+     */
     public void rename(String aName) {
         this.setName(aName);
 
         // TODO: publish event / student assignment
     }
 
+    /**
+     *<h3>从重新排序</h3>
+     *
+     * @param anId
+     * @param anOrderOfPriority 
+     */
     public void reorderFrom(BacklogItemId anId, int anOrderOfPriority) {
         for (CommittedBacklogItem committedBacklogItem : this.backlogItems()) {
             committedBacklogItem.reorderFrom(anId, anOrderOfPriority);
@@ -145,6 +241,11 @@ public class Sprint extends Entity {
         return this.tenantId;
     }
 
+    /**
+     *<h3>取消提交待定项</h3>
+     *
+     * @param aBacklogItem
+     */
     public void uncommit(BacklogItem aBacklogItem) {
         CommittedBacklogItem cbi =
                 new CommittedBacklogItem(
@@ -190,6 +291,10 @@ public class Sprint extends Entity {
                 + ", retrospective=" + retrospective + "]";
     }
 
+    /**
+     *<h3></h3>
+     *
+     */
     private Sprint() {
         super();
 

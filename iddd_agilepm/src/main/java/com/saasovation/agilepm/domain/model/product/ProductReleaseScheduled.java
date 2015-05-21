@@ -20,6 +20,10 @@ import com.saasovation.agilepm.domain.model.product.release.ReleaseId;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>产品发布计划 - 领域事件</h3>
+ *
+ */
 public class ProductReleaseScheduled implements DomainEvent {
 
     private Date begins;

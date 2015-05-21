@@ -22,8 +22,15 @@ import com.saasovation.agilepm.domain.model.product.backlogitem.StoryPoints;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>产品待定项计划 - 领域事件</h3>
+ *
+ */
 public class ProductBacklogItemPlanned implements DomainEvent {
 
+    /**
+     * 待定项ID
+     */
     private BacklogItemId backlogItemId;
     private String category;
     private int eventVersion;

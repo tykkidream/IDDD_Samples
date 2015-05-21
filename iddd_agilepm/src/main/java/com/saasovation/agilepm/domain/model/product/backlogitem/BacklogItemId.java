@@ -24,12 +24,22 @@ public class BacklogItemId extends ValueObject {
 
     private String id;
 
+    /**
+     *<h3></h3>
+     *
+     * @param anId
+     */
     public BacklogItemId(String anId) {
         this();
 
         this.setId(anId);
     }
 
+    /**
+     *<h3></h3>
+     *
+     * @param aBacklogItemId
+     */
     public BacklogItemId(BacklogItemId aBacklogItemId) {
         this(aBacklogItemId.id());
     }
@@ -64,6 +74,10 @@ public class BacklogItemId extends ValueObject {
         return "BacklogItemId [id=" + id + "]";
     }
 
+    /**
+     *<h3></h3>
+     *
+     */
     private BacklogItemId() {
         super();
     }

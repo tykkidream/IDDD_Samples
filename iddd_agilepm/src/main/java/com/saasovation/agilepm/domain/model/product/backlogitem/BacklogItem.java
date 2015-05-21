@@ -31,28 +31,58 @@ import com.saasovation.agilepm.domain.model.tenant.TenantId;
 import com.saasovation.common.domain.model.DomainEventPublisher;
 
 /**
- * <h3>待定项 - 聚合根</h3>
- *
+ *<h3>待定项 - 聚合根</h3>
+ *<p>积压的工作, 待解决的问题。
  */
 public class BacklogItem extends Entity {
 
+	/** 有关发行ID **/
     private String associatedIssueId;
+    /** ID **/
     private BacklogItemId backlogItemId;
+    /** 业务优先级 **/
     private BusinessPriority businessPriority;
+    /** 类别 **/
     private String category;
+    /** 讨论 **/
     private BacklogItemDiscussion discussion;
+    /** 讨论起始ID **/
     private String discussionInitiationId;
+    /** 产品ID **/
     private ProductId productId;
+    /** 版本ID **/
     private ReleaseId releaseId;
+    /** 冲刺ID **/
     private SprintId sprintId;
+    /** 状态 **/
     private BacklogItemStatus status;
+    /** 故事 **/
     private String story;
+    /** 故事点 **/
     private StoryPoints storyPoints;
+    /** 总结 **/
     private String summary;
+    /** 任务 **/
     private Set<Task> tasks;
+    /** 承租者ID **/
     private TenantId tenantId;
+    /** 类型 **/
     private BacklogItemType type;
 
+    /**
+     *<h3>构造BacklogItem</h3>
+     *
+     *<p>代表了一个新生的BacklogItem对象，由初始化参数构造聚合内的状态。
+     * 
+     * @param aTenantId
+     * @param aProductId
+     * @param aBacklogItemId
+     * @param aSummary
+     * @param aCategory
+     * @param aType
+     * @param aStatus
+     * @param aStoryPoints
+     */
     public BacklogItem(
             TenantId aTenantId,
             ProductId aProductId,
@@ -82,6 +112,11 @@ public class BacklogItem extends Entity {
         return Collections.unmodifiableSet(this.tasks());
     }
 
+    /**
+     *<h3>所有任务是否有剩余时间</h3>
+     *<p>如果还有剩余时间，返回ture，反之返回false。
+     *@return
+     */
     public boolean anyTaskHoursRemaining() {
         return this.totalTaskHoursRemaining() > 0;
     }
@@ -90,15 +125,32 @@ public class BacklogItem extends Entity {
         return this.associatedIssueId;
     }
 
+    /**
+     *<h3>联想到发行</h3>
+     * @param anIssueId
+     */
     public void associateWithIssue(String anIssueId) {
         if (this.associatedIssueId == null) {
             this.associatedIssueId = anIssueId;
         }
     }
 
+    /**
+     *<h3>分配业务优先级</h3>
+     *
+     *<p>这是一个CQS命令方法，用于分配业务优先级，没有返回值。
+     *
+     *<p>处理完成后，将参数封装到一个新的{@link BusinessPriorityAssigned}事件对象中，并发
+     *布它。更多关于事件的信息参考{@link DomainEventPublisher}。
+     *
+     * @param aBusinessPriority
+     */
     public void assignBusinessPriority(BusinessPriority aBusinessPriority) {
+    	// 业务如此简单，仅仅是修改了一个状态。
+    	// 但是这个方法富有业务意义。
         this.setBusinessPriority(aBusinessPriority);
 
+        // 富有业务意义不只是因为方法名，还因为这里有事件。事件还会让人觉得这里将引发在未来的哪个地方继续任务。
         DomainEventPublisher
             .instance()
             .publish(new BusinessPriorityAssigned(
@@ -107,9 +159,22 @@ public class BacklogItem extends Entity {
                     this.businessPriority()));
     }
 
+    /**
+     *<h3>分配故事点</h3>
+     *
+     *<p>这是一个CQS命令方法，用于分配故事点，没有返回值。
+     *
+     *<p>处理完成后，将参数封装到一个新的{@link BacklogItemStoryPointsAssigned}事件对象中，并发
+     *布它。更多关于事件的信息参考{@link DomainEventPublisher}。
+     * 
+     * @param aStoryPoints
+     */
     public void assignStoryPoints(StoryPoints aStoryPoints) {
+    	// 业务如此简单，仅仅是修改了一个状态。
+    	// 但是这个方法富有业务意义。
         this.setStoryPoints(aStoryPoints);
 
+        // 富有业务意义不只是因为方法名，还因为这里有事件。事件还会让人觉得这里将引发在未来的哪个地方继续任务。
         DomainEventPublisher
             .instance()
             .publish(new BacklogItemStoryPointsAssigned(
@@ -118,6 +183,17 @@ public class BacklogItem extends Entity {
                     this.storyPoints()));
     }
 
+    /**
+     *<h3>分配任务志愿者</h3>
+     *
+     *<p>这是一个CQS命令方法，用于分配任务志愿者，没有返回值。
+     *
+     *<p>处理过程中，会使用{@link #task(TaskId)}方法根据aTaskId找到{@link Task}对象，然后将
+     *aVolunteer传递给{@link Task#assignVolunteer(TeamMember)}来处理。
+     *
+     * @param aTaskId
+     * @param aVolunteer
+     */
     public void assignTaskVolunteer(TaskId aTaskId, TeamMember aVolunteer) {
         Task task = this.task(aTaskId);
 
@@ -140,9 +216,22 @@ public class BacklogItem extends Entity {
         return this.category;
     }
 
+    /**
+     *<h3>改变类别</h3>
+     *
+     *<p>这是一个CQS命令方法，用于改变类别，没有返回值。
+     *
+     *<p>处理完成后，将参数封装到一个新的{@link BacklogItemCategoryChanged}事件对象中，并发
+     *布它。更多关于事件的信息参考{@link DomainEventPublisher}。
+     *
+     *@param aCategory
+     */
     public void changeCategory(String aCategory) {
+    	// 业务如此简单，仅仅是修改了一个状态。
+    	// 但是这个方法富有业务意义。
         this.setCategory(aCategory);
 
+        // 富有业务意义不只是因为方法名，还因为这里有事件。事件还会让人觉得这里将引发在未来的哪个地方继续任务。
         DomainEventPublisher
             .instance()
             .publish(new BacklogItemCategoryChanged(
@@ -151,6 +240,17 @@ public class BacklogItem extends Entity {
                     this.category()));
     }
 
+    /**
+     *<h3>更改任务状态</h3>
+     *
+     *<p>这是一个CQS命令方法，用于更改任务状态，没有返回值。
+     *
+     *<p>处理过程中，会使用{@link #task(TaskId)}方法根据aTaskId找到{@link Task}对象，然后将
+     *aStatus传递给{@link Task#changeStatus(TaskStatus))}来处理。
+     * 
+     * @param aTaskId
+     * @param aStatus
+     */
     public void changeTaskStatus(TaskId aTaskId, TaskStatus aStatus) {
         Task task = this.task(aTaskId);
 
@@ -161,9 +261,22 @@ public class BacklogItem extends Entity {
         task.changeStatus(aStatus);
     }
 
+    /**
+     *<h3>改变类别</h3>
+     *
+     *<p>这是一个CQS命令方法，用于改变类别，没有返回值。
+     *
+     *<p>处理完成后，将参数封装到一个新的{@link BacklogItemCategoryChanged}事件对象中，并发
+     *布它。更多关于事件的信息参考{@link DomainEventPublisher}。
+     * 
+     * @param aType
+     */
     public void changeType(BacklogItemType aType) {
+    	// 业务如此简单，仅仅是修改了一个状态。
+    	// 但是这个方法富有业务意义。
         this.setType(aType);
 
+        // 富有业务意义不只是因为方法名，还因为这里有事件。事件还会让人觉得这里将引发在未来的哪个地方继续任务。
         DomainEventPublisher
             .instance()
             .publish(new BacklogItemTypeChanged(
@@ -172,6 +285,16 @@ public class BacklogItem extends Entity {
                     this.type()));
     }
 
+    /**
+     *<h3>承诺</h3>
+     *
+     *<p>这是一个CQS命令方法，用于承诺，没有返回值。
+     *
+     *<p>处理完成后，将参数封装到一个新的{@link BacklogItemCommitted}事件对象中，并发
+     *布它。更多关于事件的信息参考{@link DomainEventPublisher}。
+     * 
+     * @param aSprint
+     */
     public void commitTo(Sprint aSprint) {
         this.assertArgumentNotNull(aSprint, "Sprint must not be null.");
         this.assertArgumentEquals(aSprint.tenantId(), this.tenantId(), "Sprint must be of same tenant.");
@@ -183,14 +306,18 @@ public class BacklogItem extends Entity {
 
         if (this.isCommittedToSprint()) {
             if (!aSprint.sprintId().equals(this.sprintId())) {
+            	// 业务1
                 this.uncommitFromSprint();
             }
         }
 
+    	// 业务2
         this.elevateStatusWith(BacklogItemStatus.COMMITTED);
 
+    	// 业务3
         this.setSprintId(aSprint.sprintId());
 
+        // 富有业务意义不只是因为方法名，还因为这里有事件。事件还会让人觉得这里将引发在未来的哪个地方继续任务。
         DomainEventPublisher
             .instance()
             .publish(new BacklogItemCommitted(
@@ -199,6 +326,19 @@ public class BacklogItem extends Entity {
                     this.sprintId()));
     }
 
+    /**
+     *<h3>定义任务</h3>
+     *
+     *<p>这是一个CQS命令方法，用于定义任务，没有返回值。
+     *
+     *<p>处理完成后，将参数封装到一个新的{@link TaskDefined}事件对象中，并发
+     *布它。更多关于事件的信息参考{@link DomainEventPublisher}。
+     * 
+     * @param aVolunteer
+     * @param aName
+     * @param aDescription
+     * @param anHoursRemaining
+     */
     public void defineTask(TeamMember aVolunteer, String aName, String aDescription, int anHoursRemaining) {
         Task task = new Task(
                 this.tenantId(),
@@ -212,6 +352,7 @@ public class BacklogItem extends Entity {
 
         this.tasks().add(task);
 
+        // 富有业务意义不只是因为方法名，还因为这里有事件。事件还会让人觉得这里将引发在未来的哪个地方继续任务。
         DomainEventPublisher
             .instance()
             .publish(new TaskDefined(
@@ -224,6 +365,17 @@ public class BacklogItem extends Entity {
                     anHoursRemaining));
     }
 
+    /**
+     *<h3>描述任务</h3>
+     *
+     *<p>这是一个CQS命令方法，用于描述任务，没有返回值。
+     *
+     *<p>处理过程中，会使用{@link #task(TaskId)}方法根据aTaskId找到{@link Task}对象，然后将
+     *aDescription传递给{@link Task#describeAs(String)))}来处理。
+     * 
+     * @param aTaskId
+     * @param aDescription
+     */
     public void describeTask(TaskId aTaskId, String aDescription) {
         Task task = this.task(aTaskId);
 
@@ -242,21 +394,42 @@ public class BacklogItem extends Entity {
         return this.discussionInitiationId;
     }
 
+    /**
+     *<h3>失败引发的讨论</h3>
+     *
+     *<p>这是一个CQS命令方法，用于描述任务，没有返回值。
+     *
+     */
     public void failDiscussionInitiation() {
+    	// 检查讨论是否是准备好的。
         if (!this.discussion().availability().isReady()) {
+        	// 设置讨论起始ID
             this.setDiscussionInitiationId(null);
+            // XXX
             this.setDiscussion(
                     BacklogItemDiscussion
                         .fromAvailability(DiscussionAvailability.FAILED));
         }
     }
 
+    /**
+     *<h3>发起讨论</h3>
+     *
+     *<p>这是一个CQS命令方法，基于现在的讨论通过一个讨论描述发起新讨论，没有返回值。
+     *
+     *<p>处理完成后，将参数封装到一个新的{@link BacklogItemDiscussionInitiated}事件对象中，并发
+     *布它。更多关于事件的信息参考{@link DomainEventPublisher}。
+     *
+     * @param aDescriptor
+     */
     public void initiateDiscussion(DiscussionDescriptor aDescriptor) {
         if (aDescriptor == null) {
             throw new IllegalArgumentException("The descriptor must not be null.");
         }
 
+        // 检查讨论状态是请求的。
         if (this.discussion().availability().isRequested()) {
+        	// XXX
             this.setDiscussion(this.discussion().nowReady(aDescriptor));
 
             DomainEventPublisher
@@ -268,6 +441,13 @@ public class BacklogItem extends Entity {
         }
     }
 
+    /**
+     *<h3>估计任务剩余时间</h3>
+     *<p>估算任务的剩余时间，并相应地调整状态。
+     *
+     * @param aTaskId
+     * @param anHoursRemaining
+     */
     public void estimateTaskHoursRemaining(TaskId aTaskId, int anHoursRemaining) {
         Task task = this.task(aTaskId);
 
@@ -275,20 +455,28 @@ public class BacklogItem extends Entity {
             throw new IllegalStateException("Task does not exist.");
         }
 
+        // 估计任务的剩余时间
         task.estimateHoursRemaining(anHoursRemaining);
 
         BacklogItemStatus changedStatus = null;
 
         if (anHoursRemaining == 0) {
+        	// 如果没有了剩余时间
             if (!this.anyTaskHoursRemaining()) {
                 changedStatus = BacklogItemStatus.DONE;
             }
-        } else if (this.isDone()) {
-            // regress to the logical previous state
-            // because "done" is no longer appropriate
+        }
+        // 如果当前状态是完成的。
+        else if (this.isDone()) {
+            // 回归到逻辑之前的状态
+            // 因为“完成”不再是合适的
+        	
+        	// 是否已经提交到冲刺中
             if (this.isCommittedToSprint()) {
                 changedStatus = BacklogItemStatus.COMMITTED;
-            } else if (this.isScheduledForRelease()) {
+            }
+            // 是否已经发布
+            else if (this.isScheduledForRelease()) {
                 changedStatus = BacklogItemStatus.SCHEDULED;
             } else {
                 changedStatus = BacklogItemStatus.PLANNED;
@@ -307,10 +495,25 @@ public class BacklogItem extends Entity {
         }
     }
 
+    /**
+     *<h3>是否有有业务优先级</h3>
+     *<p>如果当前的{@link #businessPriority}不为null返回true。
+     * @return
+     */
     public boolean hasBusinessPriority() {
         return this.businessPriority() != null;
     }
 
+    /**
+     *<h3>发起讨论</h3>
+     *
+     *<p>这是一个CQS命令方法，发起一个新的讨论，没有返回值。
+     *
+     *<p>处理完成后，将参数封装到一个新的{@link BacklogItemDiscussionInitiated}事件对象中，并发
+     *布它。更多关于事件的信息参考{@link DomainEventPublisher}。
+     *
+     * @param aDiscussion
+     */
     public void initiateDiscussion(BacklogItemDiscussion aDiscussion) {
         this.setDiscussion(aDiscussion);
 
@@ -322,26 +525,65 @@ public class BacklogItem extends Entity {
                     this.discussion()));
     }
 
+    /**
+     *<h3>是否已经提交到冲刺中</h3>
+     *<p>如果当前对象有冲刺的ID，说明已经被提交到了冲刺中，返回true。
+     * @return
+     */
     public boolean isCommittedToSprint() {
         return this.sprintId() != null;
     }
 
+    /**
+     *<h3>是否已经完成</h3>
+     *<p>检查当前状态{@link #status}的状态是否是完成的。
+     * @return
+     */
     public boolean isDone() {
         return this.status().isDone();
     }
 
+    /**
+     *<h3>是否正在计划中</h3>
+     *<p>检查当前状态{@link #status}的状态是否正在计划中。
+     * 
+     * @return
+     */
     public boolean isPlanned() {
         return this.status().isPlanned();
     }
 
+    /**
+     *<h3>是否已经被删除</h3>
+     *<p>检查当前状态{@link #status}的状态是否已被删除。
+     * 
+     * @return
+     */
     public boolean isRemoved() {
         return this.status().isRemoved();
     }
 
+    /**
+     *<h3>是否已经发布</h3>
+     *<p>检查当前状态{@link #releaseId}的状态是否是完成的。
+     *
+     * @return
+     */
     public boolean isScheduledForRelease() {
         return this.releaseId() != null;
     }
 
+    /**
+     *<h3>标记为删除</h3>
+     *
+     *<p>这是一个CQS命令方法，将当前对象标记为删除，没有返回值。如果当前对象的状态是{@link BacklogItemStatus#DONE}、
+     *{@link BacklogItemStatus#REMOVED}将不能继续此操作，如果当前对象已经提交到冲刺中或者已经发布，将撤消这些操作之后
+     *继续标记为删除。
+     *
+     *<p>处理完成后，将参数封装到一个新的{@link BacklogItemMarkedAsRemoved}事件对象中，并发
+     *布它。更多关于事件的信息参考{@link DomainEventPublisher}。
+     *
+     */
     public void markAsRemoved() {
         if (this.isRemoved()) {
             throw new IllegalStateException("Already removed, not outstanding.");
@@ -373,6 +615,16 @@ public class BacklogItem extends Entity {
         return this.releaseId;
     }
 
+    /**
+     *<h3>删除任务</h3>
+     *
+     *<p>这是一个CQS命令方法，用于删除任务，没有返回值。
+     *
+     *<p>处理完成后，将参数封装到一个新的{@link TaskRemoved}事件对象中，并发
+     *布它。更多关于事件的信息参考{@link DomainEventPublisher}。
+     *
+     * @param aTaskId
+     */
     public void removeTask(TaskId aTaskId) {
         Task task = this.task(aTaskId);
 
@@ -392,6 +644,11 @@ public class BacklogItem extends Entity {
                     aTaskId));
     }
 
+    /**
+     * 
+     * @param aTaskId
+     * @param aName
+     */
     public void renameTask(TaskId aTaskId, String aName) {
         Task task = this.task(aTaskId);
 
@@ -402,6 +659,16 @@ public class BacklogItem extends Entity {
         task.rename(aName);
     }
 
+    /**
+     *<h3>请求讨论</h3>
+     *
+     *<p>这是一个CQS命令方法，用于请求讨论，没有返回值。
+     *
+     *<p>处理完成后，将参数封装到一个新的{@link BacklogItemDiscussionRequested}事件对象中，并发
+     *布它。更多关于事件的信息参考{@link DomainEventPublisher}。
+     * 
+     * @param aDiscussionAvailability
+     */
     public void requestDiscussion(DiscussionAvailability aDiscussionAvailability) {
         if (!this.discussion().availability().isReady()) {
             this.setDiscussion(
@@ -418,6 +685,16 @@ public class BacklogItem extends Entity {
         }
     }
 
+    /**
+     *<h3>时间安排</h3>
+     *
+     *<p>这是一个CQS命令方法，用于时间安排，没有返回值。
+     *
+     *<p>处理完成后，将参数封装到一个新的{@link BacklogItemScheduled}事件对象中，并发
+     *布它。更多关于事件的信息参考{@link DomainEventPublisher}。
+     * 
+     * @param aRelease
+     */
     public void scheduleFor(Release aRelease) {
         this.assertArgumentNotNull(aRelease, "Release must not be null.");
         this.assertArgumentEquals(aRelease.tenantId(), this.tenantId(), "Release must be of same tenant.");
@@ -447,6 +724,12 @@ public class BacklogItem extends Entity {
         return this.sprintId;
     }
 
+    /**
+     *<h3>开始启动的探讨</h3>
+     *<p>这是一个CQS命令方法，用于开始启动的探讨，没有返回值。
+     *
+     * @param aDiscussionInitiationId
+     */
     public void startDiscussionInitiation(String aDiscussionInitiationId) {
         if (!this.discussion().availability().isReady()) {
             this.setDiscussionInitiationId(aDiscussionInitiationId);
@@ -465,6 +748,16 @@ public class BacklogItem extends Entity {
         return this.summary;
     }
 
+    /**
+     *<h3>总结</h3>
+     *
+     *<p>这是一个CQS命令方法，用于总结，没有返回值。
+     *
+     *<p>处理完成后，将参数封装到一个新的{@link BacklogItemSummarized}事件对象中，并发
+     *布它。更多关于事件的信息参考{@link DomainEventPublisher}。
+     *
+     * @param aSummary
+     */
     public void summarize(String aSummary) {
         this.setSummary(aSummary);
 
@@ -476,6 +769,12 @@ public class BacklogItem extends Entity {
                     this.summary()));
     }
 
+    /**
+     *<h3><h3>
+     *
+     *@param aTaskId
+     *@return
+     */
     public Task task(TaskId aTaskId) {
         for (Task task : this.tasks()) {
             if (task.taskId().equals(aTaskId)) {
@@ -486,6 +785,16 @@ public class BacklogItem extends Entity {
         return null;
     }
 
+    /**
+     *<h3>告诉故事</h3>
+     *
+     *<p>这是一个CQS命令方法，用于告诉故事，没有返回值。
+     *
+     *<p>处理完成后，将参数封装到一个新的{@link BacklogItemStoryTold}事件对象中，并发
+     *布它。更多关于事件的信息参考{@link DomainEventPublisher}。
+     * 
+     * @param aStory
+     */
     public void tellStory(String aStory) {
         this.setStory(aStory);
 
@@ -501,6 +810,11 @@ public class BacklogItem extends Entity {
         return this.tenantId;
     }
 
+    /**
+     *<h3>获取总的任务剩余时间</h3>
+     *
+     * @return
+     */
     public int totalTaskHoursRemaining() {
         int totalHoursRemaining = 0;
 
@@ -515,6 +829,15 @@ public class BacklogItem extends Entity {
         return this.type;
     }
 
+    /**
+     *<h3>取消提交到冲刺</h3>
+     *
+     *<p>这是一个CQS命令方法，用于取消提交到冲刺，没有返回值。
+     *
+     *<p>处理完成后，将参数封装到一个新的{@link BacklogItemUncommitted}事件对象中，并发
+     *布它。更多关于事件的信息参考{@link DomainEventPublisher}。
+     * 
+     */
     public void uncommitFromSprint() {
         if (!this.isCommittedToSprint()) {
             throw new IllegalStateException("Not currently committed.");
@@ -532,6 +855,15 @@ public class BacklogItem extends Entity {
                     uncommittedSprintId));
     }
 
+    /**
+     *<h3>取消调度从发布</h3>
+     *
+     *<p>这是一个CQS命令方法，用于取消调度从发布，没有返回值。
+     *
+     *<p>处理完成后，将参数封装到一个新的{@link BacklogItemUnscheduled}事件对象中，并发
+     *布它。更多关于事件的信息参考{@link DomainEventPublisher}。
+     * 
+     */
     public void unscheduleFromRelease() {
         if (this.isCommittedToSprint()) {
             throw new IllegalStateException("Must first uncommit.");
@@ -590,6 +922,15 @@ public class BacklogItem extends Entity {
                 + ", tasks=" + tasks + ", type=" + type + "]";
     }
 
+    /**
+     *<h3>构造BacklogItem</h3>
+     *
+     *<p>此构造函数没有参数，构造过程中只发生一个对{@link #tasks}的初始化。
+     *
+     *<p>注意，此函数是private的，外部无法使用，所以在创建实例时只能使用其它带参的构造函数，
+     *并且提供必要的参数以满足聚合所需最少的状态。
+     * 
+     */
     private BacklogItem() {
         super();
 
@@ -619,6 +960,7 @@ public class BacklogItem extends Entity {
 
     private void setDiscussionInitiationId(String aDiscussionInitiationId) {
         if (aDiscussionInitiationId != null) {
+        	//
             this.assertArgumentLength(
                     aDiscussionInitiationId,
                     100,
@@ -642,11 +984,22 @@ public class BacklogItem extends Entity {
         this.sprintId = aSprintId;
     }
 
+    /**
+     *<h3>获取当前状态</h3>
+     *<p>注意此方法是private的。
+     * @return
+     */
     private BacklogItemStatus status() {
         return this.status;
     }
 
+    /**
+     *<h3>提升当前状态</h3>
+     *
+     * @param aStatus
+     */
     private void elevateStatusWith(BacklogItemStatus aStatus) {
+    	// 如果当前状态是预定的
         if (this.status().isScheduled()) {
             this.setStatus(BacklogItemStatus.COMMITTED);
         }

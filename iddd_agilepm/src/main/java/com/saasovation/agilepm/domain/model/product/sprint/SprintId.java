@@ -17,16 +17,30 @@ package com.saasovation.agilepm.domain.model.product.sprint;
 import com.saasovation.agilepm.domain.model.ValueObject;
 import com.saasovation.agilepm.domain.model.product.release.ReleaseId;
 
+/**
+ *<h3>冲刺唯一标识符 - 值对象</h3>
+ *
+ */
 public class SprintId extends ValueObject {
 
     private String id;
 
+    /**
+     *<h3></h3>
+     *
+     * @param anId
+     */
     public SprintId(String anId) {
         super();
 
         this.setId(anId);
     }
 
+    /**
+     *<h3></h3>
+     *
+     * @param aReleaseId
+     */
     public SprintId(ReleaseId aReleaseId) {
         this(aReleaseId.id());
     }
@@ -61,6 +75,10 @@ public class SprintId extends ValueObject {
         return "SprintId [id=" + id + "]";
     }
 
+    /**
+     *<h3></h3>
+     *
+     */
     protected SprintId() {
         super();
     }
