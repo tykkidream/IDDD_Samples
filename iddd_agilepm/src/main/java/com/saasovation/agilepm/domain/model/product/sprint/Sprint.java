@@ -119,6 +119,7 @@ public class Sprint extends Entity {
 
     /**
      *<h3>调整目标</h3>
+     *<p>这是一个CQS命令方法，用于修改当前冲刺的目标，没有返回值。
      *
      * @param aGoals
      */
@@ -138,6 +139,7 @@ public class Sprint extends Entity {
 
     /**
      *<h3>捕捉回顾会议结果</h3>
+     *<p>这是一个CQS命令方法，用于修改当前冲刺的回顾，没有返回值。
      *
      * @param aRetrospective
      */
@@ -149,6 +151,7 @@ public class Sprint extends Entity {
 
     /**
      *<h3>提交待定项</h3>
+     *<p>这是一个CQS命令方法，用于向当前冲刺中提交待定项，没有返回值。
      *
      * @param aBacklogItem
      */
@@ -156,15 +159,13 @@ public class Sprint extends Entity {
         this.assertArgumentEquals(this.tenantId(), aBacklogItem.tenantId(), "Must have same tenants.");
         this.assertArgumentEquals(this.productId(), aBacklogItem.productId(), "Must have same products.");
 
+        // 计算顺序
         int ordering = this.backlogItems().size() + 1;
 
-        CommittedBacklogItem committedBacklogItem =
-                new CommittedBacklogItem(
-                        this.tenantId(),
-                        this.sprintId(),
-                        aBacklogItem.backlogItemId(),
-                        ordering);
+        // 将BacklogItem（待定项）转换为CommittedBacklogItem（冲刺待定项）
+        CommittedBacklogItem committedBacklogItem = new CommittedBacklogItem(this.tenantId(), this.sprintId(), aBacklogItem.backlogItemId(), ordering);
 
+        // 添加到当前集合末尾
         this.backlogItems().add(committedBacklogItem);
     }
 
@@ -182,6 +183,7 @@ public class Sprint extends Entity {
 
     /**
      *<h3>冲刺现在开始于时间</h3>
+     *<p>这是一个CQS命令方法，用于设置当前冲刺的开始时间，没有返回值。
      *
      * @param aBegins
      */
@@ -193,6 +195,7 @@ public class Sprint extends Entity {
 
     /**
      *<h3>冲刺现在结束于时间</h3>
+     *<p>这是一个CQS命令方法，用于设置当前冲刺的结束时间，没有返回值。
      *
      * @param anEnds
      */
@@ -207,7 +210,8 @@ public class Sprint extends Entity {
     }
 
     /**
-     *<h3>重命令</h3>
+     *<h3>重命名</h3>
+     *<p>这是一个CQS命令方法，用于修改当前冲刺的名称，没有返回值。
      *
      * @param aName
      */
@@ -219,12 +223,14 @@ public class Sprint extends Entity {
 
     /**
      *<h3>从重新排序</h3>
+     *<p>这是一个CQS命令方法，用于从重新排序当前冲刺中的待定项，没有返回值。
      *
      * @param anId
      * @param anOrderOfPriority 
      */
     public void reorderFrom(BacklogItemId anId, int anOrderOfPriority) {
         for (CommittedBacklogItem committedBacklogItem : this.backlogItems()) {
+        	// 计算位置
             committedBacklogItem.reorderFrom(anId, anOrderOfPriority);
         }
     }
@@ -243,15 +249,12 @@ public class Sprint extends Entity {
 
     /**
      *<h3>取消提交待定项</h3>
+     *<p>这是一个CQS命令方法，用于取消当前冲刺中的待定项，没有返回值。
      *
      * @param aBacklogItem
      */
     public void uncommit(BacklogItem aBacklogItem) {
-        CommittedBacklogItem cbi =
-                new CommittedBacklogItem(
-                        this.tenantId(),
-                        this.sprintId(),
-                        aBacklogItem.backlogItemId());
+        CommittedBacklogItem cbi = new CommittedBacklogItem(this.tenantId(), this.sprintId(), aBacklogItem.backlogItemId());
 
         this.backlogItems.remove(cbi);
     }

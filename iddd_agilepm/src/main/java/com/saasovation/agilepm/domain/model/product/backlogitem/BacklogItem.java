@@ -151,12 +151,7 @@ public class BacklogItem extends Entity {
         this.setBusinessPriority(aBusinessPriority);
 
         // 富有业务意义不只是因为方法名，还因为这里有事件。事件还会让人觉得这里将引发在未来的哪个地方继续任务。
-        DomainEventPublisher
-            .instance()
-            .publish(new BusinessPriorityAssigned(
-                    this.tenantId(),
-                    this.backlogItemId(),
-                    this.businessPriority()));
+        DomainEventPublisher.instance().publish(new BusinessPriorityAssigned(this.tenantId(), this.backlogItemId(), this.businessPriority()));
     }
 
     /**
@@ -175,12 +170,7 @@ public class BacklogItem extends Entity {
         this.setStoryPoints(aStoryPoints);
 
         // 富有业务意义不只是因为方法名，还因为这里有事件。事件还会让人觉得这里将引发在未来的哪个地方继续任务。
-        DomainEventPublisher
-            .instance()
-            .publish(new BacklogItemStoryPointsAssigned(
-                    this.tenantId(),
-                    this.backlogItemId(),
-                    this.storyPoints()));
+        DomainEventPublisher.instance().publish(new BacklogItemStoryPointsAssigned(this.tenantId(), this.backlogItemId(), this.storyPoints()));
     }
 
     /**
@@ -232,12 +222,7 @@ public class BacklogItem extends Entity {
         this.setCategory(aCategory);
 
         // 富有业务意义不只是因为方法名，还因为这里有事件。事件还会让人觉得这里将引发在未来的哪个地方继续任务。
-        DomainEventPublisher
-            .instance()
-            .publish(new BacklogItemCategoryChanged(
-                    this.tenantId(),
-                    this.backlogItemId(),
-                    this.category()));
+        DomainEventPublisher.instance().publish(new BacklogItemCategoryChanged(this.tenantId(),  this.backlogItemId(), this.category()));
     }
 
     /**
@@ -277,12 +262,7 @@ public class BacklogItem extends Entity {
         this.setType(aType);
 
         // 富有业务意义不只是因为方法名，还因为这里有事件。事件还会让人觉得这里将引发在未来的哪个地方继续任务。
-        DomainEventPublisher
-            .instance()
-            .publish(new BacklogItemTypeChanged(
-                    this.tenantId(),
-                    this.backlogItemId(),
-                    this.type()));
+        DomainEventPublisher.instance().publish(new BacklogItemTypeChanged(this.tenantId(), this.backlogItemId(), this.type()));
     }
 
     /**
@@ -318,12 +298,7 @@ public class BacklogItem extends Entity {
         this.setSprintId(aSprint.sprintId());
 
         // 富有业务意义不只是因为方法名，还因为这里有事件。事件还会让人觉得这里将引发在未来的哪个地方继续任务。
-        DomainEventPublisher
-            .instance()
-            .publish(new BacklogItemCommitted(
-                    this.tenantId(),
-                    this.backlogItemId(),
-                    this.sprintId()));
+        DomainEventPublisher.instance().publish(new BacklogItemCommitted(this.tenantId(), this.backlogItemId(), this.sprintId()));
     }
 
     /**
@@ -353,9 +328,7 @@ public class BacklogItem extends Entity {
         this.tasks().add(task);
 
         // 富有业务意义不只是因为方法名，还因为这里有事件。事件还会让人觉得这里将引发在未来的哪个地方继续任务。
-        DomainEventPublisher
-            .instance()
-            .publish(new TaskDefined(
+        DomainEventPublisher.instance().publish(new TaskDefined(
                     this.tenantId(),
                     this.backlogItemId(),
                     task.taskId(),
@@ -432,12 +405,7 @@ public class BacklogItem extends Entity {
         	// XXX
             this.setDiscussion(this.discussion().nowReady(aDescriptor));
 
-            DomainEventPublisher
-                .instance()
-                .publish(new BacklogItemDiscussionInitiated(
-                        this.tenantId(),
-                        this.backlogItemId(),
-                        this.discussion()));
+            DomainEventPublisher.instance().publish(new BacklogItemDiscussionInitiated(this.tenantId(), this.backlogItemId(), this.discussion()));
         }
     }
 
@@ -486,12 +454,7 @@ public class BacklogItem extends Entity {
         if (changedStatus != null) {
             this.setStatus(changedStatus);
 
-            DomainEventPublisher
-                .instance()
-                .publish(new BacklogItemStatusChanged(
-                        this.tenantId(),
-                        this.backlogItemId(),
-                        changedStatus));
+            DomainEventPublisher.instance().publish(new BacklogItemStatusChanged(this.tenantId(), this.backlogItemId(), changedStatus));
         }
     }
 
@@ -517,12 +480,7 @@ public class BacklogItem extends Entity {
     public void initiateDiscussion(BacklogItemDiscussion aDiscussion) {
         this.setDiscussion(aDiscussion);
 
-        DomainEventPublisher
-            .instance()
-            .publish(new BacklogItemDiscussionInitiated(
-                    this.tenantId(),
-                    this.backlogItemId(),
-                    this.discussion()));
+        DomainEventPublisher.instance().publish(new BacklogItemDiscussionInitiated(this.tenantId(), this.backlogItemId(),  this.discussion()));
     }
 
     /**
@@ -600,11 +558,7 @@ public class BacklogItem extends Entity {
 
         this.setStatus(BacklogItemStatus.REMOVED);
 
-        DomainEventPublisher
-            .instance()
-            .publish(new BacklogItemMarkedAsRemoved(
-                    this.tenantId(),
-                    this.backlogItemId()));
+        DomainEventPublisher.instance().publish(new BacklogItemMarkedAsRemoved(this.tenantId(), this.backlogItemId()));
     }
 
     public ProductId productId() {
@@ -636,12 +590,7 @@ public class BacklogItem extends Entity {
             throw new IllegalStateException("Task was not removed.");
         }
 
-        DomainEventPublisher
-            .instance()
-            .publish(new TaskRemoved(
-                    this.tenantId(),
-                    this.backlogItemId(),
-                    aTaskId));
+        DomainEventPublisher.instance().publish(new TaskRemoved(this.tenantId(), this.backlogItemId(), aTaskId));
     }
 
     /**
@@ -671,13 +620,9 @@ public class BacklogItem extends Entity {
      */
     public void requestDiscussion(DiscussionAvailability aDiscussionAvailability) {
         if (!this.discussion().availability().isReady()) {
-            this.setDiscussion(
-                    BacklogItemDiscussion.fromAvailability(
-                            aDiscussionAvailability));
+            this.setDiscussion(BacklogItemDiscussion.fromAvailability(aDiscussionAvailability));
 
-            DomainEventPublisher
-                .instance()
-                .publish(new BacklogItemDiscussionRequested(
+            DomainEventPublisher.instance().publish(new BacklogItemDiscussionRequested(
                         this.tenantId(),
                         this.productId(),
                         this.backlogItemId(),
@@ -712,12 +657,7 @@ public class BacklogItem extends Entity {
 
         this.setReleaseId(aRelease.releaseId());
 
-        DomainEventPublisher
-            .instance()
-            .publish(new BacklogItemScheduled(
-                    this.tenantId(),
-                    this.backlogItemId(),
-                    this.releaseId()));
+        DomainEventPublisher.instance().publish(new BacklogItemScheduled(this.tenantId(), this.backlogItemId(), this.releaseId()));
     }
 
     public SprintId sprintId() {
@@ -761,12 +701,7 @@ public class BacklogItem extends Entity {
     public void summarize(String aSummary) {
         this.setSummary(aSummary);
 
-        DomainEventPublisher
-            .instance()
-            .publish(new BacklogItemSummarized(
-                    this.tenantId(),
-                    this.backlogItemId(),
-                    this.summary()));
+        DomainEventPublisher.instance().publish(new BacklogItemSummarized(this.tenantId(), this.backlogItemId(), this.summary()));
     }
 
     /**
@@ -798,12 +733,7 @@ public class BacklogItem extends Entity {
     public void tellStory(String aStory) {
         this.setStory(aStory);
 
-        DomainEventPublisher
-            .instance()
-            .publish(new BacklogItemStoryTold(
-                    this.tenantId(),
-                    this.backlogItemId(),
-                    this.story()));
+        DomainEventPublisher.instance().publish(new BacklogItemStoryTold(this.tenantId(), this.backlogItemId(), this.story()));
     }
 
     public TenantId tenantId() {
@@ -847,12 +777,7 @@ public class BacklogItem extends Entity {
         SprintId uncommittedSprintId = this.sprintId();
         this.setSprintId(null);
 
-        DomainEventPublisher
-            .instance()
-            .publish(new BacklogItemUncommitted(
-                    this.tenantId(),
-                    this.backlogItemId(),
-                    uncommittedSprintId));
+        DomainEventPublisher.instance().publish(new BacklogItemUncommitted(this.tenantId(), this.backlogItemId(), uncommittedSprintId));
     }
 
     /**
@@ -876,12 +801,7 @@ public class BacklogItem extends Entity {
         ReleaseId unscheduledReleaseId = this.releaseId();
         this.setReleaseId(null);
 
-        DomainEventPublisher
-            .instance()
-            .publish(new BacklogItemUnscheduled(
-                    this.tenantId(),
-                    this.backlogItemId(),
-                    unscheduledReleaseId));
+        DomainEventPublisher.instance().publish(new BacklogItemUnscheduled(this.tenantId(), this.backlogItemId(), unscheduledReleaseId));
     }
 
     @Override
@@ -960,11 +880,7 @@ public class BacklogItem extends Entity {
 
     private void setDiscussionInitiationId(String aDiscussionInitiationId) {
         if (aDiscussionInitiationId != null) {
-        	//
-            this.assertArgumentLength(
-                    aDiscussionInitiationId,
-                    100,
-                    "Discussion initiation identity must be 100 characters or less.");
+            this.assertArgumentLength(aDiscussionInitiationId, 100, "Discussion initiation identity must be 100 characters or less.");
         }
 
         this.discussionInitiationId = aDiscussionInitiationId;

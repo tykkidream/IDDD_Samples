@@ -21,6 +21,10 @@ import com.saasovation.agilepm.domain.model.team.TeamMember;
 import com.saasovation.agilepm.domain.model.team.TeamMemberRepository;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 
+/**
+ *<h3>团队业务 - 应用服务</h3>
+ *
+ */
 public class TeamApplicationService {
 
     private ProductOwnerRepository productOwnerRepository;
@@ -42,16 +46,12 @@ public class TeamApplicationService {
         ApplicationServiceLifeCycle.begin();
 
         try {
-            ProductOwner productOwner =
-                    this.productOwnerRepository.productOwnerOfIdentity(
-                            tenantId,
-                            aCommand.getUsername());
+            ProductOwner productOwner = this.productOwnerRepository.productOwnerOfIdentity(tenantId, aCommand.getUsername());
 
             if (productOwner != null) {
                 productOwner.enable(aCommand.getOccurredOn());
             } else {
-                productOwner =
-                        new ProductOwner(
+                productOwner = new ProductOwner(
                                 tenantId,
                                 aCommand.getUsername(),
                                 aCommand.getFirstName(),
@@ -74,16 +74,12 @@ public class TeamApplicationService {
         ApplicationServiceLifeCycle.begin();
 
         try {
-            TeamMember teamMember =
-                    this.teamMemberRepository.teamMemberOfIdentity(
-                            tenantId,
-                            aCommand.getUsername());
+            TeamMember teamMember = this.teamMemberRepository.teamMemberOfIdentity(tenantId, aCommand.getUsername());
 
             if (teamMember != null) {
                 teamMember.enable(aCommand.getOccurredOn());
             } else {
-                teamMember =
-                        new TeamMember(
+                teamMember = new TeamMember(
                                 tenantId,
                                 aCommand.getUsername(),
                                 aCommand.getFirstName(),
@@ -107,30 +103,18 @@ public class TeamApplicationService {
         ApplicationServiceLifeCycle.begin();
 
         try {
-            ProductOwner productOwner =
-                    this.productOwnerRepository.productOwnerOfIdentity(
-                            tenantId,
-                            aCommand.getUsername());
+            ProductOwner productOwner = this.productOwnerRepository.productOwnerOfIdentity(tenantId, aCommand.getUsername());
 
             if (productOwner != null) {
-                productOwner
-                    .changeEmailAddress(
-                        aCommand.getEmailAddress(),
-                        aCommand.getOccurredOn());
+                productOwner.changeEmailAddress(aCommand.getEmailAddress(), aCommand.getOccurredOn());
 
                 this.productOwnerRepository().save(productOwner);
             }
 
-            TeamMember teamMember =
-                    this.teamMemberRepository.teamMemberOfIdentity(
-                            tenantId,
-                            aCommand.getUsername());
+            TeamMember teamMember = this.teamMemberRepository.teamMemberOfIdentity(tenantId, aCommand.getUsername());
 
             if (teamMember != null) {
-                teamMember
-                    .changeEmailAddress(
-                            aCommand.getEmailAddress(),
-                            aCommand.getOccurredOn());
+                teamMember.changeEmailAddress(aCommand.getEmailAddress(), aCommand.getOccurredOn());
 
                 this.teamMemberRepository().save(teamMember);
             }
@@ -148,32 +132,18 @@ public class TeamApplicationService {
         ApplicationServiceLifeCycle.begin();
 
         try {
-            ProductOwner productOwner =
-                    this.productOwnerRepository.productOwnerOfIdentity(
-                            tenantId,
-                            aCommand.getUsername());
+            ProductOwner productOwner = this.productOwnerRepository.productOwnerOfIdentity(tenantId, aCommand.getUsername());
 
             if (productOwner != null) {
-                productOwner
-                    .changeName(
-                            aCommand.getFirstName(),
-                            aCommand.getLastName(),
-                            aCommand.getOccurredOn());
+                productOwner.changeName(aCommand.getFirstName(), aCommand.getLastName(), aCommand.getOccurredOn());
 
                 this.productOwnerRepository().save(productOwner);
             }
 
-            TeamMember teamMember =
-                    this.teamMemberRepository.teamMemberOfIdentity(
-                            tenantId,
-                            aCommand.getUsername());
+            TeamMember teamMember = this.teamMemberRepository.teamMemberOfIdentity(tenantId, aCommand.getUsername());
 
             if (teamMember != null) {
-                teamMember
-                    .changeName(
-                            aCommand.getFirstName(),
-                            aCommand.getLastName(),
-                            aCommand.getOccurredOn());
+                teamMember.changeName(aCommand.getFirstName(), aCommand.getLastName(), aCommand.getOccurredOn());
 
                 this.teamMemberRepository().save(teamMember);
             }
@@ -191,10 +161,7 @@ public class TeamApplicationService {
         ApplicationServiceLifeCycle.begin();
 
         try {
-            ProductOwner productOwner =
-                    this.productOwnerRepository.productOwnerOfIdentity(
-                            tenantId,
-                            aCommand.getUsername());
+            ProductOwner productOwner = this.productOwnerRepository.productOwnerOfIdentity(tenantId, aCommand.getUsername());
 
             if (productOwner != null) {
                 productOwner.disable(aCommand.getOccurredOn());
@@ -215,10 +182,7 @@ public class TeamApplicationService {
         ApplicationServiceLifeCycle.begin();
 
         try {
-            TeamMember teamMember =
-                    this.teamMemberRepository.teamMemberOfIdentity(
-                            tenantId,
-                            aCommand.getUsername());
+            TeamMember teamMember = this.teamMemberRepository.teamMemberOfIdentity(tenantId, aCommand.getUsername());
 
             if (teamMember != null) {
                 teamMember.disable(aCommand.getOccurredOn());

@@ -31,6 +31,10 @@ import com.saasovation.common.port.adapter.persistence.leveldb.LevelDBProvider;
 import com.saasovation.common.port.adapter.persistence.leveldb.LevelDBPublishedNotificationTrackerStore;
 import com.saasovation.common.port.adapter.persistence.leveldb.LevelDBUnitOfWork;
 
+/**
+ *<h3>应用 服务生命周期</h3>
+ *
+ */
 public class ApplicationServiceLifeCycle {
 
     private static final DB database;
@@ -41,19 +45,13 @@ public class ApplicationServiceLifeCycle {
     private static PublishedNotificationTrackerStore publishedNotificationTrackerStore;
 
     static {
-        database =
-                LevelDBProvider
-                    .instance()
-                    .databaseFrom(LevelDBDatabasePath.agilePMPath());
+        database = LevelDBProvider.instance().databaseFrom(LevelDBDatabasePath.agilePMPath());
 
         eventStore = new LevelDBEventStore(LevelDBDatabasePath.agilePMPath());
 
         timer = new NotificationPublisherTimer();
 
-        publishedNotificationTrackerStore =
-                new LevelDBPublishedNotificationTrackerStore(
-                        LevelDBDatabasePath.agilePMPath(),
-                        "saasovation.agilepm");
+        publishedNotificationTrackerStore = new LevelDBPublishedNotificationTrackerStore(LevelDBDatabasePath.agilePMPath(), "saasovation.agilepm");
 
 //        notificationPublisher =
 //                new RabbitMQNotificationPublisher(
@@ -61,11 +59,7 @@ public class ApplicationServiceLifeCycle {
 //                        publishedNotificationTrackerStore,
 //                        Exchanges.AGILEPM_EXCHANGE_NAME);
 
-        notificationPublisher =
-                new SlothMQNotificationPublisher(
-                        eventStore,
-                        publishedNotificationTrackerStore,
-                        Exchanges.AGILEPM_EXCHANGE_NAME);
+        notificationPublisher = new SlothMQNotificationPublisher(eventStore, publishedNotificationTrackerStore, Exchanges.AGILEPM_EXCHANGE_NAME);
 
         notificationApplicationService = new NotificationApplicationService(notificationPublisher);
 

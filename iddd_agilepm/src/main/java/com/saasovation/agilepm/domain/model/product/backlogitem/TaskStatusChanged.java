@@ -19,6 +19,10 @@ import java.util.Date;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>任务状态被修改 - 领域事件</h3>
+ *
+ */
 public class TaskStatusChanged implements DomainEvent {
 
     private BacklogItemId backlogItemId;

@@ -16,10 +16,18 @@ package com.saasovation.common.domain.model.process;
 
 import java.util.Collection;
 
+/**
+ *<h3>长时处理过程状态仓库</h3>
+ *
+ */
 public interface TimeConstrainedProcessTrackerRepository {
 
     public void add(TimeConstrainedProcessTracker aTimeConstrainedProcessTracker);
 
+    /**
+     *<h3>获取所有超时状态</h3>
+     *@return
+     */
     public Collection<TimeConstrainedProcessTracker> allTimedOut();
 
     public Collection<TimeConstrainedProcessTracker> allTimedOutOf(String aTenantId);

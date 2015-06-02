@@ -19,6 +19,10 @@ import java.util.Date;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>讨论开始 - 领域事件</h3>
+ *
+ */
 public class BacklogItemDiscussionInitiated implements DomainEvent {
 
     private BacklogItemId backlogItemId;

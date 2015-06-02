@@ -16,12 +16,22 @@ package com.saasovation.collaboration.domain.model.collaborator;
 
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 
+/**
+ *<h3>协作服务 - 领域服务</h3>
+ *
+ */
 public interface CollaboratorService {
 
     public Author authorFrom(Tenant aTenant, String anIdentity);
 
     public Creator creatorFrom(Tenant aTenant, String anIdentity);
 
+    /**
+     *<h3>获取版主</h3>
+     *@param aTenant
+     *@param anIdentity
+     *@return
+     */
     public Moderator moderatorFrom(Tenant aTenant, String anIdentity);
 
     public Owner ownerFrom(Tenant aTenant, String anIdentity);

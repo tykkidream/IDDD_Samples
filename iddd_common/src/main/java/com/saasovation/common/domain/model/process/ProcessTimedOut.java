@@ -19,8 +19,8 @@ import java.util.Date;
 import com.saasovation.common.domain.model.DomainEvent;
 
 /**
- *<h3>处理超时 - 领域事件</h3>
- *
+ *<h3>长时处理过程超时 - 领域事件</h3>
+ *<P>
  */
 public class ProcessTimedOut implements DomainEvent {
 

@@ -19,6 +19,11 @@ import com.saasovation.agilepm.domain.model.ValueObject;
 /**
  *<h3>讨论的描述 - 值对象</h3>
  *
+ *<p>虽然名称中有个Descriptor描述，不过真没有任何文字性的内容，
+ *仅包含一个表示ID的属性。
+ *
+ *<p>由于实际的讨论在其它的项目中，属于一个远程上下文，所以这
+ *个类型是本地对远程的映射。
  */
 public class DiscussionDescriptor extends ValueObject {
 
@@ -90,6 +95,9 @@ public class DiscussionDescriptor extends ValueObject {
         return "DiscussionDescriptor [id=" + id + "]";
     }
 
+    /**
+     * 
+     */
     private DiscussionDescriptor() {
         super();
     }

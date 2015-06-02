@@ -19,7 +19,7 @@ import java.io.Serializable;
 import com.saasovation.common.AssertionConcern;
 
 /**
- * 领域实体的唯一标识的实现。
+ * <h3>抽象的唯一标识实现</h3>
  *
  */
 public abstract class AbstractId

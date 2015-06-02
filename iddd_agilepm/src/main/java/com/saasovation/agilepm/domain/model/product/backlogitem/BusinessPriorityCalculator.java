@@ -19,35 +19,31 @@ import java.util.Collection;
 import com.saasovation.agilepm.domain.model.product.ProductId;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 
+/**
+ *<h3>业务优先级的计算器</h3>
+ *
+ */
 public class BusinessPriorityCalculator {
 
     private BacklogItemRepository backlogItemRepository;
 
-    public BusinessPriorityCalculator(
-            BacklogItemRepository aBacklogItemRepository) {
-
+    public BusinessPriorityCalculator(BacklogItemRepository aBacklogItemRepository) {
         super();
 
         this.backlogItemRepository = aBacklogItemRepository;
     }
 
-    public BusinessPriorityTotals businessPriorityTotals(
-            TenantId aTenantId,
-            ProductId aProductId) {
-
+    public BusinessPriorityTotals businessPriorityTotals(TenantId aTenantId, ProductId aProductId) {
         int totalBenefit = 0;
         int totalPenalty = 0;
         int totalCost = 0;
         int totalRisk = 0;
 
-        Collection<BacklogItem> outstandingBacklogItems =
-                this.backlogItemRepository()
-                    .allOutstandingProductBacklogItems(aTenantId, aProductId);
+        Collection<BacklogItem> outstandingBacklogItems = this.backlogItemRepository().allOutstandingProductBacklogItems(aTenantId, aProductId);
 
         for (BacklogItem backlogItem : outstandingBacklogItems) {
             if (backlogItem.hasBusinessPriority()) {
-                BusinessPriorityRatings ratings =
-                        backlogItem.businessPriority().ratings();
+                BusinessPriorityRatings ratings = backlogItem.businessPriority().ratings();
 
                 totalBenefit += ratings.benefit();
                 totalPenalty += ratings.penalty();
@@ -56,8 +52,7 @@ public class BusinessPriorityCalculator {
             }
         }
 
-        BusinessPriorityTotals businessPriorityTotals =
-                new BusinessPriorityTotals(
+        BusinessPriorityTotals businessPriorityTotals = new BusinessPriorityTotals(
                         totalBenefit,
                         totalPenalty,
                         totalBenefit + totalPenalty,

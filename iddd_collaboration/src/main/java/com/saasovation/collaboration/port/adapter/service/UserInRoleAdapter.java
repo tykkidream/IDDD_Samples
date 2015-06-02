@@ -19,9 +19,13 @@ import com.saasovation.collaboration.domain.model.tenant.Tenant;
 
 public interface UserInRoleAdapter {
 
-    public <T extends Collaborator> T toCollaborator(
-            Tenant aTenant,
-            String anIdentity,
-            String aRoleName,
-            Class<T> aCollaboratorClass);
+    /**
+     *<h3></h3>
+     *@param aTenant
+     *@param anIdentity
+     *@param aRoleName
+     *@param aCollaboratorClass
+     *@return
+     */
+    public <T extends Collaborator> T toCollaborator(Tenant aTenant, String anIdentity, String aRoleName, Class<T> aCollaboratorClass);
 }

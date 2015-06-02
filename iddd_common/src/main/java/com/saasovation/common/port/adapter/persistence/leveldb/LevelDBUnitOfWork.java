@@ -31,13 +31,16 @@ import org.iq80.leveldb.WriteBatch;
 import com.google.gson.reflect.TypeToken;
 import com.saasovation.common.serializer.ObjectSerializer;
 
+/**
+ *<h3>工作单元</h3>
+ *
+ *<p>基于ThreadLocal。</p>
+ */
 public class LevelDBUnitOfWork {
 
-    private static Map<String,ReentrantLock> keyLocks =
-            new ConcurrentHashMap<String,ReentrantLock>();
+    private static Map<String,ReentrantLock> keyLocks = new ConcurrentHashMap<String,ReentrantLock>();
 
-    private static ThreadLocal<LevelDBUnitOfWork> unitsOfWork =
-            new ThreadLocal<LevelDBUnitOfWork>();
+    private static ThreadLocal<LevelDBUnitOfWork> unitsOfWork =  new ThreadLocal<LevelDBUnitOfWork>();
 
     private WriteBatch batch;
     private DB database;
@@ -45,6 +48,12 @@ public class LevelDBUnitOfWork {
     private Map<String,Set<Object>> referenceKeys;
     private ObjectSerializer serializer;
 
+
+    /**
+     *<h3>得到当前的工作单元实例</h3>
+     *<p>如果当前没有实例将返回null，可使用{@link #readOnly}创建。</p>
+     *@return
+     */
     public static LevelDBUnitOfWork current() {
         LevelDBUnitOfWork uow = unitsOfWork.get();
 
@@ -55,6 +64,11 @@ public class LevelDBUnitOfWork {
         return uow;
     }
 
+    /**
+     *<h3>准备当前的工作单元实例</h3>
+     *@param aDatabase
+     *@return
+     */
     public static LevelDBUnitOfWork readOnly(DB aDatabase) {
         LevelDBUnitOfWork uow = unitsOfWork.get();
 
@@ -67,6 +81,11 @@ public class LevelDBUnitOfWork {
         return uow;
     }
 
+    /**
+     *<h3></h3>
+     *@param aDatabase
+     *@return
+     */
     public static LevelDBUnitOfWork start(DB aDatabase) {
         LevelDBUnitOfWork uow = unitsOfWork.get();
 

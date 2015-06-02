@@ -18,34 +18,47 @@ import com.saasovation.agilepm.domain.model.ValueObject;
 import com.saasovation.agilepm.domain.model.discussion.DiscussionAvailability;
 import com.saasovation.agilepm.domain.model.discussion.DiscussionDescriptor;
 
+/**
+ *<h3>待定项的讨论 - 值对象</h3>
+ *
+ */
 public class BacklogItemDiscussion extends ValueObject {
-
+	/** 讨论可用状态 **/
     private DiscussionAvailability availability;
+    /** 讨论的描述 **/
     private DiscussionDescriptor descriptor;
 
-    public static BacklogItemDiscussion fromAvailability(
-            DiscussionAvailability anAvailability) {
-
+    /**
+     *<h3>根据讨论的可用状态创建一个待定项讨论</h3>
+     *@param anAvailability
+     *@return
+     */
+    public static BacklogItemDiscussion fromAvailability(DiscussionAvailability anAvailability) {
         if (anAvailability.isReady()) {
             throw new IllegalArgumentException("Cannot be created ready.");
         }
 
-        DiscussionDescriptor descriptor =
-                new DiscussionDescriptor(DiscussionDescriptor.UNDEFINED_ID);
+        DiscussionDescriptor descriptor = new DiscussionDescriptor(DiscussionDescriptor.UNDEFINED_ID);
 
         return new BacklogItemDiscussion(descriptor, anAvailability);
     }
 
-    public BacklogItemDiscussion(
-            DiscussionDescriptor aDescriptor,
-            DiscussionAvailability anAvailability) {
-
+    /**
+     *<h3></h3>
+     *@param aDescriptor
+     *@param anAvailability
+     */
+    public BacklogItemDiscussion(DiscussionDescriptor aDescriptor, DiscussionAvailability anAvailability) {
         this();
 
         this.setAvailability(anAvailability);
         this.setDescriptor(aDescriptor);
     }
 
+    /**
+     *<h3></h3>
+     *@param aBacklogItemDiscussion
+     */
     public BacklogItemDiscussion(BacklogItemDiscussion aBacklogItemDiscussion) {
         this(aBacklogItemDiscussion.descriptor(), aBacklogItemDiscussion.availability());
     }
@@ -58,6 +71,11 @@ public class BacklogItemDiscussion extends ValueObject {
         return this.descriptor;
     }
 
+    /**
+     *<h3>现在已经准备好</h3>
+     *@param aDescriptor
+     *@return
+     */
     public BacklogItemDiscussion nowReady(DiscussionDescriptor aDescriptor) {
         if (aDescriptor == null || aDescriptor.isUndefined()) {
             throw new IllegalStateException("The discussion descriptor must be defined.");
@@ -93,6 +111,9 @@ public class BacklogItemDiscussion extends ValueObject {
         return hashCodeValue;
     }
 
+    /**
+     *<h3></h3>
+     */
     private BacklogItemDiscussion() {
         super();
     }

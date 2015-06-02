@@ -20,6 +20,23 @@ import java.util.Date;
 import com.saasovation.common.AssertionConcern;
 import com.saasovation.common.domain.model.DomainEventPublisher;
 
+/**
+ *<h3>长时处理过程的状态</h3>
+ *
+ *<p>在实际的领域中，一个长时处理过程的执行器将创建一个新的类似聚合的状态对象来跟踪事件的完成情况。
+ *该状态对象在处理过程开始时创建，它将与所有的领域事件共享一个唯一标识。同时，将处理过程开始是的时
+ *间己戳保存在该状态对象中也是有好处的。
+ *
+ *<h4>超时处理</h4>
+ *<p>状态跟踪器可以包含包含处理过程开始时的时间戳。如果再向跟踪器添加一个最大允许处理时间，那么执行
+ *器便可以管理那些对时间敏感的长时处理过程了。
+ *<p>被动超时检查由执行器在每次并行执行流的完成事件到达时执行。执行器根据状态跟踪来决定是否出现超时
+ *，比如调用名为 {@link #hasTimedOut()} 的方法。如果执行流的处理时间超过了最大允许处理时间，状态跟踪器
+ *将被标记为“遗弃”状态。此时，执行器甚至可以发布一个表明处理失败的领域事件。被动超时检查的一个缺点是
+ *，如果由于某些原因导致执行器始终接收不到完成领域事件，那么即使处理过程已经超时，执行器还是会认为处
+ *理过程正在处于活跃状态。如果还有更大的并发过程依赖于该过程处理，那么这将是不可接受的。
+ *<>
+ */
 public class TimeConstrainedProcessTracker extends AssertionConcern {
 
     private long allowableDuration;
@@ -60,10 +77,18 @@ public class TimeConstrainedProcessTracker extends AssertionConcern {
         return this.allowableDuration;
     }
 
+    /**
+     *<h3>过程完成</h3>
+     */
     public void completed() {
         this.completed = true;
     }
 
+    /**
+     *<h3>过程是否已完成</h3>
+     *
+     *@return
+     */
     public boolean isCompleted() {
         return this.completed;
     }
@@ -90,6 +115,11 @@ public class TimeConstrainedProcessTracker extends AssertionConcern {
         return this.processTimedOutEventType;
     }
 
+    /**
+     *<h3>过程是否超时</h3>
+     *
+     *@return
+     */
     public boolean hasTimedOut() {
         Date timeout = new Date(this.timeoutOccursOn());
         Date now = new Date();
@@ -97,6 +127,9 @@ public class TimeConstrainedProcessTracker extends AssertionConcern {
         return (timeout.equals(now) || timeout.before(now));
     }
 
+    /**
+     *<h3>通知长时处理过程已超时</h3>
+     */
     public void informProcessTimedOut() {
         if (!this.isProcessInformedOfTimeout() && this.hasTimedOut()) {
 

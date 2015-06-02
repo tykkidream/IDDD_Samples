@@ -14,26 +14,46 @@
 
 package com.saasovation.agilepm.domain.model.product.backlogitem;
 
+/**
+ *<h3>任务状态 - 值对象</h3>
+ *
+ */
 public enum TaskStatus  {
 
+    /**
+     *<h3>未启动</h3>
+     *
+     */
     NOT_STARTED {
         public boolean isNotStarted() {
             return true;
         }
     },
 
+    /**
+     *<h3>进行中</h3>
+     *
+     */
     IN_PROGRESS {
         public boolean isInProgress() {
             return true;
         }
     },
 
+    /**
+     *<h3>阻碍</h3>
+     *
+     */
     IMPEDED {
         public boolean isImpeded() {
             return true;
         }
     },
 
+    /**
+     *<h3>完成</h3>
+     *
+     */
     DONE {
         public boolean isDone() {
             return true;

@@ -18,6 +18,10 @@ import java.util.List;
 
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>事件存储</h3>
+ *
+ */
 public interface EventStore {
 
     public List<StoredEvent> allStoredEventsBetween(long aLowStoredEventId, long aHighStoredEventId);

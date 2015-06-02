@@ -18,6 +18,10 @@ import java.util.Date;
 
 import com.saasovation.common.domain.model.Entity;
 
+/**
+ *<h3>抽象的长时处理过程实现</h3>
+ *
+ */
 public abstract class AbstractProcess extends Entity implements Process {
 
     private static final long serialVersionUID = 1L;

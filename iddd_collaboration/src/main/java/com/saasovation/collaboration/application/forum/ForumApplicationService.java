@@ -28,6 +28,10 @@ import com.saasovation.collaboration.domain.model.forum.ForumIdentityService;
 import com.saasovation.collaboration.domain.model.forum.ForumRepository;
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 
+/**
+ *<h3>论坛的应用服务</h3>
+ *
+ */
 public class ForumApplicationService {
 
     private CollaboratorService collaboratorService;
@@ -55,229 +59,215 @@ public class ForumApplicationService {
         this.forumRepository = aForumRepository;
     }
 
-    public void assignModeratorToForum(
-            String aTenantId,
-            String aForumId,
-            String aModeratorId) {
-
+    /**
+     *<h3>改变论坛版主</h3>
+     *@param aTenantId
+     *@param aForumId 论坛ID
+     *@param aModeratorId 版主ID
+     */
+    public void assignModeratorToForum(String aTenantId, String aForumId, String aModeratorId) {
         Tenant tenant = new Tenant(aTenantId);
 
-        Forum forum =
-                this.forumRepository()
-                    .forumOfId(
-                            tenant,
-                            new ForumId(aForumId));
+        // 出：从仓库中提取论坛
+        Forum forum = this.forumRepository().forumOfId(tenant, new ForumId(aForumId));
 
-        Moderator moderator =
-                this.collaboratorService().moderatorFrom(tenant, aModeratorId);
+        // 出：从服务中查找版主
+        Moderator moderator = this.collaboratorService().moderatorFrom(tenant, aModeratorId);
 
+        // 改：在论坛上改变版主
         forum.assignModerator(moderator);
 
+        // 入：向仓库中保存论坛
         this.forumRepository().save(forum);
     }
 
-    public void changeForumDescription(
-            String aTenantId,
-            String aForumId,
-            String aDescription) {
-
+    /**
+     *<h3>修改论坛的描述</h3>
+     *@param aTenantId
+     *@param aForumId
+     *@param aDescription
+     */
+    public void changeForumDescription(String aTenantId, String aForumId, String aDescription) {
         Tenant tenant = new Tenant(aTenantId);
 
-        Forum forum =
-                this.forumRepository()
-                    .forumOfId(
-                            tenant,
-                            new ForumId(aForumId));
+        // 出：从仓库中提取论坛
+        Forum forum = this.forumRepository().forumOfId(tenant, new ForumId(aForumId));
 
+        // 改：在论坛上修改描述
         forum.changeDescription(aDescription);
 
+        // 入：向仓库中保存论坛
         this.forumRepository().save(forum);
     }
 
-    public void changeForumSubject(
-            String aTenantId,
-            String aForumId,
-            String aSubject) {
-
+    /**
+     *<h3>改变论坛的主题</h3>
+     *@param aTenantId
+     *@param aForumId 论坛ID
+     *@param aSubject 主题
+     */
+    public void changeForumSubject(String aTenantId, String aForumId, String aSubject) {
         Tenant tenant = new Tenant(aTenantId);
 
-        Forum forum =
-                this.forumRepository()
-                    .forumOfId(
-                            tenant,
-                            new ForumId(aForumId));
+        // 出：从仓库中提取论坛
+        Forum forum = this.forumRepository().forumOfId(tenant, new ForumId(aForumId));
 
+        // 改：在论坛上改变主题
         forum.changeSubject(aSubject);
 
+        // 入：向仓库中保存论坛
         this.forumRepository().save(forum);
     }
 
-    public void closeForum(
-            String aTenantId,
-            String aForumId) {
-
+    /**
+     *<h3>关闭论坛</h3>
+     *@param aTenantId
+     *@param aForumId
+     */
+    public void closeForum(String aTenantId, String aForumId) {
         Tenant tenant = new Tenant(aTenantId);
 
-        Forum forum =
-                this.forumRepository()
-                    .forumOfId(
-                            tenant,
-                            new ForumId(aForumId));
+        // 出：从仓库中提取论坛
+        Forum forum = this.forumRepository().forumOfId(tenant, new ForumId(aForumId));
 
+        // 改：在论坛上执行关闭
         forum.close();
 
+        // 入：向仓库中保存论坛
         this.forumRepository().save(forum);
     }
 
-    public void reopenForum(
-            String aTenantId,
-            String aForumId) {
-
+    /**
+     *<h3>重开论坛</h3>
+     *@param aTenantId
+     *@param aForumId
+     */
+    public void reopenForum(String aTenantId, String aForumId) {
         Tenant tenant = new Tenant(aTenantId);
 
-        Forum forum =
-                this.forumRepository()
-                    .forumOfId(
-                            tenant,
-                            new ForumId(aForumId));
+        // 出：从仓库中提取论坛
+        Forum forum = this.forumRepository().forumOfId(tenant, new ForumId(aForumId));
 
+        // 改：在论坛上执行开放
         forum.reopen();
 
+        // 入：向仓库中保存论坛
         this.forumRepository().save(forum);
     }
 
-    public void startForum(
-            String aTenantId,
-            String aCreatorId,
-            String aModeratorId,
-            String aSubject,
-            String aDescription,
-            ForumCommandResult aResult) {
+    /**
+     *<h3>开始一个新论坛</h3>
+     *@param aTenantId
+     *@param aCreatorId
+     *@param aModeratorId
+     *@param aSubject
+     *@param aDescription
+     *@param aResult
+     */
+    public void startForum(String aTenantId, String aCreatorId, String aModeratorId,
+            String aSubject, String aDescription, ForumCommandResult aResult) {
 
-        Forum forum =
-                this.startNewForum(
-                    new Tenant(aTenantId),
-                    aCreatorId,
-                    aModeratorId,
-                    aSubject,
-                    aDescription,
-                    null);
+    	// 改：创建一个新论坛
+        Forum forum = this.startNewForum(new Tenant(aTenantId), aCreatorId, aModeratorId, aSubject, aDescription, null);
 
         if (aResult != null) {
+            // 设置当前命令的执行结果
             aResult.resultingForumId(forum.forumId().id());
         }
     }
 
-    public void startExclusiveForum(
-            String aTenantId,
-            String anExclusiveOwner,
-            String aCreatorId,
-            String aModeratorId,
-            String aSubject,
-            String aDescription,
-            ForumCommandResult aResult) {
+    /**
+     *<h3>开始一个新论坛</h3>
+     *@param aTenantId
+     *@param anExclusiveOwner
+     *@param aCreatorId
+     *@param aModeratorId
+     *@param aSubject
+     *@param aDescription
+     *@param aResult
+     */
+    public void startExclusiveForum(String aTenantId, String anExclusiveOwner, String aCreatorId,
+            String aModeratorId, String aSubject, String aDescription, ForumCommandResult aResult) {
 
         Tenant tenant = new Tenant(aTenantId);
 
-        String forumId =
-                this.forumQueryService()
-                    .forumIdOfExclusiveOwner(
-                            aTenantId,
-                            anExclusiveOwner);
+        // 查：从Query服务中查询论坛ID
+        String forumId = this.forumQueryService().forumIdOfExclusiveOwner(aTenantId, anExclusiveOwner);
 
         Forum forum = null;
 
         if (forumId != null) {
-            forum = this.forumRepository()
-                        .forumOfId(
-                                tenant,
-                                new ForumId(forumId));
+            // 出：从仓库中提取论坛
+            forum = this.forumRepository().forumOfId(tenant, new ForumId(forumId));
         }
 
         if (forum == null) {
-            forum =
-                    this.startNewForum(
-                        tenant,
-                        aCreatorId,
-                        aModeratorId,
-                        aSubject,
-                        aDescription,
-                        anExclusiveOwner);
+        	// 改：创建一个新论坛
+            forum = this.startNewForum(tenant, aCreatorId, aModeratorId, aSubject, aDescription, anExclusiveOwner);
         }
 
         if (aResult != null) {
+            // 设置当前命令的执行结果
             aResult.resultingForumId(forum.forumId().id());
         }
     }
 
-    public void startExclusiveForumWithDiscussion(
-            String aTenantId,
-            String anExclusiveOwner,
-            String aCreatorId,
-            String aModeratorId,
-            String anAuthorId,
-            String aForumSubject,
-            String aForumDescription,
-            String aDiscussionSubject,
-            ForumCommandResult aResult) {
+    /**
+     *<h3>在讨论中开始一个新讨论</h3>
+     *@param aTenantId
+     *@param anExclusiveOwner
+     *@param aCreatorId
+     *@param aModeratorId
+     *@param anAuthorId
+     *@param aForumSubject
+     *@param aForumDescription
+     *@param aDiscussionSubject
+     *@param aResult
+     */
+    public void startExclusiveForumWithDiscussion(String aTenantId, String anExclusiveOwner, 
+    		String aCreatorId, String aModeratorId, String anAuthorId, String aForumSubject, 
+    		String aForumDescription, String aDiscussionSubject, ForumCommandResult aResult) {
 
         Tenant tenant = new Tenant(aTenantId);
 
-        String forumId =
-                this.forumQueryService()
-                    .forumIdOfExclusiveOwner(
-                            aTenantId,
-                            anExclusiveOwner);
+        // 查：从Query服务中查询论坛ID
+        String forumId = this.forumQueryService().forumIdOfExclusiveOwner(aTenantId, anExclusiveOwner);
 
         Forum forum = null;
 
         if (forumId != null) {
-            forum = this.forumRepository()
-                        .forumOfId(
-                                tenant,
-                                new ForumId(forumId));
+            // 出：从仓库中提取论坛
+            forum = this.forumRepository().forumOfId(tenant, new ForumId(forumId));
         }
 
         if (forum == null) {
-            forum = this.startNewForum(
-                    tenant,
-                    aCreatorId,
-                    aModeratorId,
-                    aForumSubject,
-                    aForumDescription,
-                    anExclusiveOwner);
+        	// 改：创建一个新论坛
+            forum = this.startNewForum(tenant, aCreatorId, aModeratorId, aForumSubject, aForumDescription, anExclusiveOwner);
         }
 
-        String discussionId =
-                this.discussionQueryService()
-                    .discussionIdOfExclusiveOwner(
-                            aTenantId,
-                            anExclusiveOwner);
+        // 查：从Query服务中查询讨论ID
+        String discussionId = this.discussionQueryService().discussionIdOfExclusiveOwner(aTenantId, anExclusiveOwner);
 
         Discussion discussion = null;
 
         if (discussionId != null) {
-            discussion = this.discussionRepository()
-                             .discussionOfId(
-                                     tenant,
-                                     new DiscussionId(discussionId));
+            // 出：从仓库中提取讨论
+            discussion = this.discussionRepository().discussionOfId(tenant, new DiscussionId(discussionId));
         }
 
         if (discussion == null) {
-            Author author =
-                    this.collaboratorService().authorFrom(tenant, anAuthorId);
+            // 出：从服务中查找创作者
+            Author author = this.collaboratorService().authorFrom(tenant, anAuthorId);
 
-            discussion =
-                    forum.startDiscussionFor(
-                            this.forumIdentityService(),
-                            author,
-                            aDiscussionSubject,
-                            anExclusiveOwner);
+        	// 改：在论坛上开始一个新讨论
+            discussion = forum.startDiscussionFor(this.forumIdentityService(), author, aDiscussionSubject, anExclusiveOwner);
 
+            // 入：向仓库中保存讨论
             this.discussionRepository().save(discussion);
         }
 
         if (aResult != null) {
+            // 设置当前命令的执行结果
             aResult.resultingForumId(forum.forumId().id());
             aResult.resultingDiscussionId(discussion.discussionId().id());
         }
@@ -307,30 +297,30 @@ public class ForumApplicationService {
         return this.forumRepository;
     }
 
-    private Forum startNewForum(
-            Tenant aTenant,
-            String aCreatorId,
-            String aModeratorId,
-            String aSubject,
-            String aDescription,
-            String anExclusiveOwner) {
+    /**
+     *<h3>开始一个新论坛</h3>
+     *@param aTenant
+     *@param aCreatorId
+     *@param aModeratorId
+     *@param aSubject
+     *@param aDescription
+     *@param anExclusiveOwner
+     *@return
+     */
+    private Forum startNewForum(Tenant aTenant, String aCreatorId, String aModeratorId,
+            String aSubject, String aDescription, String anExclusiveOwner) {
 
-        Creator creator =
-                this.collaboratorService().creatorFrom(aTenant, aCreatorId);
+        // 出：从服务中查找创作者
+        Creator creator = this.collaboratorService().creatorFrom(aTenant, aCreatorId);
 
-        Moderator moderator =
-                this.collaboratorService().moderatorFrom(aTenant, aModeratorId);
+        // 出：从服务中查找版主
+        Moderator moderator = this.collaboratorService().moderatorFrom(aTenant, aModeratorId);
 
-        Forum newForum =
-            new Forum(
-                    aTenant,
-                    this.forumRepository().nextIdentity(),
-                    creator,
-                    moderator,
-                    aSubject,
-                    aDescription,
-                    anExclusiveOwner);
+        // 改：创建论坛
+        Forum newForum = new Forum(aTenant, this.forumRepository().nextIdentity(), 
+        		creator, moderator, aSubject, aDescription, anExclusiveOwner);
 
+        // 入：向仓库中保存论坛
         this.forumRepository().save(newForum);
 
         return newForum;

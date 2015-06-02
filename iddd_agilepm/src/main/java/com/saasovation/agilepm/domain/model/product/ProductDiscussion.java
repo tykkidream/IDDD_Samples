@@ -20,7 +20,7 @@ import com.saasovation.agilepm.domain.model.discussion.DiscussionDescriptor;
 
 /**
  *<h3>产品讨论 - 值对象</h3>
- *
+ *<p>被本地用于关联到远程中实际的讨论。
  */
 public final class ProductDiscussion extends ValueObject {
 
@@ -31,20 +31,18 @@ public final class ProductDiscussion extends ValueObject {
 
     /**
      *<h3>根据讨论的可用状态创建一个产品讨论</h3>
-     *{@link ProductDiscussion}
+     *
      *
      * @param anAvailability
      * @return
      */
-    public static ProductDiscussion fromAvailability(
-            DiscussionAvailability anAvailability) {
+    public static ProductDiscussion fromAvailability(DiscussionAvailability anAvailability) {
 
         if (anAvailability.isReady()) {
             throw new IllegalArgumentException("Cannot be created ready.");
         }
 
-        DiscussionDescriptor descriptor =
-                new DiscussionDescriptor(DiscussionDescriptor.UNDEFINED_ID);
+        DiscussionDescriptor descriptor = new DiscussionDescriptor(DiscussionDescriptor.UNDEFINED_ID);
 
         return new ProductDiscussion(descriptor, anAvailability);
     }
@@ -54,10 +52,7 @@ public final class ProductDiscussion extends ValueObject {
      * @param aDescriptor
      * @param anAvailability
      */
-    public ProductDiscussion(
-            DiscussionDescriptor aDescriptor,
-            DiscussionAvailability anAvailability) {
-
+    public ProductDiscussion(DiscussionDescriptor aDescriptor, DiscussionAvailability anAvailability) {
         super();
 
         this.setAvailability(anAvailability);

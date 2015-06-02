@@ -19,16 +19,47 @@ import java.util.Date;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>任务被定义 - 领域事件</h3>
+ *
+ */
 public class TaskDefined implements DomainEvent {
 
+    /**
+     * 待定项ID
+     */
     private BacklogItemId backlogItemId;
+    /**
+     * 描述
+     */
     private String description;
+    /**
+     * 事件版本
+     */
     private int eventVersion;
+    /**
+     * 剩余时间
+     */
     private int hoursRemaining;
+    /**
+     * 名称
+     */
     private String name;
+    /**
+     * 事件发生时间
+     */
     private Date occurredOn;
+    /**
+     * 任务ID
+     */
     private TaskId taskId;
+    /**
+     * 承租者ID
+     */
     private TenantId tenantId;
+    /**
+     * 志愿者ID
+     */
     private String volunteerMemberId;
 
     public TaskDefined(

@@ -19,6 +19,11 @@ import java.util.Date;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>业务的优先级调整 - 领域事件</h3>
+ *@author Tykkidream
+ *
+ */
 public class BusinessPriorityAssigned implements DomainEvent {
 
     private BacklogItemId backlogItemId;

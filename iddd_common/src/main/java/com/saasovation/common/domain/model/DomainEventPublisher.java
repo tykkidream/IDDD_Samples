@@ -18,6 +18,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ *<h3>领域事件发布器</h3>
+ *
+ */
 public class DomainEventPublisher {
 
     private static final ThreadLocal<DomainEventPublisher> instance = new ThreadLocal<DomainEventPublisher>() {
@@ -35,6 +39,17 @@ public class DomainEventPublisher {
         return instance.get();
     }
 
+    /**
+     *<h3>发布领域事件</h3>
+     *
+     *<p>发布一个领域事件。</p>
+     *
+     *<p>当领域事件发生在一个多任务的过程中时，当第一个任务逆时将事件发送出去，
+     *那么整个处理过程便开始了。可参考长时处理过程 
+     *{@link com.saasovation.common.domain.model.process.Process Process} 。</p>
+     *
+     *@param aDomainEvent 领域事件
+     */
     public <T> void publish(final T aDomainEvent) {
         if (!this.isPublishing() && this.hasSubscribers()) {
 

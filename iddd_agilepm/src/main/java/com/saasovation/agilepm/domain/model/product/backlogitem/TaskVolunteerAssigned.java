@@ -19,6 +19,10 @@ import java.util.Date;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 import com.saasovation.common.domain.model.DomainEvent;
 
+/**
+ *<h3>任务分配志愿者 - 领域事件</h3>
+ *
+ */
 public class TaskVolunteerAssigned implements DomainEvent {
 
     private BacklogItemId backlogItemId;

@@ -26,16 +26,47 @@ import com.saasovation.agilepm.domain.model.team.TeamMemberId;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 import com.saasovation.common.domain.model.DomainEventPublisher;
 
+/**
+ *<h3>任务 - 聚合</h3>
+ *
+ */
 public class Task extends Entity {
 
+    /**
+     * 待定项ID
+     */
     private BacklogItemId backlogItemId;
+    /**
+     * 描述
+     */
     private String description;
+    /**
+     * 日志
+     */
     private List<EstimationLogEntry> estimationLog;
+    /**
+     * 剩余时间
+     */
     private int hoursRemaining;
+    /**
+     * 名称
+     */
     private String name;
+    /**
+     * 状态
+     */
     private TaskStatus status;
+    /**
+     * ID
+     */
     private TaskId taskId;
+    /**
+     * 承租者ID
+     */
     private TenantId tenantId;
+    /**
+     * 志愿者ID
+     */
     private TeamMemberId volunteer;
 
     public List<EstimationLogEntry> allEstimationLogEntries() {
@@ -58,6 +89,11 @@ public class Task extends Entity {
         return this.volunteer;
     }
 
+    /**
+     *<h3>设置志愿者</h3>
+     *<p>protected？
+     *@param aVolunteer
+     */
     protected void setVolunteer(TeamMemberId aVolunteer) {
         this.assertArgumentNotNull(aVolunteer, "The volunteer id must be provided.");
         this.assertArgumentEquals(this.tenantId(), aVolunteer.tenantId(), "The volunteer must be of the same tenant.");
@@ -91,6 +127,17 @@ public class Task extends Entity {
         return hashCodeValue;
     }
 
+    /**
+     *<h3></h3>
+     *@param aTenantId
+     *@param aBacklogItemId
+     *@param aTaskId
+     *@param aVolunteer
+     *@param aName
+     *@param aDescription
+     *@param aHoursRemaining
+     *@param aStatus
+     */
     protected Task(
             TenantId aTenantId,
             BacklogItemId aBacklogItemId,
@@ -113,6 +160,9 @@ public class Task extends Entity {
         this.setVolunteer(aVolunteer.teamMemberId());
     }
 
+    /**
+     *<h3></h3>
+     */
     private Task() {
         super();
 
@@ -120,64 +170,60 @@ public class Task extends Entity {
     }
 
     /**
-     * 
-     * @param aVolunteer
+     *<h3>分配志愿者</h3>
+     *<p>这是一个CQS命令方法，用于分配志愿者，没有返回值。
+     *<p>注意此方法为protected。
+     *@param aVolunteer
      */
     protected void assignVolunteer(TeamMember aVolunteer) {
     	// 业务如此简单，仅仅是修改了一个状态。
     	// 但是这个方法富有业务意义。
         this.setVolunteer(aVolunteer.teamMemberId());
 
-        DomainEventPublisher
-            .instance()
-            .publish(new TaskVolunteerAssigned(
-                    this.tenantId(),
-                    this.backlogItemId(),
-                    this.taskId(),
-                    this.volunteer().id()));
+        DomainEventPublisher.instance().publish(new TaskVolunteerAssigned(this.tenantId(), this.backlogItemId(), this.taskId(), this.volunteer().id()));
     }
 
+    /**
+     *<h3>改变状态</h3>
+     *<p>这是一个CQS命令方法，用于改变状态，没有返回值。
+     *<p>注意此方法为protected。
+     *@param aStatus
+     */
     protected void changeStatus(TaskStatus aStatus) {
         this.setStatus(aStatus);
 
-        DomainEventPublisher
-            .instance()
-            .publish(new TaskStatusChanged(
-                    this.tenantId(),
-                    this.backlogItemId(),
-                    this.taskId(),
-                    this.status()));
+        DomainEventPublisher.instance().publish(new TaskStatusChanged(this.tenantId(), this.backlogItemId(), this.taskId(), this.status()));
     }
 
+    /**
+     *<h3>修改描述</h3>
+     *<p>这是一个CQS命令方法，用于修改描述，没有返回值。
+     *<p>注意此方法为protected。
+     *@param aDescription
+     */
     protected void describeAs(String aDescription) {
         this.setDescription(aDescription);
 
-        DomainEventPublisher
-            .instance()
-            .publish(new TaskDescribed(
-                    this.tenantId(),
-                    this.backlogItemId(),
-                    this.taskId(),
-                    this.description()));
+        DomainEventPublisher.instance().publish(new TaskDescribed(this.tenantId(), this.backlogItemId(), this.taskId(), this.description()));
     }
 
+    /**
+     *<h3>估计剩余时间</h3>
+     *<p>这是一个CQS命令方法，用于估计剩余时间，没有返回值。
+     *@param anHoursRemaining
+     */
     protected void estimateHoursRemaining(int anHoursRemaining) {
         if (anHoursRemaining < 0) {
-            throw new IllegalArgumentException(
-                    "Hours reminaing is illegal: " + anHoursRemaining);
+            throw new IllegalArgumentException("Hours reminaing is illegal: " + anHoursRemaining);
         }
 
         if (anHoursRemaining != this.hoursRemaining()) {
+        	// 改变剩余时间
             this.setHoursRemaining(anHoursRemaining);
 
-            DomainEventPublisher
-                .instance()
-                .publish(new TaskHoursRemainingEstimated(
-                        this.tenantId(),
-                        this.backlogItemId(),
-                        this.taskId(),
-                        this.hoursRemaining()));
+            DomainEventPublisher.instance().publish(new TaskHoursRemainingEstimated(this.tenantId(), this.backlogItemId(), this.taskId(), this.hoursRemaining()));
 
+        	// 改变状态
             if (anHoursRemaining == 0 && !this.status().isDone()) {
                 this.changeStatus(TaskStatus.DONE);
             } else if (anHoursRemaining > 0 && !this.status().isInProgress()) {
@@ -188,18 +234,21 @@ public class Task extends Entity {
         }
     }
 
+    /**
+     *<h3>重命名</h3>
+     *<p>这是一个CQS命令方法，用于重命名，没有返回值。
+     *@param aName
+     */
     protected void rename(String aName) {
         this.setName(aName);
 
-        DomainEventPublisher
-            .instance()
-            .publish(new TaskRenamed(
-                    this.tenantId(),
-                    this.backlogItemId(),
-                    this.taskId(),
-                    this.name()));
+        DomainEventPublisher.instance().publish(new TaskRenamed(this.tenantId(), this.backlogItemId(), this.taskId(), this.name()));
     }
 
+    /**
+     *<h3></h3>
+     *@return
+     */
     protected BacklogItemId backlogItemId() {
         return this.backlogItemId;
     }
@@ -281,6 +330,10 @@ public class Task extends Entity {
         this.tenantId = aTenantId;
     }
 
+    /**
+     *<h3></h3>
+     *@param anHoursRemaining
+     */
     private void logEstimation(int anHoursRemaining) {
         Date today = EstimationLogEntry.currentLogDate();
 

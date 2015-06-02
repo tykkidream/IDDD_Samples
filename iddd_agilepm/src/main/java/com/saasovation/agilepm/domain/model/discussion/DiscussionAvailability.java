@@ -15,7 +15,7 @@
 package com.saasovation.agilepm.domain.model.discussion;
 
 /**
- *<h3>讨论的可用状态</h3>
+ *<h3>讨论的可用状态 - 值对象</h3>
  *
  */
 public enum DiscussionAvailability  {

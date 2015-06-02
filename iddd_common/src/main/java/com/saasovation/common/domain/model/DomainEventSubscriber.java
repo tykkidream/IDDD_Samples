@@ -14,6 +14,11 @@
 
 package com.saasovation.common.domain.model;
 
+/**
+ *<h3>领域事件接收器</h3>
+ *
+ * @param <T>
+ */
 public interface DomainEventSubscriber<T> {
 
     public void handleEvent(final T aDomainEvent);

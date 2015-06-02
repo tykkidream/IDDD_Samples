@@ -18,6 +18,10 @@ import java.util.UUID;
 
 import com.saasovation.agilepm.domain.model.ValueObject;
 
+/**
+ *<h3>任务唯一标识符 - 值对象</h3>
+ *
+ */
 public class TaskId extends ValueObject {
 
     private String id;

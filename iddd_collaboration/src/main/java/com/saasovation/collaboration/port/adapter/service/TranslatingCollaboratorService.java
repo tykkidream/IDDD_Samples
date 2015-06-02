@@ -22,6 +22,11 @@ import com.saasovation.collaboration.domain.model.collaborator.Owner;
 import com.saasovation.collaboration.domain.model.collaborator.Participant;
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 
+/**
+ *<h3>实现了领域服务</h3>
+ *@author Tykkidream
+ *
+ */
 public class TranslatingCollaboratorService implements CollaboratorService {
 
     private UserInRoleAdapter userInRoleAdapter;
@@ -60,39 +65,21 @@ public class TranslatingCollaboratorService implements CollaboratorService {
 
     @Override
     public Moderator moderatorFrom(Tenant aTenant, String anIdentity) {
-        Moderator moderator =
-                this.userInRoleAdapter()
-                    .toCollaborator(
-                            aTenant,
-                            anIdentity,
-                            "Moderator",
-                            Moderator.class);
+        Moderator moderator = this.userInRoleAdapter().toCollaborator(aTenant, anIdentity, "Moderator", Moderator.class);
 
         return moderator;
     }
 
     @Override
     public Owner ownerFrom(Tenant aTenant, String anIdentity) {
-        Owner owner =
-                this.userInRoleAdapter()
-                    .toCollaborator(
-                            aTenant,
-                            anIdentity,
-                            "Owner",
-                            Owner.class);
+        Owner owner = this.userInRoleAdapter().toCollaborator(aTenant,  anIdentity, "Owner", Owner.class);
 
         return owner;
     }
 
     @Override
     public Participant participantFrom(Tenant aTenant, String anIdentity) {
-        Participant participant =
-                this.userInRoleAdapter()
-                    .toCollaborator(
-                            aTenant,
-                            anIdentity,
-                            "Participant",
-                            Participant.class);
+        Participant participant = this.userInRoleAdapter().toCollaborator(aTenant, anIdentity, "Participant", Participant.class);
 
         return participant;
     }

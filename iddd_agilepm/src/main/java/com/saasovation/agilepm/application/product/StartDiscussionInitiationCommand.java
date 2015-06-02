@@ -14,6 +14,11 @@
 
 package com.saasovation.agilepm.application.product;
 
+/**
+ *<h3>开始讨论 - CQRS命令</h3>
+ *<p>是一个POJO</p>
+ *
+ */
 public class StartDiscussionInitiationCommand {
 
     private String tenantId;

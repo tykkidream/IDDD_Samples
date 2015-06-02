@@ -21,6 +21,10 @@ import com.saasovation.agilepm.domain.model.product.ProductId;
 import com.saasovation.agilepm.domain.model.product.backlogitem.*;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 
+/**
+ *<h3></h3>
+ *
+ */
 public class Release extends Entity {
 
     private boolean archived;
@@ -61,6 +65,10 @@ public class Release extends Entity {
         return Collections.unmodifiableSet(this.backlogItems());
     }
 
+    /**
+     *<h3></h3>
+     *@param anArchived
+     */
     public void archived(boolean anArchived) {
         this.setArchived(anArchived);
 
@@ -71,6 +79,10 @@ public class Release extends Entity {
         return this.begins;
     }
 
+    /**
+     *<h3></h3>
+     *@param aDescription
+     */
     public void describeAs(String aDescription) {
         this.setDescription(aDescription);
 
@@ -85,6 +97,10 @@ public class Release extends Entity {
         return this.ends;
     }
 
+    /**
+     *<h3></h3>
+     *@return
+     */
     public boolean isArchived() {
         return this.archived;
     }
@@ -93,12 +109,20 @@ public class Release extends Entity {
         return this.name;
     }
 
+    /**
+     *<h3></h3>
+     *@param aBegins
+     */
     public void nowBeginsOn(Date aBegins) {
         this.setBegins(aBegins);
 
         // TODO: publish event / student assignment
     }
 
+    /**
+     *<h3></h3>
+     *@param anEnds
+     */
     public void nowEndsOn(Date anEnds) {
         this.setEnds(anEnds);
 
@@ -113,30 +137,38 @@ public class Release extends Entity {
         return this.releaseId;
     }
 
+    /**
+     *<h3></h3>
+     *@param aName
+     */
     public void rename(String aName) {
         this.setName(aName);
 
         // TODO: publish event / student assignment
     }
 
+    /**
+     *<h3></h3>
+     *@param anId
+     *@param anOrderOfPriority
+     */
     public void reorderFrom(BacklogItemId anId, int anOrderOfPriority) {
         for (ScheduledBacklogItem scheduledBacklogItem : this.backlogItems()) {
             scheduledBacklogItem.reorderFrom(anId, anOrderOfPriority);
         }
     }
 
+    /**
+     *<h3></h3>
+     *@param aBacklogItem
+     */
     public void schedule(BacklogItem aBacklogItem) {
         this.assertArgumentEquals(this.tenantId(), aBacklogItem.tenantId(), "Must have same tenants.");
         this.assertArgumentEquals(this.productId(), aBacklogItem.productId(), "Must have same products.");
 
         int ordering = this.backlogItems().size() + 1;
 
-        ScheduledBacklogItem scheduledBacklogItem =
-                new ScheduledBacklogItem(
-                        this.tenantId(),
-                        this.releaseId(),
-                        aBacklogItem.backlogItemId(),
-                        ordering);
+        ScheduledBacklogItem scheduledBacklogItem = new ScheduledBacklogItem(this.tenantId(), this.releaseId(), aBacklogItem.backlogItemId(), ordering);
 
         this.backlogItems().add(scheduledBacklogItem);
     }
@@ -145,15 +177,15 @@ public class Release extends Entity {
         return this.tenantId;
     }
 
+    /**
+     *<h3></h3>
+     *@param aBacklogItem
+     */
     public void unschedule(BacklogItem aBacklogItem) {
         this.assertArgumentEquals(this.tenantId(), aBacklogItem.tenantId(), "Must have same tenants.");
         this.assertArgumentEquals(this.productId(), aBacklogItem.productId(), "Must have same products.");
 
-        ScheduledBacklogItem scheduledBacklogItem =
-                new ScheduledBacklogItem(
-                        this.tenantId(),
-                        this.releaseId(),
-                        aBacklogItem.backlogItemId());
+        ScheduledBacklogItem scheduledBacklogItem = new ScheduledBacklogItem(this.tenantId(), this.releaseId(), aBacklogItem.backlogItemId());
 
         this.backlogItems().remove(scheduledBacklogItem);
     }

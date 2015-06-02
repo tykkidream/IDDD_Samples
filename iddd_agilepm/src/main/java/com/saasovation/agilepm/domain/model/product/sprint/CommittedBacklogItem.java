@@ -30,10 +30,10 @@ import com.saasovation.agilepm.domain.model.tenant.TenantId;
  *</ul>
  *</p>
  *
- *<p>刚看到这个类时还以为是值对象，但经分析之后可以从两个点上判断为实体。一是{@link #backlogItemId()}可以作为实例唯一标识，这个标识
- *是来自{@link com.saasovation.agilepm.domain.model.product.backlogitem.BacklogItem#backlogItemId()
- *BacklogItem#backlogItemId()}，二是其状态可以被{@link #reorderFrom(BacklogItemId, int)}修改。所以这个类仅仅只
- *是一个实体，不是值对象。</p>
+ *<p>刚看到这个类时还以为是值对象，但经分析之后可以从两点上判断为实体。一是{@link #backlogItemId()}可以作为实例唯一标识，这个标识
+ *是来自{@link com.saasovation.agilepm.domain.model.product.backlogitem.BacklogItem#backlogItemId() BacklogItem#backlogItemId()}，二是其状态
+ *可以被{@link #reorderFrom(BacklogItemId, int)}修改。所以这个类是一个实体，不是值对象。</p>
+ *
  */
 public class CommittedBacklogItem extends Entity {
 

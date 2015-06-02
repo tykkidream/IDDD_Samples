@@ -192,8 +192,7 @@ public class Calendar extends EventSourcedRootEntity {
             Alarm anAlarm,
             Set<Participant> anInvitees) {
 
-        CalendarEntry calendarEntry =
-                new CalendarEntry(
+        CalendarEntry calendarEntry = new CalendarEntry(
                         this.tenant(),
                         this.calendarId(),
                         aCalendarIdentityService.nextCalendarEntryId(),

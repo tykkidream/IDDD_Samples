@@ -79,11 +79,8 @@ public class LevelDBTimeConstrainedProcessTrackerRepository
     public TimeConstrainedProcessTracker trackerOfProcessId(String aTenantId, ProcessId aProcessId) {
         LevelDBKey primaryKey = new LevelDBKey(PRIMARY, aTenantId, aProcessId.id());
 
-        TimeConstrainedProcessTracker tracker =
-                LevelDBUnitOfWork.readOnly(this.database())
-                    .readObject(
-                            primaryKey.key().getBytes(),
-                            TimeConstrainedProcessTracker.class);
+        TimeConstrainedProcessTracker tracker = LevelDBUnitOfWork.readOnly(this.database())
+                    .readObject(primaryKey.key().getBytes(),TimeConstrainedProcessTracker.class);
 
         return tracker;
     }

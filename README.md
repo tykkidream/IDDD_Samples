@@ -9,6 +9,12 @@ not meant to be a reflection of a production quality
 work, but rather as a set of reference projects for
 the book.
 
+管道是消息通道
+端口连接过滤器和管道 过滤器通过端口连接到输入和输出管道
+过滤器即是处理器 过滤器可以对消息进行处理，而不见得一定对消息进行过滤
+松耦合
+可换性
+
 说明
 ==================
 
@@ -59,7 +65,7 @@ producing the samples.
 - MySQL Client + Server
 - RabbitMQ
 
-Setup (with Docker)
+安装 (with Docker)
 -------------------
 
 To make it easy to run the tests and it requirements,
@@ -78,7 +84,7 @@ MySQL Server and RabbitMQ installed locally. Instead,
 Docker needs to be installed as the script will start
 MySQL and RabbitMQ in Docker containers.
 
-Build
+构建
 ------
 
 You can build the project by running:

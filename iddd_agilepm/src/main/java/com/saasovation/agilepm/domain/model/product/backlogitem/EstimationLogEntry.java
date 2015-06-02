@@ -19,6 +19,10 @@ import java.util.Date;
 import com.saasovation.agilepm.domain.model.Entity;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
 
+/**
+ *<h3>预测日志</h3>
+ *
+ */
 public class EstimationLogEntry extends Entity {
 
     private Date date;
@@ -26,6 +30,10 @@ public class EstimationLogEntry extends Entity {
     private TaskId taskId;
     private TenantId tenantId;
 
+    /**
+     *<h3></h3>
+     *@return
+     */
     public static Date currentLogDate() {
         java.util.Calendar calendar = java.util.Calendar.getInstance();
         calendar.set(java.util.Calendar.HOUR_OF_DAY, 0);
@@ -71,6 +79,13 @@ public class EstimationLogEntry extends Entity {
                 + hoursRemaining + "]";
     }
 
+    /**
+     *<h3></h3>
+     *@param aTenantId
+     *@param aTaskId
+     *@param aDate
+     *@param aHoursRemaining
+     */
     protected EstimationLogEntry(
             TenantId aTenantId,
             TaskId aTaskId,
@@ -85,6 +100,9 @@ public class EstimationLogEntry extends Entity {
         this.setTenantId(aTenantId);
     }
 
+    /**
+     *<h3></h3>
+     */
     private EstimationLogEntry() {
         super();
     }
@@ -99,10 +117,18 @@ public class EstimationLogEntry extends Entity {
         this.date = aDate;
     }
 
+    /**
+     *<h3></h3>
+     *@return
+     */
     protected int hoursRemaining() {
         return this.hoursRemaining;
     }
 
+    /**
+     *<h3></h3>
+     *@param aHoursRemaining
+     */
     protected void setHoursRemaining(int aHoursRemaining) {
         this.hoursRemaining = aHoursRemaining;
     }
@@ -131,6 +157,12 @@ public class EstimationLogEntry extends Entity {
         this.tenantId = aTenantId;
     }
 
+    /**
+     *<h3></h3>
+     *@param anHoursRemaining
+     *@param aDate
+     *@return
+     */
     protected boolean updateHoursRemainingWhenDateMatches(int anHoursRemaining, Date aDate) {
         if (this.isMatching(aDate)) {
             this.setHoursRemaining(anHoursRemaining);

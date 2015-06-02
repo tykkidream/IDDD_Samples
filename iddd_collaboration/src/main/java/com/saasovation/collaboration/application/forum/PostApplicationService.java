@@ -24,6 +24,10 @@ import com.saasovation.collaboration.domain.model.forum.PostId;
 import com.saasovation.collaboration.domain.model.forum.PostRepository;
 import com.saasovation.collaboration.domain.model.tenant.Tenant;
 
+/**
+ *<h3>帖子的应用服务</h3>
+ *
+ */
 public class PostApplicationService {
 
     private CollaboratorService collaboratorService;
@@ -42,29 +46,24 @@ public class PostApplicationService {
         this.postRepository = aPostRepository;
     }
 
-    public void moderatePost(
-            String aTenantId,
-            String aForumId,
-            String aPostId,
-            String aModeratorId,
-            String aSubject,
-            String aBodyText) {
+    public void moderatePost(String aTenantId, String aForumId, String aPostId,
+            String aModeratorId, String aSubject, String aBodyText) {
 
         Tenant tenant = new Tenant(aTenantId);
 
-        Forum forum =
-                this.forumRepository()
-                    .forumOfId(
-                            tenant,
-                            new ForumId(aForumId));
+        // 出：从仓库中提取论坛
+        Forum forum = this.forumRepository().forumOfId(tenant, new ForumId(aForumId));
 
-        Moderator moderator =
-                this.collaboratorService().moderatorFrom(tenant, aModeratorId);
+        // 出：从服务中查找版主
+        Moderator moderator = this.collaboratorService().moderatorFrom(tenant, aModeratorId);
 
+        // 出：从仓库中提取帖子
         Post post = this.postRepository().postOfId(tenant, new PostId(aPostId));
 
+        // 改：在帖子上修改内容
         forum.moderatePost(post, moderator, aSubject, aBodyText);
 
+        // 入：向仓库中保存帖子
         this.postRepository().save(post);
     }
 

@@ -20,6 +20,10 @@ import com.saasovation.agilepm.application.ApplicationServiceLifeCycle;
 import com.saasovation.common.domain.model.process.TimeConstrainedProcessTracker;
 import com.saasovation.common.domain.model.process.TimeConstrainedProcessTrackerRepository;
 
+/**
+ *<h3>长时处理过程 - 应用服务</h3>
+ *
+ */
 public class ProcessApplicationService {
 
     private TimeConstrainedProcessTrackerRepository processTrackerRepository;
@@ -32,14 +36,18 @@ public class ProcessApplicationService {
         this.processTrackerRepository = aProcessorTrackerRepository;
     }
 
+    /**
+     *<h3>检查超时处理过程</h3>
+     */
     public void checkForTimedOutProcesses() {
         ApplicationServiceLifeCycle.begin();
 
         try {
-            Collection<TimeConstrainedProcessTracker> trackers =
-                    this.processTrackerRepository().allTimedOut();
+        	// 加载：所有超时的跟踪状态
+            Collection<TimeConstrainedProcessTracker> trackers = this.processTrackerRepository().allTimedOut();
 
             for (TimeConstrainedProcessTracker tracker : trackers) {
+            	// 命令：通知长时处理过程已超时
                 tracker.informProcessTimedOut();
 
                 this.processTrackerRepository().save(tracker);

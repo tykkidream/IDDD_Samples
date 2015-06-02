@@ -24,9 +24,7 @@ import com.saasovation.collaboration.port.adapter.persistence.EventStoreProvider
 import com.saasovation.common.event.sourcing.EventStream;
 import com.saasovation.common.event.sourcing.EventStreamId;
 
-public class EventStoreCalendarRepository
-        extends EventStoreProvider
-        implements CalendarRepository {
+public class EventStoreCalendarRepository extends EventStoreProvider implements CalendarRepository {
 
     public EventStoreCalendarRepository() {
         super();

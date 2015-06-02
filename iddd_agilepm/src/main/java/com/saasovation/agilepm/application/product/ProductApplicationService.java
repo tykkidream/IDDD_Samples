@@ -30,6 +30,10 @@ import com.saasovation.common.domain.model.process.ProcessId;
 import com.saasovation.common.domain.model.process.TimeConstrainedProcessTracker;
 import com.saasovation.common.domain.model.process.TimeConstrainedProcessTrackerRepository;
 
+/**
+ *<h3>产品业务 - 应用服务</h3>
+ *
+ */
 public class ProductApplicationService {
 
     private TimeConstrainedProcessTrackerRepository processTrackerRepository;
@@ -50,45 +54,54 @@ public class ProductApplicationService {
 
     // TODO: additional APIs / student assignment
 
+    /**
+     *<h3>发起讨论</h3>
+     *<p>是一个长时处理过程的执行器。
+     *@param aCommand
+     */
     public void initiateDiscussion(InitiateDiscussionCommand aCommand) {
+    	// 服务周期：开始。当前服务开始
         ApplicationServiceLifeCycle.begin();
 
         try {
-            Product product =
-                    this.productRepository()
-                        .productOfId(
-                                new TenantId(aCommand.getTenantId()),
-                                new ProductId(aCommand.getProductId()));
+        	// 出：从仓库中提取产品
+            Product product = this.productRepository().productOfId(new TenantId(aCommand.getTenantId()), new ProductId(aCommand.getProductId()));
 
             if (product == null) {
-                throw new IllegalStateException(
-                        "Unknown product of tenant id: "
-                        + aCommand.getTenantId()
-                        + " and product id: "
-                        + aCommand.getProductId());
+                throw new IllegalStateException("Unknown product of tenant id: " + aCommand.getTenantId() + " and product id: " + aCommand.getProductId());
             }
 
+            // 改：在产品上发起讨论
             product.initiateDiscussion(new DiscussionDescriptor(aCommand.getDiscussionId()));
 
+            // 入：向仓库中保存产品
             this.productRepository().save(product);
 
             ProcessId processId = ProcessId.existingProcessId(product.discussionInitiationId());
 
-            TimeConstrainedProcessTracker tracker =
-                    this.processTrackerRepository()
-                        .trackerOfProcessId(aCommand.getTenantId(), processId);
+            // 出：从仓库中提取过程状态。获取长时处理过程的状态对象。
+            TimeConstrainedProcessTracker tracker = this.processTrackerRepository().trackerOfProcessId(aCommand.getTenantId(), processId);
 
+            // 改：在过程状态上执行完成
             tracker.completed();
 
+            // 入：向仓库中保存过程状态
             this.processTrackerRepository().save(tracker);
 
+            // 服务周期：成功
             ApplicationServiceLifeCycle.success();
 
         } catch (RuntimeException e) {
+        	// 服务周期：失败
             ApplicationServiceLifeCycle.fail(e);
         }
     }
 
+    /**
+     *<h3>新的产品</h3>
+     *@param aCommand
+     *@return
+     */
     public String newProduct(NewProductCommand aCommand) {
 
         return this.newProductWith(
@@ -99,6 +112,11 @@ public class ProductApplicationService {
                 DiscussionAvailability.NOT_REQUESTED);
     }
 
+    /**
+     *<h3>新的产品及讨论</h3>
+     *@param aCommand
+     *@return
+     */
     public String newProductWithDiscussion(NewProductCommand aCommand) {
 
         return this.newProductWith(
@@ -109,89 +127,89 @@ public class ProductApplicationService {
                 this.requestDiscussionIfAvailable());
     }
 
+    /**
+     *<h3>申请产品讨论</h3>
+     *@param aCommand
+     */
     public void requestProductDiscussion(RequestProductDiscussionCommand aCommand) {
-        Product product =
-                this.productRepository()
-                    .productOfId(
+        // 出：从仓库中提取产品
+        Product product = this.productRepository().productOfId(
                             new TenantId(aCommand.getTenantId()),
                             new ProductId(aCommand.getProductId()));
 
         if (product == null) {
-            throw new IllegalStateException(
-                    "Unknown product of tenant id: "
-                    + aCommand.getTenantId()
-                    + " and product id: "
-                    + aCommand.getProductId());
+            throw new IllegalStateException("Unknown product of tenant id: " + aCommand.getTenantId() + " and product id: " + aCommand.getProductId());
         }
 
         this.requestProductDiscussionFor(product);
     }
 
+    /**
+     *<h3>重新配置产品要求</h3>
+     *@param aCommand
+     */
     public void retryProductDiscussionRequest(RetryProductDiscussionRequestCommand aCommand) {
 
         ProcessId processId = ProcessId.existingProcessId(aCommand.getProcessId());
 
         TenantId tenantId = new TenantId(aCommand.getTenantId());
 
-        Product product =
-                this.productRepository()
-                    .productOfDiscussionInitiationId(
-                            tenantId,
-                            processId.id());
+        // 出：从仓库中提取产品
+        Product product = this.productRepository().productOfDiscussionInitiationId(tenantId, processId.id());
 
         if (product == null) {
-            throw new IllegalStateException(
-                    "Unknown product of tenant id: "
-                    + aCommand.getTenantId()
-                    + " and discussion initiation id: "
-                    + processId.id());
+            throw new IllegalStateException("Unknown product of tenant id: " + aCommand.getTenantId() + " and discussion initiation id: " + processId.id());
         }
 
         this.requestProductDiscussionFor(product);
     }
 
+    /**
+     *<h3>开始讨论</h3>
+     *@param aCommand
+     */
     public void startDiscussionInitiation(StartDiscussionInitiationCommand aCommand) {
-
+    	// 服务周期：开始
         ApplicationServiceLifeCycle.begin();
 
         try {
-            Product product =
-                    this.productRepository()
-                        .productOfId(
+        	// 出：从仓库中提取产品
+            Product product = this.productRepository().productOfId(
                                 new TenantId(aCommand.getTenantId()),
                                 new ProductId(aCommand.getProductId()));
 
             if (product == null) {
-                throw new IllegalStateException(
-                        "Unknown product of tenant id: "
-                        + aCommand.getTenantId()
-                        + " and product id: "
-                        + aCommand.getProductId());
+                throw new IllegalStateException("Unknown product of tenant id: " + aCommand.getTenantId() + " and product id: " + aCommand.getProductId());
             }
 
-            String timedOutEventName =
-                    ProductDiscussionRequestTimedOut.class.getName();
+            String timedOutEventName = ProductDiscussionRequestTimedOut.class.getName();
 
-            TimeConstrainedProcessTracker tracker =
-                    new TimeConstrainedProcessTracker(
+            //  改：创建过程状态
+            // 长时处理过程开始时，将创建一个新的状态对象来跟踪事件的完成情况，它将
+            // 与所有的领域事件共享一个唯一标识，同时将当前时间戳保存在状态对象。
+            TimeConstrainedProcessTracker tracker = new TimeConstrainedProcessTracker(
                             product.tenantId().id(),
-                            ProcessId.newProcessId(),
-                            "Create discussion for product: "
-                                + product.name(),
-                            new Date(),
+                            ProcessId.newProcessId(), // 生成新的过程ID
+                            "Create discussion for product: " + product.name(),
+                            new Date(), // 过程开始时间
                             5L * 60L * 1000L, // retries every 5 minutes
                             3, // 3 total retries
                             timedOutEventName);
 
+            // 入：向仓库中保存过程状态
             this.processTrackerRepository().save(tracker);
 
+            // 改：在产品上开始讨论
             product.startDiscussionInitiation(tracker.processId().id());
-
+           
+            // 入：向仓库中保存产品
             this.productRepository().save(product);
 
+            // 服务周期：成功
             ApplicationServiceLifeCycle.success();
 
         } catch (RuntimeException e) {
+        	// 服务周期：失败
             ApplicationServiceLifeCycle.fail(e);
         }
     }
@@ -230,6 +248,15 @@ public class ProductApplicationService {
 
     }
 
+    /**
+     *<h3></h3>
+     *@param aTenantId
+     *@param aProductOwnerId
+     *@param aName
+     *@param aDescription
+     *@param aDiscussionAvailability
+     *@return
+     */
     private String newProductWith(
             String aTenantId,
             String aProductOwnerId,
@@ -295,6 +322,10 @@ public class ProductApplicationService {
         return this.productRepository;
     }
 
+    /**
+     *<h3></h3>
+     *@param aProduct
+     */
     private void requestProductDiscussionFor(Product aProduct) {
 
         ApplicationServiceLifeCycle.begin();

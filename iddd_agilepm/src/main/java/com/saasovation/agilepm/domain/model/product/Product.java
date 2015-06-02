@@ -34,6 +34,7 @@ import com.saasovation.agilepm.domain.model.product.sprint.SprintId;
 import com.saasovation.agilepm.domain.model.team.ProductOwner;
 import com.saasovation.agilepm.domain.model.team.ProductOwnerId;
 import com.saasovation.agilepm.domain.model.tenant.TenantId;
+import com.saasovation.common.domain.model.DomainEvent;
 import com.saasovation.common.domain.model.DomainEventPublisher;
 
 /**
@@ -48,7 +49,7 @@ public class Product extends Entity {
     private String description;
     /** 产品的讨论 **/
     private ProductDiscussion discussion;
-    /** 讨论起始标识 **/
+    /** 讨论起始ID **/
     private String discussionInitiationId;
     /** 名称 **/
     private String name;
@@ -87,9 +88,7 @@ public class Product extends Entity {
         this.setProductId(aProductId);
         this.setProductOwnerId(aProductOwnerId);
 
-        DomainEventPublisher
-            .instance()
-            .publish(new ProductCreated(
+        DomainEventPublisher.instance().publish(new ProductCreated(
                     this.tenantId(),
                     this.productId(),
                     this.productOwnerId(),
@@ -122,16 +121,29 @@ public class Product extends Entity {
         return this.discussionInitiationId;
     }
 
+    /**
+     *<h3></h3>
+     */
     public void failDiscussionInitiation() {
         if (!this.discussion().availability().isReady()) {
             this.setDiscussionInitiationId(null);
-            this.setDiscussion(
-                    ProductDiscussion
-                        .fromAvailability(
-                                DiscussionAvailability.FAILED));
+            this.setDiscussion(ProductDiscussion.fromAvailability(DiscussionAvailability.FAILED));
         }
     }
 
+    /**
+     *<h3>发起讨论</h3>
+     *
+     *<p>这是一个 CQS 命令方法，用于发起讨论，没有返回值。
+     *
+     *<p>当前聚合中有一个 {@link ProductDiscussion} 属性，其中有一个 {@link DiscussionDescriptor} 属性
+     *，处理过程仅仅将参数改变此属性，最后产生一个新的 ProductDiscussion 做为当前聚合的新属性。
+     *
+     *<p>当处理完成时，将一些数据封装到一个新的 {@link ProductDiscussionInitiated} 事件对象中，并发
+     *布它。可参考事件发布 {@link DomainEventPublisher#publish(DomainEvent)} 。
+     *
+     *@param aDescriptor
+     */
     public void initiateDiscussion(DiscussionDescriptor aDescriptor) {
         if (aDescriptor == null) {
             throw new IllegalArgumentException("The descriptor must not be null.");
@@ -140,12 +152,9 @@ public class Product extends Entity {
         if (this.discussion().availability().isRequested()) {
             this.setDiscussion(this.discussion().nowReady(aDescriptor));
 
-            DomainEventPublisher
-                .instance()
-                .publish(new ProductDiscussionInitiated(
-                        this.tenantId(),
-                        this.productId(),
-                        this.discussion()));
+            // 发布事件
+            // 当有事件监听器订阅此事件时，将开始长时处理过程。
+            DomainEventPublisher.instance().publish(new ProductDiscussionInitiated(this.tenantId(), this.productId(), this.discussion()));
         }
     }
 
@@ -153,6 +162,15 @@ public class Product extends Entity {
         return this.name;
     }
 
+    /**
+     *<h3></h3>
+     *@param aNewBacklogItemId
+     *@param aSummary
+     *@param aCategory
+     *@param aType
+     *@param aStoryPoints
+     *@return
+     */
     public BacklogItem planBacklogItem(
             BacklogItemId aNewBacklogItemId,
             String aSummary,
@@ -160,8 +178,7 @@ public class Product extends Entity {
             BacklogItemType aType,
             StoryPoints aStoryPoints) {
 
-        BacklogItem backlogItem =
-            new BacklogItem(
+        BacklogItem backlogItem = new BacklogItem(
                     this.tenantId(),
                     this.productId(),
                     aNewBacklogItemId,
@@ -171,9 +188,7 @@ public class Product extends Entity {
                     BacklogItemStatus.PLANNED,
                     aStoryPoints);
 
-        DomainEventPublisher
-            .instance()
-            .publish(new ProductBacklogItemPlanned(
+        DomainEventPublisher.instance().publish(new ProductBacklogItemPlanned(
                     backlogItem.tenantId(),
                     backlogItem.productId(),
                     backlogItem.backlogItemId(),
@@ -215,15 +230,25 @@ public class Product extends Entity {
         }
     }
 
+    /**
+     *<h3>申请讨论</h3>
+     *
+     *<p>这是一个 CQS 命令方法，用于发证讨论状态，没有返回值。
+     *
+     *<p>当时聚合中有一个 {@link ProductDiscussion} 属性，它有一个 {@link DiscussionAvailability} 属性，
+     *处理过程仅仅将参数赋与此属性，最后产生一个新的 ProductDiscussion 做为当前聚合的新属性。
+     *
+     *<p>处理最后，将参数封装到一个新的 {@link ProductDiscussionRequested} 事件对象中，并发布它。
+     *
+     *<p>具体的事件发布机制参考 {@link DomainEventPublisher#publish(DomainEvent)} 。
+     *
+     *@param aDiscussionAvailability
+     */
     public void requestDiscussion(DiscussionAvailability aDiscussionAvailability) {
         if (!this.discussion().availability().isReady()) {
-            this.setDiscussion(
-                    ProductDiscussion.fromAvailability(
-                            aDiscussionAvailability));
+            this.setDiscussion(ProductDiscussion.fromAvailability(aDiscussionAvailability));
 
-            DomainEventPublisher
-                .instance()
-                .publish(new ProductDiscussionRequested(
+            DomainEventPublisher.instance().publish(new ProductDiscussionRequested(
                         this.tenantId(),
                         this.productId(),
                         this.productOwnerId(),
@@ -295,6 +320,10 @@ public class Product extends Entity {
         return sprint;
     }
 
+    /**
+     *<h3></h3>
+     *@param aDiscussionInitiationId
+     */
     public void startDiscussionInitiation(String aDiscussionInitiationId) {
         if (!this.discussion().availability().isReady()) {
             this.setDiscussionInitiationId(aDiscussionInitiationId);
